@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        >
+<RelativeLayout
+    android:id="@+id/rlTop"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivUploader"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/profile1"
+            android:layout_marginLeft="@dimen/_15sdp"
+            />
+
+        <TextView
+            android:id="@+id/tvUploaderName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:fontFamily="@font/inter_medium"
+            android:text="joshua_l"
+            android:layout_toRightOf="@id/ivUploader"
+            android:textSize="@dimen/_11sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_centerVertical="true"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_more"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/_4sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_centerVertical="true"
+            />
+</RelativeLayout>
+        <TextView
+            android:id="@+id/tvCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="joshua_l The game in Japan was amazing and I want to share some photos... See More"
+            android:layout_below="@+id/rlTop"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/text_color"
+            android:layout_marginTop="@dimen/_10sdp"
+            />
+
+        <RelativeLayout
+            android:id="@+id/rlPager"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_350sdp"
+            android:layout_below="@+id/tvCaption"
+            >
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_350sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/gray"
+            />
+
+        <com.technorizen.stanrz.utility.CircleIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:animateLayoutChanges="false" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/llLike"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/rlPager"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            >
+            <ImageView
+                android:id="@+id/ivLike"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                />
+            <ImageView
+                android:id="@+id/ivComment"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_comment"
+            android:layout_marginRight="@dimen/_10sdp"
+                />
+
+            <ImageView
+                android:id="@+id/iv_super_like"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_pay"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23 Super likes"
+                android:textSize="@dimen/_14sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/text_color"
+                />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="44,686 Likes"
+            android:layout_below="@+id/llLike"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/text_color"
+            android:layout_marginTop="@dimen/_10sdp"
+            />
+        <TextView
+            android:id="@+id/tv_totalComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/comment"
+            android:layout_below="@+id/tv_by"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/dark_grey"
+            android:layout_marginTop="@dimen/_5sdp"
+            />
+    </RelativeLayout>
+</LinearLayout>
+</layout>

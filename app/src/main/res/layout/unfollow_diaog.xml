@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_220sdp"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    app:cardCornerRadius="10dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:id="@+id/ivOtherUserProfile"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_10sdp"
+            />
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/inter_semi_bold"
+            android:padding="5dp"
+            android:text="Remove Following?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:fontFamily="@font/inter_semi_bold"
+            android:padding="5dp"
+            android:text="Remove Following?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18sdp"
+           />
+
+        <TextView
+            android:id="@+id/tvRemoveText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/inter_semi_bold"
+            android:padding="5dp"
+            android:text="Remove Following?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="horizontal"
+            >
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnFollow"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="@dimen/_35sdp"
+                android:text="@string/follow"
+                android:textColor="@color/white"
+                android:fontFamily="@font/inter_bold"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_11sdp"
+                android:background="@drawable/button_bg"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:layout_marginRight="@dimen/_5sdp"
+                />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRemove"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="@dimen/_35sdp"
+                android:text="@string/remove"
+                android:textColor="@color/white"
+                android:fontFamily="@font/inter_bold"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_11sdp"
+                android:background="@drawable/button_bg"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/_5sdp"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="@dimen/_35sdp"
+                android:text="@string/cancel"
+                android:textColor="@color/red"
+                android:fontFamily="@font/inter_bold"
+                android:textAllCaps="false"
+                android:gravity="center"
+                android:textSize="@dimen/_10sdp"
+                android:background="@drawable/red_stroke"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

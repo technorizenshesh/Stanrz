@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".fragments.NotificationFragment">
+
+        <include layout="@layout/header_layout" android:id="@+id/header"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutEventDay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/dark_grey"
+            app:tabTextAppearance="@style/AppTabTextAppearance"
+            android:theme="@style/AppTabLayout"
+            app:tabIndicatorHeight="0dp"
+            />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_15sdp"
+            android:id="@+id/rvFollowing"
+            />
+
+
+    </LinearLayout>
+</layout>

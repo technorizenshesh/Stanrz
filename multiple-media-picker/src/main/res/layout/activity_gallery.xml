@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.erikagtierrez.multiple_media_picker.Gallery">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:fitsSystemWindows="true"
+            android:titleTextColor="?attr/titleTextColor"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+
+
+           <!-- <ImageView
+                android:id="@+id/ivCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo_purple"
+                android:layout_gravity="center"
+                />-->
+        </androidx.appcompat.widget.Toolbar>
+<!--
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabTextColor="#B4B5B9"
+            app:tabSelectedTextColor="@color/white"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
+-->
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+<!--
+    <include layout="@layout/content_gallery" />
+-->
+
+
+<!--
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"  >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tvPhotos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Photos"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/selector_background_color"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:padding="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+
+                android:fontFamily="@font/sf_pro_display_semibold"
+                />
+            <TextView
+                android:id="@+id/tvVideos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/_5sdp"
+                android:text="Videos"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/selector_background_color"
+                android:textSize="14sp"
+                android:padding="@dimen/_8sdp"
+                android:fontFamily="@font/sf_pro_display_semibold"
+                />
+
+        </LinearLayout>
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_check_white_48dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

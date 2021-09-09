@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:id="@+id/rlStory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:visibility="gone"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:src="@drawable/rider"
+            app:civ_border_width="@dimen/_2sdp"
+            app:civ_border_color="@color/red"
+            />
+
+        <TextView
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_bold"
+            android:text="LIVE"
+            android:textAllCaps="true"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/live_text_bg"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_58sdp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Karena"
+            android:textAllCaps="true"
+            android:layout_below="@+id/ivProfile"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/_10sdp"
+            android:textColor="@color/text_color"
+            android:layout_marginTop="@dimen/_10sdp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:id="@+id/rlUploadStory"
+        >
+<RelativeLayout
+    android:layout_width="@dimen/_55sdp"
+    android:layout_height="@dimen/_55sdp"
+    android:id="@+id/ivAddStory"
+    >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="@dimen/_55sdp"
+            android:src="@drawable/ic_user"
+            />
+    <ImageView
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:src="@drawable/ic_plus"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/_2sdp"
+        />
+
+</RelativeLayout>
+        <TextView
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_bold"
+            android:text="LIVE"
+            android:textAllCaps="true"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/live_text_bg"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_58sdp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tvuserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/your_story"
+            android:textAllCaps="true"
+            android:layout_below="@+id/ivAddStory"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/_10sdp"
+            android:textColor="@color/text_color"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_10sdp"
+            />
+    </RelativeLayout>
+
+
+</LinearLayout>
+</layout>

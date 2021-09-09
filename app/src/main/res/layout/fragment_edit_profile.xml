@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.EditProfileFragment"
+    android:orientation="vertical"
+    >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <include layout="@layout/header_layout" android:id="@+id/header"/>
+
+    <TextView
+        android:id="@+id/tvDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semi_bold"
+        android:textColor="@color/white"
+        android:layout_alignParentRight="true"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/_15sdp"
+        android:text="@string/done"
+        android:textSize="@dimen/_14sdp" />
+</RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:src="@drawable/rider"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/circle_gray"
+        android:layout_marginTop="@dimen/_20sdp"
+        />
+    <TextView
+        android:id="@+id/tvChangePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semi_bold"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/red"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:text="Change Profile Photo"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textSize="@dimen/_12sdp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/gray"
+        android:layout_marginTop="@dimen/_15sdp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:padding="@dimen/_10sdp"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/text_color"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="Name"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/text_color"
+            android:text="Kareeena"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter_regular"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/text_color"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="Username"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/tvUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:layout_weight=".7"
+            android:textSize="@dimen/_14sdp"
+            android:editable="false"
+            android:textColor="@color/text_color"
+            android:text="Kareeena"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter_regular"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/text_color"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="Website"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/tvWebsite"
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/text_color"
+            android:hint="Website"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter_regular"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/text_color"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="Bio"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/tvBio"
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/text_color"
+            android:hint="Bio"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter_regular"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/gray"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semi_bold"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="Prvate Information"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/_14sdp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/text_color"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="Email"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/tvEmail"
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/text_color"
+            android:hint="Email"
+            android:editable="false"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter_regular"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/text_color"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/phone"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/tvPhone"
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/text_color"
+            android:hint="@string/phone"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter_regular"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:visibility="gone"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/text_color"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/gender"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/tvGender"
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/text_color"
+            android:hint="@string/gender"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter_regular"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/text_color"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="Dob"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText
+            android:id="@+id/etDOB"
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/text_color"
+            android:hint="Dob"
+            android:editable="false"
+            android:focusable="false"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/inter_regular"
+            />
+
+    </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
+</layout>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.technorizen.stanrz.fragments.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_navigation_home_to_coinDetailFragment"
+            app:destination="@id/coinDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_addCommentFragment"
+            app:destination="@id/addCommentFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.technorizen.stanrz.fragments.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_searchUsersFragment"
+            app:destination="@id/searchUsersFragment" />
+    </fragment>
+
+     <fragment
+        android:id="@+id/navigation_add"
+        android:name="com.technorizen.stanrz.fragments.AddPostFragment"
+        android:label="Cart"
+        tools:layout="@layout/fragment_add_post" >
+     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_notification"
+        android:name="com.technorizen.stanrz.fragments.NotificationFragment"
+        android:label="User"
+        tools:layout="@layout/fragment_notification" >
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.technorizen.stanrz.fragments.ProfileFragment"
+        android:label="User"
+        tools:layout="@layout/fragment_profile" >
+
+        <action
+            android:id="@+id/action_navigation_profile_to_joinVipMembershipFragment"
+            app:destination="@id/joinVipMembershipFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_editVipMembershipFragment"
+            app:destination="@id/editVipMembershipFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_addCoverPhotoFragment"
+            app:destination="@id/addCoverPhotoFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_folloersAndFollowingsFragment"
+            app:destination="@id/folloersAndFollowingsFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_postsFragment"
+            app:destination="@id/postsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/coinDetailFragment"
+        android:name="com.technorizen.stanrz.fragments.CoinDetailFragment"
+        android:label="CoinDetailFragment" />
+    <fragment
+        android:id="@+id/joinVipMembershipFragment"
+        android:name="com.technorizen.stanrz.fragments.JoinVipMembershipFragment"
+        android:label="JoinVipMembershipFragment" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.technorizen.stanrz.fragments.EditProfileFragment"
+        android:label="EditProfileFragment" />
+    <activity
+        android:id="@+id/storyDetailActivity"
+        android:name="com.technorizen.stanrz.activites.StoryDetailActivity"
+        android:label="activity_story_detail"
+        tools:layout="@layout/activity_story_detail" />
+    <fragment
+        android:id="@+id/editSingleSubscriptionFragment"
+        android:name="com.technorizen.stanrz.fragments.EditSingleSubscriptionFragment"
+        android:label="EditSingleSubscriptionFragment" />
+    <fragment
+        android:id="@+id/editVipMembershipFragment"
+        android:name="com.technorizen.stanrz.fragments.EditVipMembershipFragment"
+        android:label="EditVipMembershipFragment" >
+        <action
+            android:id="@+id/action_editVipMembershipFragment_to_editSingleSubscriptionFragment"
+            app:destination="@id/editSingleSubscriptionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.technorizen.stanrz.fragments.ChatFragment"
+        android:label="ChatFragment" >
+        <action
+            android:id="@+id/action_chatFragment_to_one2OneChatFragment"
+            app:destination="@id/one2OneChatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/one2OneChatFragment"
+        android:name="com.technorizen.stanrz.fragments.One2OneChatFragment"
+        android:label="One2OneChatFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.technorizen.stanrz.fragments.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.technorizen.stanrz.fragments.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" />
+    <fragment
+        android:id="@+id/searchUsersFragment"
+        android:name="com.technorizen.stanrz.fragments.SearchUsersFragment"
+        android:label="SearchUsersFragment" >
+
+        <action
+            android:id="@+id/action_searchUsersFragment_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCoverPhotoFragment"
+        android:name="com.technorizen.stanrz.fragments.AddCoverPhotoFragment"
+        android:label="AddCoverPhotoFragment" />
+    <fragment
+        android:id="@+id/otherUserDetailFragment"
+        android:name="com.technorizen.stanrz.fragments.OtherUserDetailFragment"
+        android:label="OtherUserDetailFragment" >
+        <action
+            android:id="@+id/action_otherUserDetailFragment_to_otherUserFollowersFollowingFragment"
+            app:destination="@id/otherUserFollowersFollowingFragment" />
+        <action
+            android:id="@+id/action_otherUserDetailFragment_to_postsFragment"
+            app:destination="@id/postsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/folloersAndFollowingsFragment"
+        android:name="com.technorizen.stanrz.fragments.FolloersAndFollowingsFragment"
+        android:label="FolloersAndFollowingsFragment" />
+    <fragment
+        android:id="@+id/otherUserFollowersFollowingFragment"
+        android:name="com.technorizen.stanrz.fragments.OtherUserFollowersFollowingFragment"
+        android:label="OtherUserFollowersFollowingFragment" />
+    <fragment
+        android:id="@+id/postsFragment"
+        android:name="com.technorizen.stanrz.fragments.PostsFragment"
+        android:label="PostsFragment" >
+        <action
+            android:id="@+id/action_postsFragment_to_addCommentFragment"
+            app:destination="@id/addCommentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCommentFragment"
+        android:name="com.technorizen.stanrz.fragments.AddCommentFragment"
+        android:label="AddCommentFragment" />
+
+
+</navigation>
