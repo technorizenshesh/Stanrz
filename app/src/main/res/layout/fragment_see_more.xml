@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.SeeMoreFragment"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/header_layout" android:id="@+id/header"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_weight=".6"
+            android:layout_height="@dimen/_35sdp"
+            app:cardElevation="@dimen/_10sdp"
+            android:id="@+id/cvDaily"
+            android:layout_margin="@dimen/_1sdp">
+            <TextView
+                android:id="@+id/tvDaily"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/daily"
+                android:textSize="@dimen/_11sdp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_header_bg"
+                />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_weight=".6"
+            android:layout_height="@dimen/_35sdp"
+            app:cardElevation="@dimen/_10sdp"
+            android:id="@+id/cvWeekly"
+            android:layout_margin="@dimen/_1sdp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/weekly"
+                android:textSize="@dimen/_11sdp"
+                android:gravity="center"
+                android:textColor="@color/dark_grey"
+                android:id="@+id/tvWeekly"
+                android:layout_gravity="center"
+                />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="@dimen/_35sdp"
+            app:cardElevation="@dimen/_10sdp"
+            android:id="@+id/cvMonthly"
+            android:layout_marginLeft="@dimen/_2sdp"
+            android:layout_margin="@dimen/_1sdp">
+            <TextView
+                android:id="@+id/tvMontly"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/monthly"
+                android:textSize="@dimen/_11sdp"
+                android:padding="@dimen/_10sdp"
+                android:gravity="center"
+                android:textColor="@color/dark_grey"
+                android:layout_gravity="center"
+                />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="@dimen/_35sdp"
+            app:cardElevation="@dimen/_10sdp"
+            android:id="@+id/cvAllTime"
+            android:layout_marginLeft="@dimen/_2sdp"
+            android:layout_margin="@dimen/_1sdp">
+            <TextView
+                android:id="@+id/tvAllTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/all_time"
+                android:textSize="@dimen/_11sdp"
+                android:padding="@dimen/_10sdp"
+                android:gravity="center"
+                android:textColor="@color/dark_grey"
+                android:layout_gravity="center"
+                />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/rvStanrz"/>
+
+</LinearLayout>
+</layout>

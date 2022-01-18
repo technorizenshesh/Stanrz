@@ -1,3 +1,4 @@
+include ':compressvideo'
 include ':multiple-media-picker'
 include ':app'
 rootProject.name = "Stanrz"

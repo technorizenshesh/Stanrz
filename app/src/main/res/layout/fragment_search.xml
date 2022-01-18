@@ -8,6 +8,10 @@
     tools:context=".fragments.SearchFragment"
     android:orientation="vertical"
     >
+    <RelativeLayout
+        android:id="@+id/rlParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/etSearch"
         android:layout_width="match_parent"
@@ -15,17 +19,20 @@
         android:background="@drawable/search_bg"
         android:drawableLeft="@drawable/ic_black_search"
         android:padding="@dimen/_10sdp"
-        android:hint="Search"
+        android:hint="@string/search"
         android:fontFamily="@font/inter_medium"
         android:gravity="center_vertical"
         android:textSize="@dimen/_12sdp"
-        android:editable="false"
+        android:focusable="false"
+        android:clickable="true"
+        android:inputType="none"
         android:textColor="@color/dark_grey"
         android:drawablePadding="@dimen/_5sdp"
-        android:layout_margin="@dimen/_15sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         />
-
-    <androidx.recyclerview.widget.RecyclerView
+    </RelativeLayout>
+  <!--  <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
@@ -36,12 +43,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:id="@+id/rvStories"/>
-
+-->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlRefreshContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_5sdp"
+        >
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:id="@+id/rvItems"/>
-
+        android:id="@+id/rvPosts"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
 </layout>

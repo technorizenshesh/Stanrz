@@ -46,12 +46,16 @@ import static com.technorizen.stanrz.retrofit.Constant.showToast;
  */
 public class OtherUserFollowersFollowingFragment extends Fragment implements AddFollow {
 
-
     FragmentOtherUserFollowersFollowingBinding binding;
     StanrzInterface apiInterface;
     private List<SuccessResGetFollowings.Result> followersList = new LinkedList<>();
 
     private String otherUserID;
+
+    boolean notFromPrevious = true;
+
+    private String name = "";
+    private boolean searchFollowers = true;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,7 +73,6 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment OtherUserFollowersFollowingFragment.
@@ -106,7 +109,6 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
 
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
 
-
         binding.tabLayoutEventDay.addTab(binding.tabLayoutEventDay.newTab().setText(R.string.followers));
         binding.tabLayoutEventDay.addTab(binding.tabLayoutEventDay.newTab().setText(R.string.following));
         binding.tabLayoutEventDay.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -115,15 +117,20 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int currentTabSelected= tab.getPosition();
+                notFromPrevious = false;
+
                 if(currentTabSelected==0)
                 {
                     //Go for Today
+                    searchFollowers = true;
 
                     getFollowers();
 
                 }else if(currentTabSelected==1)
                 {
                     //Go for Upcoming
+                    searchFollowers = false;
+
                     getFollowings();
 
                 }
@@ -136,29 +143,51 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
             }
         });
 
-
-
         Bundle bundle = this.getArguments();
 
-        if (bundle!=null)
+        if(notFromPrevious)
         {
-            String name = bundle.getString("name");
-            otherUserID =  bundle.getString("id");
+
+            if (bundle!=null)
+            {
+                name = bundle.getString("name");
+                otherUserID =  bundle.getString("id");
+                binding.header.tvHeader.setText(name);
+                String Goto = bundle.getString("Goto");
+
+                if(Goto.equalsIgnoreCase("1"))
+                {
+                    binding.tabLayoutEventDay.getTabAt(0).select();
+                    getFollowers();
+                    searchFollowers = true;
+
+
+                } else
+                {
+                    binding.tabLayoutEventDay.getTabAt(1).select();
+                    getFollowings();
+                    searchFollowers = false;
+
+                }
+            }
+
+
+        }
+        else
+        {
             binding.header.tvHeader.setText(name);
-            String Goto = bundle.getString("Goto");
-
-
-            if(Goto.equalsIgnoreCase("1"))
+            if(searchFollowers)
             {
                 binding.tabLayoutEventDay.getTabAt(0).select();
                 getFollowers();
-
-            } else
+            }
+            else
             {
                 binding.tabLayoutEventDay.getTabAt(1).select();
                 getFollowings();
             }
         }
+
 
 
         return binding.getRoot();
@@ -233,11 +262,6 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
         map.put("user_id",userID);
         map.put("other_id",otherUserID);
 
-      /*  RequestBody email = RequestBody.create(MediaType.parse("text/plain"),strEmail);
-        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), strPassword);
-        RequestBody registerID = RequestBody.create(MediaType.parse("text/plain"),deviceToken);
-*/
-//        Call<SuccessResSignIn> call = apiInterface.login(email,password,registerID);
         Call<SuccessResGetFollowings> call = apiInterface.getOthersFollowing(map);
 
         call.enqueue(new Callback<SuccessResGetFollowings>() {

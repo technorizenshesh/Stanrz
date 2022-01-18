@@ -38,7 +38,6 @@ public class SplashActivity extends AppCompatActivity {
         finds();
 
 /*
-
         if(checkPermisssionForReadStorage())
         {
             Intent intent= new Intent(this, Gallery.class);
@@ -50,9 +49,7 @@ public class SplashActivity extends AppCompatActivity {
             startActivityForResult(intent,OPEN_MEDIA_PICKER);
         }
 */
-
     }
-
 
     //CHECKING FOR Camera STATUS
     public boolean checkPermisssionForReadStorage() {
@@ -72,19 +69,14 @@ public class SplashActivity extends AppCompatActivity {
                         != PackageManager.PERMISSION_GRANTED
         ) {
 
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(SplashActivity.this,
                     Manifest.permission.CAMERA)
-
                     ||
-
                     ActivityCompat.shouldShowRequestPermissionRationale(SplashActivity.this,
                             Manifest.permission.READ_EXTERNAL_STORAGE)
                     ||
                     ActivityCompat.shouldShowRequestPermissionRationale(SplashActivity.this,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-
             ) {
 
                 ActivityCompat.requestPermissions(SplashActivity.this,
@@ -93,8 +85,6 @@ public class SplashActivity extends AppCompatActivity {
 
             } else {
 
-                //explain("Please Allow Location Permission");
-                // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(SplashActivity.this,
                         new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         MY_PERMISSION_CONSTANT);
@@ -143,8 +133,6 @@ public class SplashActivity extends AppCompatActivity {
 
         }
     }
-
-
 
     private void finds() {
 

@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -61,6 +63,29 @@ public class SignupActivity extends AppCompatActivity {
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
+
+        binding.etUserName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                String result = s.toString().replaceAll(" ", "");
+                if (!s.toString().equals(result)) {
+                    binding.etUserName.setText(result);
+                    binding.etUserName.setSelection(result.length());
+                }
+            }
+        });
+
         binding.btnReg.setOnClickListener(v ->
 
                 {
@@ -83,9 +108,7 @@ public class SignupActivity extends AppCompatActivity {
                         }
                     } else {
                         Toast.makeText(this, getResources().getString(R.string.on_error), Toast.LENGTH_SHORT).show();
-
                     }
-
                 }
         );
         binding.rlbottom.setOnClickListener(v ->
@@ -101,7 +124,6 @@ public class SignupActivity extends AppCompatActivity {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
                 }
                 );
         binding.header.setOnClickListener(v -> finish());

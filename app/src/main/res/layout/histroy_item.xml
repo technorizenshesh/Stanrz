@@ -13,23 +13,26 @@
         >
 <ImageView
     android:id="@+id/iv_history"
-    android:layout_width="@dimen/_50sdp"
-    android:layout_height="@dimen/_50sdp"
-    android:background="@drawable/circle_gray"
-    android:layout_marginRight="@dimen/_15sdp"
+    android:layout_width="@dimen/_40sdp"
+    android:layout_height="@dimen/_40sdp"
+    android:background="@drawable/ic_dollar_exchange"
+    android:layout_marginRight="@dimen/_10sdp"
     />
 
         <TextView
-            android:id="@+id/tv_history"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_semi_bold"
             android:textColor="@color/black"
             android:textStyle="bold"
+            android:layout_centerVertical="true"
             android:text="Bitcoin"
+            android:layout_toLeftOf="@+id/tv_date"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_toRightOf="@+id/iv_history"
-            android:textSize="@dimen/_14sdp" />
+            android:textSize="@dimen/_12sdp" />
+
         <TextView
             android:id="@+id/tv_header"
             android:layout_width="wrap_content"
@@ -37,7 +40,7 @@
             android:fontFamily="@font/inter_regular"
             android:textColor="@color/dark_grey"
             android:text="From btc-Wallet"
-            android:layout_below="@id/tv_history"
+            android:visibility="gone"
             android:layout_toRightOf="@+id/iv_history"
             android:textSize="@dimen/_12sdp" />
         <TextView
@@ -46,6 +49,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_regular"
             android:textColor="@color/black"
+            android:visibility="gone"
             android:text="$40"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_alignParentRight="true"
@@ -57,9 +61,9 @@
             android:fontFamily="@font/inter_regular"
             android:textColor="@color/dark_grey"
             android:text="now"
-            android:layout_below="@id/tv_history"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_10sdp" />
 
     </RelativeLayout>
 </LinearLayout>

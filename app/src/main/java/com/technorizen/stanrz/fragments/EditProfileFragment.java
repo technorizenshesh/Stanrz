@@ -2,9 +2,14 @@ package com.technorizen.stanrz.fragments;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,9 +19,12 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,9 +48,13 @@ import com.technorizen.stanrz.retrofit.ApiClient;
 import com.technorizen.stanrz.retrofit.StanrzInterface;
 import com.technorizen.stanrz.utility.DataManager;
 import com.technorizen.stanrz.utility.NetworkAvailablity;
+import com.technorizen.stanrz.utility.RealPathUtil;
 import com.technorizen.stanrz.utility.SharedPreferenceUtility;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +82,8 @@ public class EditProfileFragment extends Fragment {
     private StanrzInterface apiInterface;
 
     private SuccessResProfileData.Result userDetail;
+
+    private String haveFanClub = "";
 
     String strName ="",strMobile ="",strGender ="",strBio ="",strAddress = "",strWebsite = "";
 
@@ -128,10 +142,43 @@ public class EditProfileFragment extends Fragment {
 
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
 
+        binding.tvUserName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                String result = s.toString().replaceAll(" ", "");
+                if (!s.toString().equals(result)) {
+                    binding.tvUserName.setText(result);
+                    binding.tvUserName.setSelection(result.length());
+                }
+            }
+        });
+
         binding.header.imgHeader.setOnClickListener(v -> getActivity().onBackPressed());
+
         binding.header.tvHeader.setText(R.string.edit_profile);
 
-        getProfile();
+        if (com.technorizen.stanrz.retrofit.NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
+            getProfile();
+        } else {
+            Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
+        }
+
+        binding.tvApply.setOnClickListener(v ->
+                {
+                    Navigation.findNavController(v).navigate(R.id.action_editProfileFragment_to_applyForFanAccountFragment);
+                }
+                );
 
         binding.tvChangePhoto.setOnClickListener(v ->
                 {
@@ -140,15 +187,20 @@ public class EditProfileFragment extends Fragment {
                 }
                 );
 
-
         binding.tvDone.setOnClickListener(v ->
                 {
 
                     strMobile = binding.tvPhone.getText().toString();
                     strName = binding.tvName.getText().toString();
                     strWebsite = binding.tvWebsite.getText().toString();
-                    strBio = binding.tvBio.getText().toString();
+                    strBio = binding.tvBio.getText().toString().trim();
 
+                    if(strBio.contains("\n\n"))
+                    {
+                        strBio = strBio.replaceAll("[\r\n]+", "\n");
+                    }
+
+                    strAddress = binding.etAddress.getText().toString();
                     if (isValid()) {
 
                         if (NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
@@ -161,13 +213,10 @@ public class EditProfileFragment extends Fragment {
                     } else {
                         Toast.makeText(getActivity(), "ON error", Toast.LENGTH_SHORT).show();
                     }
-
                 }
                 );
-
         return binding.getRoot();
     }
-
 
     private boolean isValid() {
         if (strName.equalsIgnoreCase("")) {
@@ -177,7 +226,6 @@ public class EditProfileFragment extends Fragment {
         return true;
     }
 
-
     private void getProfile() {
 
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
@@ -185,11 +233,6 @@ public class EditProfileFragment extends Fragment {
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
 
-      /*  RequestBody email = RequestBody.create(MediaType.parse("text/plain"),strEmail);
-        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), strPassword);
-        RequestBody registerID = RequestBody.create(MediaType.parse("text/plain"),deviceToken);
-*/
-//        Call<SuccessResSignIn> call = apiInterface.login(email,password,registerID);
         Call<SuccessResProfileData> call = apiInterface.getProfile(map);
 
         call.enqueue(new Callback<SuccessResProfileData>() {
@@ -201,15 +244,13 @@ public class EditProfileFragment extends Fragment {
                 try {
                     SuccessResProfileData data = response.body();
                     userDetail = data.getResult();
-//                    setSellerData();
+
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
                         setProfileDetails();
 
-//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
-//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                     }
@@ -229,33 +270,46 @@ public class EditProfileFragment extends Fragment {
     private void setProfileDetails()
     {
 
-
         Glide
                 .with(getActivity())
                 .load(userDetail.getImage())
                 .centerCrop()
                 .placeholder(R.drawable.ic_user)
                 .into(binding.ivProfile);
+
         binding.tvName.setText(userDetail.getFullname());
         binding.tvUserName.setText(userDetail.getUsername());
         binding.tvEmail.setText(userDetail.getEmail());
         binding.tvPhone.setText(userDetail.getMobile());
         binding.tvGender.setText(userDetail.getGender());
-
         binding.etDOB.setText(userDetail.getDob());
         binding.tvBio.setText(userDetail.getBio());
         binding.tvWebsite.setText(userDetail.getWebsite());
-
+        binding.etAddress.setText(userDetail.getAddress());
         binding.header.tvHeader.setText(userDetail.getUsername());
 
-//        str_image_path = sellerDetail.getImage();
+        if(userDetail.getVerified().equalsIgnoreCase("Verified"))
+        {
+            binding.tvApply.setVisibility(View.GONE);
+            binding.tvPending.setVisibility(View.GONE);
+        } else if (userDetail.getVerified().equalsIgnoreCase("Unverified"))
+        {
+            binding.tvApply.setVisibility(View.GONE);
+            binding.tvPending.setVisibility(View.VISIBLE);
+        }else if (userDetail.getVerified().equalsIgnoreCase("Rejected"))
+        {
+            binding.tvApply.setVisibility(View.GONE);
+            binding.tvPending.setVisibility(View.GONE);
+        }
+        else
+        {
+            binding.tvPending.setVisibility(View.GONE);
+            binding.tvApply.setVisibility(View.VISIBLE);
+        }
     }
-
-
 
     public void updateProfile()
     {
-
         String strUserId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         MultipartBody.Part filePart;
@@ -263,13 +317,12 @@ public class EditProfileFragment extends Fragment {
             File file = DataManager.getInstance().saveBitmapToFile(new File(str_image_path));
             if(file!=null)
             {
-                filePart = MultipartBody.Part.createFormData("bg_image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+                filePart = MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
             }
             else
             {
                 filePart = null;
             }
-
         } else {
             RequestBody attachmentEmpty = RequestBody.create(MediaType.parse("text/plain"), "");
             filePart = MultipartBody.Part.createFormData("attachment", "", attachmentEmpty);
@@ -282,11 +335,6 @@ public class EditProfileFragment extends Fragment {
         RequestBody address = RequestBody.create(MediaType.parse("text/plain"), strAddress);
         RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), strGender);
 
-      /*  RequestBody email = RequestBody.create(MediaType.parse("text/plain"),strEmail);
-        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), strPassword);
-        RequestBody registerID = RequestBody.create(MediaType.parse("text/plain"),deviceToken);
-*/
-//        Call<SuccessResSignIn> call = apiInterface.login(email,password,registerID);
         Call<SuccessResUpdateProfile> loginCall = apiInterface.updateProfile(userId,mobile,name,wesite,bio,address,gender,filePart);
         loginCall.enqueue(new Callback<SuccessResUpdateProfile>() {
             @Override
@@ -311,7 +359,6 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
-
     public void showImageSelection() {
 
         final Dialog dialog = new Dialog(getActivity());
@@ -321,7 +368,7 @@ public class EditProfileFragment extends Fragment {
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         Window window = dialog.getWindow();
         lp.copyFrom(window.getAttributes());
-        //This makes the dialog take up the full width
+
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
@@ -355,27 +402,31 @@ public class EditProfileFragment extends Fragment {
 
     private void openCamera() {
 
-        File dirtostoreFile = new File(Environment.getExternalStorageDirectory() + "/Micasa/Images/");
+//        File dirtostoreFile = new File(Environment.getExternalStorageDirectory() + "/Starnz/Images/");
+//
+//        if (!dirtostoreFile.exists()) {
+//            dirtostoreFile.mkdirs();
+//        }
+//
+//        String timestr = DataManager.getInstance().convertDateToString(Calendar.getInstance().getTimeInMillis());
+//
+//        File tostoreFile = new File(Environment.getExternalStorageDirectory() + "/Stanrz/Images/" + "IMG_" + timestr + ".jpg");
+//
+//        str_image_path = tostoreFile.getPath();
+//
+//        uriSavedImage = FileProvider.getUriForFile(getActivity(),
+//                BuildConfig.APPLICATION_ID + ".provider",
+//                tostoreFile);
+//
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+//
+//        startActivityForResult(intent, REQUEST_CAMERA);
 
-        if (!dirtostoreFile.exists()) {
-            dirtostoreFile.mkdirs();
-        }
-
-        String timestr = DataManager.getInstance().convertDateToString(Calendar.getInstance().getTimeInMillis());
-
-        File tostoreFile = new File(Environment.getExternalStorageDirectory() + "/Micasa/Images/" + "IMG_" + timestr + ".jpg");
-
-        str_image_path = tostoreFile.getPath();
-
-        uriSavedImage = FileProvider.getUriForFile(getActivity(),
-                BuildConfig.APPLICATION_ID + ".provider",
-                tostoreFile);
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
-
-        startActivityForResult(intent, REQUEST_CAMERA);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null)
+            startActivityForResult(cameraIntent, REQUEST_CAMERA);
 
     }
 
@@ -385,20 +436,71 @@ public class EditProfileFragment extends Fragment {
         if (resultCode == RESULT_OK) {
             Log.e("Result_code", requestCode + "");
             if (requestCode == SELECT_FILE) {
-                str_image_path = DataManager.getInstance().getRealPathFromURI(getActivity(), data.getData());
-                Glide.with(getActivity())
-                        .load(str_image_path)
-                        .centerCrop()
-                        .into(binding.ivProfile);
+
+                try {
+                    Uri selectedImage = data.getData();
+                    Bitmap bitmapNew = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                    Bitmap bitmap = BITMAP_RE_SIZER(bitmapNew, bitmapNew.getWidth(), bitmapNew.getHeight());
+                    Glide.with(getActivity())
+                            .load(selectedImage)
+                            .centerCrop()
+                            .into(binding.ivProfile);
+                    Uri tempUri = getImageUri(getActivity(), bitmap);
+                    String image = RealPathUtil.getRealPath(getActivity(), tempUri);
+                    str_image_path = image;
+
+                } catch (IOException e) {
+                    Log.i("TAG", "Some exception " + e);
+                }
+
+
 
             } else if (requestCode == REQUEST_CAMERA) {
-                Glide.with(getActivity())
-                        .load(str_image_path)
-                        .centerCrop()
-                        .into(binding.ivProfile);
 
+                try {
+                    if (data != null) {
+                        Bundle extras = data.getExtras();
+                        Bitmap bitmapNew = (Bitmap) extras.get("data");
+                        Bitmap imageBitmap = BITMAP_RE_SIZER(bitmapNew, bitmapNew.getWidth(), bitmapNew.getHeight());
+                        Uri tempUri = getImageUri(getActivity(), imageBitmap);
+                        String image = RealPathUtil.getRealPath(getActivity(), tempUri);
+                        str_image_path = image;
+                        Glide.with(getActivity())
+                                .load(str_image_path)
+                                .centerCrop()
+                                .into(binding.ivProfile);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+    public Bitmap BITMAP_RE_SIZER(Bitmap bitmap, int newWidth, int newHeight) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+
+        float ratioX = newWidth / (float) bitmap.getWidth();
+        float ratioY = newHeight / (float) bitmap.getHeight();
+        float middleX = newWidth / 2.0f;
+        float middleY = newHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title_" + System.currentTimeMillis(), null);
+        return Uri.parse(path);
     }
 
     //CHECKING FOR Camera STATUS
@@ -431,9 +533,7 @@ public class EditProfileFragment extends Fragment {
                     ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-
             ) {
-
 
                 requestPermissions(
                         new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -516,9 +616,6 @@ public class EditProfileFragment extends Fragment {
 
         }
     }
-
-
-
 
 
 }

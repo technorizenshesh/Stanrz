@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -61,13 +62,6 @@ public class StanrzNotification extends FirebaseMessagingService {
         }
     }
 
-    /**
-     * Create and show a simple notification containing the received FCM message.
-     *
-     * @param message
-     * @param title
-     */
-
     private void sendNotification(String message, String title,Map<String,String> map) throws JSONException {
 
         JSONObject jsonObject = null;
@@ -84,8 +78,69 @@ public class StanrzNotification extends FirebaseMessagingService {
             intent.putExtra("notification","notification");
             intent.putExtra("key","notification");
             intent.putExtra("chat","test");
-            intent.putExtra("GoToTab3","1");
+        }  else if(key.equalsIgnoreCase("Like"))
+        {
+            String result = jsonObject.getString("result");
+            intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("notification","notification");
+            intent.putExtra("key","notification");
+            intent.putExtra("chat","test");
+
+            if(Util.appInForeground(this))
+
+            {
+                Intent intent1 = new Intent("filter_string");
+                intent.putExtra("key", "My Data");
+                // put your all data using put extra
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
+            }
+
+        } else if(key.equalsIgnoreCase("Comment"))
+        {
+            intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("notification","notification");
+            if(Util.appInForeground(this))
+
+            {
+                Intent intent1 = new Intent("filter_string");
+                intent.putExtra("key", "My Data");
+                // put your all data using put extra
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
+            }
+
+        }else if(key.equalsIgnoreCase("Super Like"))
+        {
+            intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("notification","notification");
+            if(Util.appInForeground(this))
+
+            {
+                Intent intent1 = new Intent("filter_string");
+                intent.putExtra("key", "My Data");
+                // put your all data using put extra
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
+            }
+
+        }else if(key.equalsIgnoreCase("Chat"))
+        {
+            String userId = jsonObject.getString("userid");
+            intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("notification","chat");
+            intent.putExtra("userId",userId);
+            if(Util.appInForeground(this))
+
+            {
+                Intent intent1 = new Intent("filter_string");
+                intent.putExtra("key", "My Data");
+                // put your all data using put extra
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
+            }
         }
+
 
        /* if (jsonObject.has("data")) {
             JSONObject object = new JSONObject(map);

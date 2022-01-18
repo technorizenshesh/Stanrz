@@ -7,11 +7,13 @@
         android:orientation="horizontal"
         >
         <RelativeLayout
+            android:id="@+id/rlParent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_8sdp"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:longClickable="true"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             >
@@ -37,15 +39,25 @@
 
             <TextView
                 android:id="@+id/tv_comment"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_regular"
                 android:textColor="@color/black"
-                android:text="ritesh12"
+                android:linksClickable="true"
+                android:layout_toLeftOf="@id/ivDelete"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/tv_name"
                 android:textSize="@dimen/_12sdp" />
+
+            <ImageView
+                android:id="@+id/ivDelete"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_delete_24"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+
             <TextView
                 android:id="@+id/tvTimeAgo"
                 android:layout_width="wrap_content"
@@ -57,6 +69,7 @@
                 android:layout_toRightOf="@id/iv_history"
                 android:layout_below="@id/tv_comment"
                 android:textSize="@dimen/_10sdp" />
+
         </RelativeLayout>
     </LinearLayout>
 </layout>

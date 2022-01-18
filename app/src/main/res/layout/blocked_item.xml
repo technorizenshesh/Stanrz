@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/light_gray_fill"
+            android:padding="@dimen/_10sdp"
+            android:layout_margin="@dimen/_10sdp"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@drawable/rider"
+                android:background="@drawable/circle_gray"
+                />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semi_bold"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_profile"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:text="Hello"
+                android:textSize="@dimen/_14sdp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnUnblock"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:text="@string/unblock"
+                android:textAllCaps="false"
+                android:textColor="@color/red"
+                android:fontFamily="@font/inter_bold"
+                android:background="@drawable/red_stroke"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/_8sdp"
+                />
+<TextView
+    android:id="@+id/tvRanking"
+    android:layout_width="@dimen/_23sdp"
+    android:layout_height="@dimen/_23sdp"
+    android:background="@drawable/pink_badge_circle"
+    android:layout_alignParentBottom="true"
+    android:text="1"
+    android:textColor="@color/white"
+    android:visibility="gone"
+    android:layout_alignParentRight="true"
+    android:gravity="center"
+    android:textSize="@dimen/_11sdp"
+    android:fontFamily="@font/inter_semi_bold"
+    />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

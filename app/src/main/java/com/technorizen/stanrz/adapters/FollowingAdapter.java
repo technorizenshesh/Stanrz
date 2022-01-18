@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.tv.TvView;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -69,6 +71,15 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Stor
         AppCompatButton btnFollowing = holder.itemView.findViewById(R.id.btnFollowing);
         AppCompatButton btnFollow = holder.itemView.findViewById(R.id.btnFollow);
 
+        ivProfile.setOnClickListener(view ->
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("otherUser",followersList.get(position).getUserDetails().getId());
+                    Navigation.findNavController(view).navigate(R.id.action_folloersAndFollowingsFragment_to_otherUserDetailFragment,bundle);
+
+                }
+                );
+
         if(forWho)
         {
             btnFollow.setVisibility(View.GONE);
@@ -111,16 +122,11 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Stor
                     .into(ivProfile);
             tvName.setText(followersList.get(position).getUserDetails().getUsername());
 
-
-
-
             if(followersList.get(position).getUserDetails().getFollow().equalsIgnoreCase("Following"))
 
             {
-
                   btnFollow.setVisibility(View.GONE);
                   btnFollowing.setVisibility(View.VISIBLE);
-
             } else
             {
                 btnFollowing.setVisibility(View.VISIBLE);
@@ -128,11 +134,8 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Stor
 
             }
 
-
-
             binding.btnFollowing.setOnClickListener(v ->
                     {
-
 
                         AppCompatButton btnCancel,btnRemove1;
                         TextView tvName1,tvRemoveText;
@@ -185,6 +188,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Stor
 
                     }
             );
+
 
             btnFollow.setOnClickListener(v ->
                     {

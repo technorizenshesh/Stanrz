@@ -20,6 +20,15 @@
         <action
             android:id="@+id/action_navigation_home_to_addCommentFragment"
             app:destination="@id/addCommentFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_myStoriesFragment"
+            app:destination="@id/myStoriesFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_purchaseSuperlikesFragment"
+            app:destination="@id/purchaseSuperlikesFragment" />
     </fragment>
 
     <fragment
@@ -30,6 +39,10 @@
         <action
             android:id="@+id/action_navigation_search_to_searchUsersFragment"
             app:destination="@id/searchUsersFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_postsFragment"
+            app:destination="@id/postsFragment" />
+
     </fragment>
 
      <fragment
@@ -45,7 +58,15 @@
         android:label="User"
         tools:layout="@layout/fragment_notification" >
 
-
+        <action
+            android:id="@+id/action_navigation_notification_to_notificationPostFragment"
+            app:destination="@id/notificationPostFragment" />
+        <action
+            android:id="@+id/action_navigation_notification_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_notification_to_addCommentFragment"
+            app:destination="@id/addCommentFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_profile"
@@ -74,6 +95,16 @@
         <action
             android:id="@+id/action_navigation_profile_to_postsFragment"
             app:destination="@id/postsFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_seeMoreFragment"
+            app:destination="@id/seeMoreFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_myStoriesFragment"
+            app:destination="@id/myStoriesFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/coinDetailFragment"
@@ -86,7 +117,11 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.technorizen.stanrz.fragments.EditProfileFragment"
-        android:label="EditProfileFragment" />
+        android:label="EditProfileFragment" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_applyForFanAccountFragment"
+            app:destination="@id/applyForFanAccountFragment" />
+    </fragment>
     <activity
         android:id="@+id/storyDetailActivity"
         android:name="com.technorizen.stanrz.activites.StoryDetailActivity"
@@ -103,6 +138,9 @@
         <action
             android:id="@+id/action_editVipMembershipFragment_to_editSingleSubscriptionFragment"
             app:destination="@id/editSingleSubscriptionFragment" />
+        <action
+            android:id="@+id/action_editVipMembershipFragment_to_applyForFanAccountFragment"
+            app:destination="@id/applyForFanAccountFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -111,6 +149,12 @@
         <action
             android:id="@+id/action_chatFragment_to_one2OneChatFragment"
             app:destination="@id/one2OneChatFragment" />
+        <action
+            android:id="@+id/action_chatFragment_to_searchUsersFragment"
+            app:destination="@id/searchUsersFragment" />
+        <action
+            android:id="@+id/action_chatFragment_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/one2OneChatFragment"
@@ -123,6 +167,36 @@
         <action
             android:id="@+id/action_settingsFragment_to_changePasswordFragment"
             app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_savedImagesAndVideoFragment"
+            app:destination="@id/savedImagesAndVideoFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_myPurchasedSubscriptionFragment"
+            app:destination="@id/myPurchasedSubscriptionFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_myFanSubscriberFragment"
+            app:destination="@id/myFanSubscriberFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_friendsSuggestionFragment"
+            app:destination="@id/friendsSuggestionFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_privacyPolicyFragment"
+            app:destination="@id/privacyPolicyFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_navigation_notification"
+            app:destination="@id/navigation_notification" />
+        <action
+            android:id="@+id/action_settingsFragment_to_helpFragment"
+            app:destination="@id/helpFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_securityFragment"
+            app:destination="@id/securityFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_userActivityFragment"
+            app:destination="@id/userActivityFragment" />
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
@@ -136,6 +210,9 @@
         <action
             android:id="@+id/action_searchUsersFragment_to_otherUserDetailFragment"
             app:destination="@id/otherUserDetailFragment" />
+        <action
+            android:id="@+id/action_searchUsersFragment_to_one2OneChatFragment"
+            app:destination="@id/one2OneChatFragment" />
     </fragment>
     <fragment
         android:id="@+id/addCoverPhotoFragment"
@@ -151,15 +228,39 @@
         <action
             android:id="@+id/action_otherUserDetailFragment_to_postsFragment"
             app:destination="@id/postsFragment" />
+        <action
+            android:id="@+id/action_otherUserDetailFragment_to_one2OneChatFragment"
+            app:destination="@id/one2OneChatFragment" />
+        <action
+            android:id="@+id/action_otherUserDetailFragment_to_joinVipMembershipFragment"
+            app:destination="@id/joinVipMembershipFragment" />
+        <action
+            android:id="@+id/action_otherUserDetailFragment_to_newOtherUserDetailFragment"
+            app:destination="@id/newOtherUserDetailFragment" />
+        <action
+            android:id="@+id/action_otherUserDetailFragment_to_seeMoreFragment"
+            app:destination="@id/seeMoreFragment" />
+        <action
+            android:id="@+id/action_otherUserDetailFragment_to_myStoriesFragment"
+            app:destination="@id/myStoriesFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/folloersAndFollowingsFragment"
         android:name="com.technorizen.stanrz.fragments.FolloersAndFollowingsFragment"
-        android:label="FolloersAndFollowingsFragment" />
+        android:label="FolloersAndFollowingsFragment" >
+        <action
+            android:id="@+id/action_folloersAndFollowingsFragment_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/otherUserFollowersFollowingFragment"
         android:name="com.technorizen.stanrz.fragments.OtherUserFollowersFollowingFragment"
-        android:label="OtherUserFollowersFollowingFragment" />
+        android:label="OtherUserFollowersFollowingFragment" >
+        <action
+            android:id="@+id/action_otherUserFollowersFollowingFragment_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/postsFragment"
         android:name="com.technorizen.stanrz.fragments.PostsFragment"
@@ -167,11 +268,120 @@
         <action
             android:id="@+id/action_postsFragment_to_addCommentFragment"
             app:destination="@id/addCommentFragment" />
+        <action
+            android:id="@+id/action_postsFragment_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/addCommentFragment"
         android:name="com.technorizen.stanrz.fragments.AddCommentFragment"
-        android:label="AddCommentFragment" />
+        android:label="AddCommentFragment" >
+        <action
+            android:id="@+id/action_addCommentFragment_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myStoriesFragment"
+        android:name="com.technorizen.stanrz.fragments.MyStoriesFragment"
+        android:label="MyStoriesFragment" />
+    <fragment
+        android:id="@+id/applyForFanAccountFragment"
+        android:name="com.technorizen.stanrz.fragments.ApplyForFanAccountFragment"
+        android:label="ApplyForFanAccountFragment" />
+    <fragment
+        android:id="@+id/purchaseSuperlikesFragment"
+        android:name="com.technorizen.stanrz.fragments.PurchaseSuperlikesFragment"
+        android:label="PurchaseSuperlikesFragment" >
+        <action
+            android:id="@+id/action_purchaseSuperlikesFragment_to_addCardFragment"
+            app:destination="@id/addCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCardFragment"
+        android:name="com.technorizen.stanrz.fragments.AddCardFragment"
+        android:label="AddCardFragment" />
+    <fragment
+        android:id="@+id/savedImagesAndVideoFragment"
+        android:name="com.technorizen.stanrz.fragments.SavedImagesAndVideoFragment"
+        android:label="SavedImagesAndVideoFragment" >
+        <action
+            android:id="@+id/action_savedImagesAndVideoFragment_to_postsFragment"
+            app:destination="@id/postsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPurchasedSubscriptionFragment"
+        android:name="com.technorizen.stanrz.fragments.MyPurchasedSubscriptionFragment"
+        android:label="MyPurchasedSubscriptionFragment" />
+    <fragment
+        android:id="@+id/myFanSubscriberFragment"
+        android:name="com.technorizen.stanrz.fragments.MyFanSubscriberFragment"
+        android:label="MyFanSubscriberFragment" />
+    <fragment
+        android:id="@+id/friendsSuggestionFragment"
+        android:name="com.technorizen.stanrz.fragments.FriendsSuggestionFragment"
+        android:label="FriendsSuggestionFragment" />
+    <fragment
+        android:id="@+id/privacyPolicyFragment"
+        android:name="com.technorizen.stanrz.fragments.PrivacyPolicyFragment"
+        android:label="PrivacyPolicyFragment" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.technorizen.stanrz.fragments.AboutFragment"
+        android:label="AboutFragment" />
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.technorizen.stanrz.fragments.HelpFragment"
+        android:label="HelpFragment" />
+    <fragment
+        android:id="@+id/newOtherUserDetailFragment"
+        android:name="com.technorizen.stanrz.fragments.NewOtherUserDetailFragment"
+        android:label="NewOtherUserDetailFragment" >
+        <action
+            android:id="@+id/action_newOtherUserDetailFragment_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
+        <action
+            android:id="@+id/action_newOtherUserDetailFragment_to_joinVipMembershipFragment"
+            app:destination="@id/joinVipMembershipFragment" />
+        <action
+            android:id="@+id/action_newOtherUserDetailFragment_to_one2OneChatFragment"
+            app:destination="@id/one2OneChatFragment" />
+        <action
+            android:id="@+id/action_newOtherUserDetailFragment_to_postsFragment"
+            app:destination="@id/postsFragment" />
+        <action
+            android:id="@+id/action_newOtherUserDetailFragment_to_seeMoreFragment"
+            app:destination="@id/seeMoreFragment" />
+        <action
+            android:id="@+id/action_newOtherUserDetailFragment_to_myStoriesFragment"
+            app:destination="@id/myStoriesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/seeMoreFragment"
+        android:name="com.technorizen.stanrz.fragments.SeeMoreFragment"
+        android:label="SeeMoreFragment" >
+        <action
+            android:id="@+id/action_seeMoreFragment_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/securityFragment"
+        android:name="com.technorizen.stanrz.fragments.SecurityFragment"
+        android:label="SecurityFragment" />
+    <fragment
+        android:id="@+id/userActivityFragment"
+        android:name="com.technorizen.stanrz.fragments.UserActivityFragment"
+        android:label="UserActivityFragment" />
+    <fragment
+        android:id="@+id/notificationPostFragment"
+        android:name="com.technorizen.stanrz.fragments.NotificationPostFragment"
+        android:label="NotificationPostFragment" >
+        <action
+            android:id="@+id/action_notificationPostFragment_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
+        <action
+            android:id="@+id/action_notificationPostFragment_to_addCommentFragment"
+            app:destination="@id/addCommentFragment" />
+    </fragment>
 
 
 </navigation>

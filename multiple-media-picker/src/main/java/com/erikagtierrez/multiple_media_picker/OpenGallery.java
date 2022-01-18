@@ -1,6 +1,8 @@
+
 package com.erikagtierrez.multiple_media_picker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OpenGallery extends AppCompatActivity {
+
     private RecyclerView recyclerView,rvSelectedItems;
     private MediaAdapter mAdapter;
     private MediaBottomAdapter mediaBottomAdapter;
@@ -32,6 +35,9 @@ public class OpenGallery extends AppCompatActivity {
     public static List<Boolean> selected = new ArrayList<>();
     public static ArrayList<String> imagesSelected = new ArrayList<>();
     public static String parent;
+
+    private boolean isVideo = false;
+
     private LinearLayoutManager linearLayoutManager;
 
     @Override
@@ -46,7 +52,9 @@ public class OpenGallery extends AppCompatActivity {
         bntNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 finish();
+
             }
         });
         toolbar.setNavigationIcon(R.drawable.arrow_back);
@@ -72,20 +80,19 @@ public class OpenGallery extends AppCompatActivity {
         if (parent.equals("Images")) {
             mediaList.addAll(OneFragment.imagesList);
             selected.addAll(OneFragment.selected);
+            isVideo = false;
         } else {
             mediaList.addAll(TwoFragment.videosList);
             selected.addAll(TwoFragment.selected);
+            isVideo = true;
         }
         populateRecyclerView();
-
-       /* linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvSelectedItems.setLayoutManager(linearLayoutManager);
         rvSelectedItems.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen._10sdp)));
-
         mediaBottomAdapter = new MediaBottomAdapter(imagesSelected,selected,this);
-        rvSelectedItems.setAdapter(mediaBottomAdapter);*/
+        rvSelectedItems.setAdapter(mediaBottomAdapter);
     }
-
 
     private void populateRecyclerView() {
         for (int i = 0; i < selected.size(); i++) {
@@ -120,25 +127,59 @@ public class OpenGallery extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (!selected.get(position).equals(true) && imagesSelected.size() < Gallery.maxSelection) {
-                    imagesSelected.add(mediaList.get(position));
-                    selected.set(position, !selected.get(position));
-                    mAdapter.notifyItemChanged(position);
-                } else if (selected.get(position).equals(true)) {
-                    if (imagesSelected.indexOf(mediaList.get(position)) != -1) {
-                        imagesSelected.remove(imagesSelected.indexOf(mediaList.get(position)));
+
+                if(isVideo)
+                {
+
+                    if (!selected.get(position).equals(true) && imagesSelected.size() < 1) {
+
+                        imagesSelected.add(mediaList.get(position));
                         selected.set(position, !selected.get(position));
                         mAdapter.notifyItemChanged(position);
+
+                    } else if (selected.get(position).equals(true)) {
+                        if (imagesSelected.indexOf(mediaList.get(position)) != -1) {
+                            imagesSelected.remove(imagesSelected.indexOf(mediaList.get(position)));
+                            selected.set(position, !selected.get(position));
+                            mAdapter.notifyItemChanged(position);
+                        }
                     }
+
+                    Gallery.selectionTitle = imagesSelected.size();
+                    if (imagesSelected.size() != 0) {
+                        setTitle(String.valueOf(imagesSelected.size()));
+                    } else {
+                        setTitle(Gallery.title);
+                    }
+
                 }
-                Gallery.selectionTitle = imagesSelected.size();
-                if (imagesSelected.size() != 0) {
-                    setTitle(String.valueOf(imagesSelected.size()));
-                } else {
-                    setTitle(Gallery.title);
+                else
+                {
+
+                    if (!selected.get(position).equals(true) && imagesSelected.size() < Gallery.maxSelection) {
+
+                        imagesSelected.add(mediaList.get(position));
+                        selected.set(position, !selected.get(position));
+                        mAdapter.notifyItemChanged(position);
+
+                    } else if (selected.get(position).equals(true)) {
+                        if (imagesSelected.indexOf(mediaList.get(position)) != -1) {
+                            imagesSelected.remove(imagesSelected.indexOf(mediaList.get(position)));
+                            selected.set(position, !selected.get(position));
+                            mAdapter.notifyItemChanged(position);
+                        }
+                    }
+
+                    Gallery.selectionTitle = imagesSelected.size();
+                    if (imagesSelected.size() != 0) {
+                        setTitle(String.valueOf(imagesSelected.size()));
+                    } else {
+                        setTitle(Gallery.title);
+                    }
+
                 }
 
-              //  mediaBottomAdapter.notifyItemChanged(position);
+                mediaBottomAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -151,8 +192,8 @@ public class OpenGallery extends AppCompatActivity {
 
     public interface ClickListener {
         void onClick(View view, int position);
-
         void onLongClick(View view, int position);
+
     }
 
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {

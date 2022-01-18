@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout     xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RadioButton
+        android:id="@+id/btnSuperLike"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:text="@string/_01_super_likes"
+        android:buttonTint="@color/red"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        />
+
+</RelativeLayout>
+</layout>

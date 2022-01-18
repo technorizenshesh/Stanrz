@@ -7,7 +7,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".fragments.NotificationFragment">
-
         <include layout="@layout/header_layout" android:id="@+id/header"/>
 
         <com.google.android.material.tabs.TabLayout
@@ -21,6 +20,26 @@
             app:tabIndicatorHeight="0dp"
             />
 
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/search_bg"
+            android:drawableLeft="@drawable/ic_black_search"
+            android:padding="@dimen/_10sdp"
+            android:visibility="gone"
+            android:hint="@string/search"
+            android:fontFamily="@font/inter_medium"
+            android:imeOptions="actionSearch"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/_11sdp"
+            android:inputType="text"
+            android:layout_toRightOf="@id/ivBack"
+            android:textColor="@color/dark_grey"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:drawablePadding="@dimen/_5sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -28,7 +47,6 @@
             android:layout_margin="@dimen/_15sdp"
             android:id="@+id/rvFollowing"
             />
-
 
     </LinearLayout>
 </layout>

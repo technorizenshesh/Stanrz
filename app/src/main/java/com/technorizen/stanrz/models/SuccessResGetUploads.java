@@ -190,6 +190,7 @@ public class SuccessResGetUploads implements Serializable {
 
     }
 
+
     public class UserPost {
 
         @SerializedName("id")
@@ -198,15 +199,12 @@ public class SuccessResGetUploads implements Serializable {
         @SerializedName("post_id")
         @Expose
         public String postId;
-        @SerializedName("image")
-        @Expose
-        public String image;
-        @SerializedName("video")
-        @Expose
-        public String video;
         @SerializedName("date_time")
         @Expose
         public String dateTime;
+        @SerializedName("post_data")
+        @Expose
+        public String postData;
 
         public String getId() {
             return id;
@@ -224,28 +222,20 @@ public class SuccessResGetUploads implements Serializable {
             this.postId = postId;
         }
 
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        public String getVideo() {
-            return video;
-        }
-
-        public void setVideo(String video) {
-            this.video = video;
-        }
-
         public String getDateTime() {
             return dateTime;
         }
 
         public void setDateTime(String dateTime) {
             this.dateTime = dateTime;
+        }
+
+        public String getPostData() {
+            return postData;
+        }
+
+        public void setPostData(String postData) {
+            this.postData = postData;
         }
 
     }

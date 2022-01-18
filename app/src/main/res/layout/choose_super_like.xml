@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/_30sdp"
         >
 
 <RelativeLayout
@@ -24,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Super likes"
+        android:text="@string/gift_super_likes"
         android:textColor="@color/black"
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/_14sdp"
@@ -47,106 +46,103 @@
             android:layout_height="3dp"
             android:background="@color/gray" />
 
-        <RelativeLayout
+        <RadioGroup
+            android:id="@+id/radioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/checkboxFanClub"
+            >
+
+            <RadioButton
+                android:id="@+id/rbtn1SuperLikes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/_01_super_likes"
+                android:checked="true"
+                android:buttonTint="@color/red"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+               />
+
+            <RadioButton
+                android:id="@+id/rbtn5SuperLikes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/_05_super_likes"
+                android:buttonTint="@color/red"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+            <RadioButton
+                android:id="@+id/rbtn20SuperLikes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/_10_super_likes"
+                android:buttonTint="@color/red"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+            <RadioButton
+                android:id="@+id/rbtn50SuperLikes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/_50_super_likes"
+                android:buttonTint="@color/red"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+            <RadioButton
+                android:id="@+id/rbtn100SuperLikes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/_100_super_likes"
+                android:buttonTint="@color/red"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+            <RadioButton
+                android:id="@+id/rbtn1000SuperLikes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/_1000_super_likes"
+                android:buttonTint="@color/red"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+            <RadioButton
+                android:id="@+id/rbtn10000SuperLikes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/_10000_super_likes"
+                android:buttonTint="@color/red"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+                   </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAddSuperLikes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_bg_bottom_cornors"
+            android:text="@string/confirm"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textAllCaps="false"
             android:layout_marginTop="@dimen/_20sdp"
-            android:padding="@dimen/_10sdp">
+            />
 
-            <RadioButton
-                android:id="@+id/radio_btn_country_selected"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/radio_button_bg_selector"
-                android:button="@color/white"
-                android:checked="true" />
-
-            <TextView
-                android:id="@+id/tv_language"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_toRightOf="@+id/radio_btn_country_selected"
-                android:text="01 Super likes"
-                android:textColor="@color/red"
-                android:textSize="@dimen/_12sdp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_10sdp"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/radio5_btn_country_selected"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/black"
-                android:layout_centerVertical="true"
-                android:text="05 Super likes"/>
-            <RadioButton
-                android:id="@+id/radio5_btn_country_selected"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:button="@color/white"
-                android:checked="false"
-                android:background="@drawable/radio_button_bg_selector"
-                android:layout_centerVertical="true"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_10sdp"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/radio20_btn_country_selected"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/black"
-                android:layout_centerVertical="true"
-                android:text="20 Super likes"/>
-            <RadioButton
-                android:id="@+id/radio20_btn_country_selected"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:button="@color/white"
-                android:checked="false"
-                android:background="@drawable/radio_button_bg_selector"
-                android:layout_centerVertical="true"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_10sdp"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/radio100_btn_country_selected"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/black"
-                android:layout_centerVertical="true"
-                android:text="100 Super likes"/>
-            <RadioButton
-                android:id="@+id/radio100_btn_country_selected"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:button="@color/white"
-                android:checked="false"
-                android:background="@drawable/radio_button_bg_selector"
-                android:layout_centerVertical="true"/>
-        </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

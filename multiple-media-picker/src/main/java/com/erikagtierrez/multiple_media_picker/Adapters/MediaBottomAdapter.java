@@ -1,6 +1,5 @@
 package com.erikagtierrez.multiple_media_picker.Adapters;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

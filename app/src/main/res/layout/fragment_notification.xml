@@ -6,9 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#f3f3f3"
     tools:context=".fragments.NotificationFragment">
 
-    <com.google.android.material.tabs.TabLayout
+   <!-- <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutEventDay"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_60sdp"
@@ -19,13 +20,18 @@
         android:theme="@style/AppTabLayout"
         app:tabIndicatorHeight="0dp"
         />
+-->
 
+    <include layout="@layout/header_layout" android:id="@+id/header"
+        android:visibility="gone"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_15sdp"
-        android:id="@+id/rvFollowing"
+        android:visibility="gone"
+        android:id="@+id/rvNotifications"
         />
 
 
@@ -34,7 +40,6 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_15sdp"
         android:id="@+id/rvYou"
-        android:visibility="gone"
         />
 </LinearLayout>
 </layout>

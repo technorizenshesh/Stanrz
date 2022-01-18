@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/top_white_cornors"
+    android:layout_marginTop="@dimen/_50sdp"
+    android:padding="@dimen/_15sdp"
+    android:minWidth="1000dp"
+    android:minHeight="400dp"
+    android:id="@+id/root">
+
+       <View
+           android:layout_width="@dimen/_35sdp"
+           android:layout_height="@dimen/_3sdp"
+           android:layout_gravity="center_horizontal"
+           android:background="@color/gray"
+           />
+
+            <TextView
+                android:id="@+id/tvFrequent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Report"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/inter_semi_bold"
+                android:textSize="@dimen/_14sdp"
+                android:textColor="@color/black"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_15sdp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/gray"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_below="@+id/tvFrequent"
+                />
+        <TextView
+            android:id="@+id/tvIDontLikeIt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/i_don_t_like_it"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/_13sdp"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/black"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/_10sdp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/gray"
+            android:layout_below="@+id/tvFrequent"
+            />
+
+        <TextView
+            android:id="@+id/tvNudity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nudity"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/inter_regular"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/_10sdp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/gray"
+            android:layout_below="@+id/tvFrequent"
+            />
+
+        <TextView
+            android:id="@+id/tvDangerousContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Violence or dangerous organisations"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/_13sdp"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/black"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/_10sdp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/gray"
+            android:layout_below="@+id/tvFrequent"
+            />
+        <TextView
+            android:id="@+id/tvHateSpeech"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hate speech or symbol"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/inter_regular"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/_10sdp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/gray"
+            android:layout_below="@+id/tvFrequent"
+            />
+
+    <TextView
+        android:id="@+id/tvBulling"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bullying_or_harassment"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/_13sdp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/inter_regular"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/_10sdp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/gray"
+        android:layout_below="@+id/tvFrequent"
+        />
+
+</LinearLayout>

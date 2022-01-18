@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 <LinearLayout
     android:layout_width="match_parent"
@@ -9,11 +10,21 @@
 
     <include layout="@layout/header_layout" android:id="@+id/header"/>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         >
         <ImageView
             android:layout_width="@dimen/_15sdp"
@@ -22,7 +33,7 @@
             android:src="@drawable/ic_privacy"
             />
         <TextView
-            android:id="@+id/tv_header"
+            android:id="@+id/tvPP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_medium"
@@ -31,16 +42,17 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/_13sdp"
-            android:text="Privacy"
+            android:text="@string/privacy"
             android:textSize="@dimen/_14sdp" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llSecurity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         >
         <ImageView
             android:layout_width="@dimen/_15sdp"
@@ -57,41 +69,16 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/_13sdp"
-            android:text="Security"
+            android:text="@string/security"
             android:textSize="@dimen/_14sdp" />
 
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/llPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        >
-        <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/change"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_medium"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/black"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/_13sdp"
-            android:text="Change Password"
-            android:textSize="@dimen/_14sdp" />
 
-    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         >
         <ImageView
             android:layout_width="@dimen/_15sdp"
@@ -100,6 +87,7 @@
             android:src="@drawable/ic_info"
             />
         <TextView
+            android:id="@+id/tvAbout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_medium"
@@ -108,16 +96,17 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/_13sdp"
-            android:text="About"
+            android:text="@string/about"
             android:textSize="@dimen/_14sdp" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llHelp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         >
         <ImageView
             android:layout_width="@dimen/_15sdp"
@@ -134,22 +123,242 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/_13sdp"
-            android:text="Help"
+            android:text="@string/help"
             android:textSize="@dimen/_14sdp" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+        <ImageView
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_invites"
+            app:tint="@color/red" />
+        <TextView
+            android:id="@+id/tvSuggestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_13sdp"
+            android:text="@string/follow_and_invite_friends"
+            android:textSize="@dimen/_14sdp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
+        >
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_noti"
+            />
+        <TextView
+            android:id="@+id/tvNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_13sdp"
+            android:text="Notifications"
+            android:textSize="@dimen/_14sdp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/change"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_13sdp"
+            android:text="@string/change_password"
+            android:textSize="@dimen/_14sdp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llSaved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_saved"
+            app:tint="@color/red" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_13sdp"
+            android:text="@string/saved_images_videos"
+            android:textSize="@dimen/_14sdp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
+        >
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_info"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_13sdp"
+            android:text="Language"
+            android:textSize="@dimen/_14sdp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llUserActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_noti"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_13sdp"
+            android:text="@string/user_activity"
+            android:textSize="@dimen/_14sdp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_dollar_exchange"
+            />
+        <TextView
+            android:id="@+id/tvMySubscriptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_13sdp"
+            android:text="@string/my_subscriptions_with_ability_to_cancel_subscriptions"
+            android:textSize="@dimen/_14sdp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_dollar_exchange"
+            />
+        <TextView
+            android:id="@+id/tvMyFan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_13sdp"
+            android:text="@string/fan_club_subscribers"
+            android:textSize="@dimen/_14sdp" />
+    </LinearLayout>
+
     <TextView
+        android:id="@+id/tvLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_medium"
-        android:layout_margin="@dimen/_15sdp"
         android:textColor="@color/red"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/_13sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_15sdp"
         android:textAllCaps="true"
-        android:text="Logout"
+        android:text="@string/logout"
         android:textSize="@dimen/_14sdp" />
 
 </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
+
 </layout>

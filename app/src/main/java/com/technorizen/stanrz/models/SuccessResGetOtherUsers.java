@@ -104,15 +104,36 @@ public class SuccessResGetOtherUsers implements Serializable {
         @SerializedName("gender")
         @Expose
         public String gender;
+        @SerializedName("total_superlikes")
+        @Expose
+        public String totalSuperlikes;
+        @SerializedName("total_coins")
+        @Expose
+        public String totalCoins;
+        @SerializedName("total_p_coins")
+        @Expose
+        public String totalPCoins;
+        @SerializedName("fan_club")
+        @Expose
+        public String fanClub;
         @SerializedName("status")
         @Expose
         public String status;
+        @SerializedName("stanrz_of")
+        @Expose
+        public String stanrzOf;
+        @SerializedName("wallet")
+        @Expose
+        public String wallet;
         @SerializedName("email_code")
         @Expose
         public String emailCode;
         @SerializedName("passkey")
         @Expose
         public String passkey;
+        @SerializedName("OpenFanClub")
+        @Expose
+        public String openFanClub;
         @SerializedName("register_id")
         @Expose
         public String registerId;
@@ -125,6 +146,12 @@ public class SuccessResGetOtherUsers implements Serializable {
         @SerializedName("follow")
         @Expose
         public String follow;
+        @SerializedName("verified")
+        @Expose
+        public String verified;
+        @SerializedName("subscriber")
+        @Expose
+        public String subscriber;
         @SerializedName("total_post")
         @Expose
         public Integer totalPost;
@@ -295,12 +322,60 @@ public class SuccessResGetOtherUsers implements Serializable {
             this.gender = gender;
         }
 
+        public String getTotalSuperlikes() {
+            return totalSuperlikes;
+        }
+
+        public void setTotalSuperlikes(String totalSuperlikes) {
+            this.totalSuperlikes = totalSuperlikes;
+        }
+
+        public String getTotalCoins() {
+            return totalCoins;
+        }
+
+        public void setTotalCoins(String totalCoins) {
+            this.totalCoins = totalCoins;
+        }
+
+        public String getTotalPCoins() {
+            return totalPCoins;
+        }
+
+        public void setTotalPCoins(String totalPCoins) {
+            this.totalPCoins = totalPCoins;
+        }
+
+        public String getFanClub() {
+            return fanClub;
+        }
+
+        public void setFanClub(String fanClub) {
+            this.fanClub = fanClub;
+        }
+
         public String getStatus() {
             return status;
         }
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public String getStanrzOf() {
+            return stanrzOf;
+        }
+
+        public void setStanrzOf(String stanrzOf) {
+            this.stanrzOf = stanrzOf;
+        }
+
+        public String getWallet() {
+            return wallet;
+        }
+
+        public void setWallet(String wallet) {
+            this.wallet = wallet;
         }
 
         public String getEmailCode() {
@@ -317,6 +392,14 @@ public class SuccessResGetOtherUsers implements Serializable {
 
         public void setPasskey(String passkey) {
             this.passkey = passkey;
+        }
+
+        public String getOpenFanClub() {
+            return openFanClub;
+        }
+
+        public void setOpenFanClub(String openFanClub) {
+            this.openFanClub = openFanClub;
         }
 
         public String getRegisterId() {
@@ -351,6 +434,22 @@ public class SuccessResGetOtherUsers implements Serializable {
             this.follow = follow;
         }
 
+        public String getVerified() {
+            return verified;
+        }
+
+        public void setVerified(String verified) {
+            this.verified = verified;
+        }
+
+        public String getSubscriber() {
+            return subscriber;
+        }
+
+        public void setSubscriber(String subscriber) {
+            this.subscriber = subscriber;
+        }
+
         public Integer getTotalPost() {
             return totalPost;
         }
@@ -376,6 +475,6 @@ public class SuccessResGetOtherUsers implements Serializable {
         }
 
     }
-
+    
 }
 

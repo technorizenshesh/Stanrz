@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/logo_purple"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 />
 
         </androidx.appcompat.widget.Toolbar>

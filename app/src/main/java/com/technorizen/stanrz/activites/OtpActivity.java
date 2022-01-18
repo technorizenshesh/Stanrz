@@ -88,7 +88,6 @@ public class OtpActivity extends AppCompatActivity {
 
         binding.btnSignup.setOnClickListener(v ->
                 {
-
                     if (TextUtils.isEmpty(binding.et1.getText().toString().trim())) {
                         Toast.makeText(mContext, getString(R.string.please_enter_com_otp), Toast.LENGTH_SHORT).show();
                     } else if (TextUtils.isEmpty(binding.et2.getText().toString().trim())) {
@@ -110,17 +109,14 @@ public class OtpActivity extends AppCompatActivity {
                                         binding.et5.getText().toString().trim()+
                                         binding.et6.getText().toString().trim()
                         ;
-
                         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, finalOtp);
                         signInWithPhoneAuthCredential(credential);
-
                     }
                 }
         );
 
     }
 /*
-
     private void VerifyPhoneNumber(){
         binding.tvResentToMessage.setVisibility(View.GONE);
         binding.progressBar.setVisibility(View.VISIBLE);
@@ -195,7 +191,6 @@ public class OtpActivity extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 */
 
@@ -203,7 +198,6 @@ public class OtpActivity extends AppCompatActivity {
         binding.tvResentToMessage.setVisibility(View.GONE);
         binding.progressBar.setVisibility(View.VISIBLE);
       //  mobile = "+"+session.getStringValue(SessionKey.mobile);
-
         // mobile = "+2348036624845";
         Log.e("mobilenumber====",mobile);
       /*  PhoneAuthOptions options =
@@ -247,7 +241,6 @@ public class OtpActivity extends AppCompatActivity {
                         binding.tvResentToMessage.setVisibility(View.VISIBLE);
                         binding.progressBar.setVisibility(View.GONE);
                         signInWithPhoneAuthCredential(credential);
-
                     }
 
                     @Override
@@ -284,17 +277,11 @@ public class OtpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             binding.tvError.setVisibility(View.VISIBLE);
                             binding.tvError.setText("Success");
-                            // Sign in success, update UI with the signed-in user's information
+
                             Log.d(TAG, "signInWithCredential:success");
-                            // Update UI
-//                            UpdateOtpToserver(credential.getSmsCode());
 
                             signup();
 
-
-                            //   session.setIsVerify();
-                            //    startActivity(new Intent(getContext(),HomeActivity.class));
-                            //     getActivity().finish();
                         } else {
                             // Sign in failed, display a message and update the UI
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -307,7 +294,6 @@ public class OtpActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     private void signup()
     {
@@ -335,12 +321,8 @@ public class OtpActivity extends AppCompatActivity {
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
                         SharedPreferenceUtility.getInstance(getApplication()).putBoolean(Constant.IS_USER_LOGGED_IN, true);
                         SharedPreferenceUtility.getInstance(OtpActivity.this).putString(Constant.USER_ID,data.getResult().getId());
-
-                        //   mobileVerify();
-//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
-//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
                         startActivity(new Intent(OtpActivity.this, LoginActivity.class));
-                        // finish();
+
                     } else if (data.status.equals("0")) {
                         showToast(OtpActivity.this, data.message);
                     }
@@ -422,9 +404,6 @@ public class OtpActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
 
-
-
-
         });
 
         binding.et4.addTextChangedListener(new TextWatcher() {
@@ -467,9 +446,6 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
             }
-
-
-
 
         });
 

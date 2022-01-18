@@ -10,13 +10,13 @@ public class SuccessResUploadCoverImage implements Serializable {
 
     @SerializedName("result")
     @Expose
-    private Result result;
+    public Result result;
     @SerializedName("message")
     @Expose
-    private String message;
+    public String message;
     @SerializedName("status")
     @Expose
-    private String status;
+    public String status;
 
     public Result getResult() {
         return result;
@@ -46,82 +46,88 @@ public class SuccessResUploadCoverImage implements Serializable {
 
         @SerializedName("id")
         @Expose
-        private String id;
+        public String id;
         @SerializedName("fullname")
         @Expose
-        private String fullname;
+        public String fullname;
         @SerializedName("username")
         @Expose
-        private String username;
+        public String username;
         @SerializedName("mobile")
         @Expose
-        private String mobile;
+        public String mobile;
         @SerializedName("email")
         @Expose
-        private String email;
+        public String email;
         @SerializedName("password")
         @Expose
-        private String password;
+        public String password;
         @SerializedName("image")
         @Expose
-        private String image;
+        public String image;
         @SerializedName("bg_image")
         @Expose
-        private String bgImage;
+        public String bgImage;
         @SerializedName("type")
         @Expose
-        private String type;
+        public String type;
         @SerializedName("online_status")
         @Expose
-        private String onlineStatus;
+        public String onlineStatus;
         @SerializedName("address")
         @Expose
-        private String address;
+        public String address;
         @SerializedName("website")
         @Expose
-        private String website;
+        public String website;
         @SerializedName("facebook")
         @Expose
-        private String facebook;
+        public String facebook;
         @SerializedName("youtube")
         @Expose
-        private String youtube;
+        public String youtube;
         @SerializedName("instagram")
         @Expose
-        private String instagram;
+        public String instagram;
         @SerializedName("dob")
         @Expose
-        private String dob;
+        public String dob;
         @SerializedName("bio")
         @Expose
-        private String bio;
+        public String bio;
         @SerializedName("language")
         @Expose
-        private String language;
+        public String language;
         @SerializedName("interested")
         @Expose
-        private String interested;
+        public String interested;
         @SerializedName("gender")
         @Expose
-        private String gender;
+        public String gender;
+        @SerializedName("total_superlikes")
+        @Expose
+        public String totalSuperlikes;
+        @SerializedName("total_coins")
+        @Expose
+        public String totalCoins;
         @SerializedName("status")
         @Expose
-        private String status;
+        public String status;
         @SerializedName("email_code")
         @Expose
-        private String emailCode;
+        public String emailCode;
         @SerializedName("passkey")
         @Expose
-        private String passkey;
+        public String passkey;
         @SerializedName("register_id")
         @Expose
-        private String registerId;
+        public String registerId;
         @SerializedName("social_id")
         @Expose
-        private String socialId;
+        public String socialId;
         @SerializedName("date_time")
         @Expose
-        private String dateTime;
+        public String dateTime;
 
         public String getId() {
             return id;
@@ -281,6 +287,22 @@ public class SuccessResUploadCoverImage implements Serializable {
 
         public void setGender(String gender) {
             this.gender = gender;
+        }
+
+        public String getTotalSuperlikes() {
+            return totalSuperlikes;
+        }
+
+        public void setTotalSuperlikes(String totalSuperlikes) {
+            this.totalSuperlikes = totalSuperlikes;
+        }
+
+        public String getTotalCoins() {
+            return totalCoins;
+        }
+
+        public void setTotalCoins(String totalCoins) {
+            this.totalCoins = totalCoins;
         }
 
         public String getStatus() {

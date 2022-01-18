@@ -9,7 +9,6 @@
     android:orientation="vertical"
     >
 <include layout="@layout/header_layout" android:id="@+id/header"/>
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,24 +21,12 @@
             android:background="@drawable/ic_header_bg"
             android:orientation="vertical"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="COINS RECEIVED"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:textAllCaps="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/inter_semi_bold"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_10sdp"
-                />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 >
                 <ImageView
                     android:layout_width="@dimen/_30sdp"
@@ -49,9 +36,9 @@
                     android:layout_gravity="center_vertical"
                     />
                 <TextView
+                    android:id="@+id/tvTotalCoins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="24"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:textAllCaps="true"
                     android:layout_centerHorizontal="true"
@@ -64,7 +51,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2 Superlikes : 1"
+                android:text="@string/_1_superlikes_1"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_centerHorizontal="true"
                 android:textSize="@dimen/_12sdp"
@@ -93,7 +80,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="History"
+                android:text="@string/history"
                 android:textSize="@dimen/_11sdp"
                 android:padding="@dimen/_10sdp"
                 android:gravity="center"
@@ -113,14 +100,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Exchange coins to superlikes"
+                android:text="@string/exchange_coins_to_superlikes"
                 android:textSize="@dimen/_11sdp"
                 android:gravity="center"
                 android:textColor="@color/dark_grey"
                 android:layout_gravity="center"
                 />
-
         </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_weight=".5"
@@ -138,7 +125,6 @@
                 android:textColor="@color/dark_grey"
                 android:layout_gravity="center"
                 />
-
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
@@ -213,22 +199,21 @@
             android:layout_margin="@dimen/_2sdp"
             >
             <EditText
+                android:id="@+id/etEnterCoins"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_10sdp"
+                android:inputType="number"
                 android:backgroundTint="@color/white"
                 android:textColor="@color/dark_grey"
                 android:hint="@string/enter_the_amount"
                 />
 
-
-
         </com.google.android.material.card.MaterialCardView>
-
 
     </LinearLayout>
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnPurchase"
+        android:id="@+id/btnExchange"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
@@ -278,9 +263,11 @@
                 android:layout_margin="@dimen/_2sdp"
                 >
                 <EditText
+                    android:id="@+id/etRadeemCoins"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_10sdp"
+                    android:inputType="number"
                     android:backgroundTint="@color/white"
                     android:textColor="@color/dark_grey"
                     android:hint="@string/enter_coin_amount_to_redeem"
@@ -291,7 +278,7 @@
 
         </LinearLayout>
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSignin"
+            android:id="@+id/btnReddemCoins"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/button_bg"
@@ -307,7 +294,6 @@
             />
     </RelativeLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -321,8 +307,8 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:padding="@dimen/_10sdp"
             >
-
-            <TextView
+          <!--
+           <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_medium"
@@ -333,7 +319,6 @@
                 android:textSize="@dimen/_14sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
                 />
-
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -349,23 +334,39 @@
                     android:textColor="@color/dark_grey"
                     android:hint="Enter amount to withdraw"
                     />
-
-
-
             </com.google.android.material.card.MaterialCardView>
+-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_medium"
-                android:textColor="@color/black"
-                android:text="Total Earning: 20$"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_toRightOf="@+id/iv_history"
-                android:textSize="@dimen/_14sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTotalEarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:textColor="@color/black"
+            android:text="@string/total_earning"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_toRightOf="@+id/iv_history"
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            />
+        <TextView
+            android:id="@+id/tvTotalDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/black"
+            android:text=" Earnings totaling or exceeding $50 will be auto-withdrawn on the 1st of every month. Withdrawals are paid and processed on a Net-45 payout term."
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_toRightOf="@+id/iv_history"
+            android:textSize="@dimen/_11sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnWithdrawCas"
             android:layout_width="match_parent"
@@ -376,6 +377,7 @@
             android:fontFamily="@font/inter_medium"
             android:textSize="@dimen/_16sdp"
             android:textColor="@color/white"
+            android:visibility="gone"
             android:layout_gravity="bottom"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/_15sdp"

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.MyStoriesFragment">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_60sdp"
+    >
+    <include layout="@layout/header_layout" android:id="@+id/header"/>
+    <TextView
+        android:id="@+id/tvViewStory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:fontFamily="@font/inter_semi_bold"
+        android:text="@string/view_story"
+        android:textSize="@dimen/_12sdp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/_10sdp"
+        />
+
+</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rvMyStories"/>
+
+</LinearLayout>
+</layout>

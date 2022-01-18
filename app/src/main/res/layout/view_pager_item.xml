@@ -1,27 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:gravity="center">
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile1"
-            android:adjustViewBounds="true"
-            />
+            android:scaleType="centerCrop" />
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/flExoPlayer"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:layout_height="@dimen/_350sdp">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            >
+            <VideoView
+                android:id="@+id/videoView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                />
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:id="@+id/ivMuteUnMute"
+                android:src="@drawable/muteicon"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/_10sdp"
+                android:padding="@dimen/_2sdp"
+                />
+            <ImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:id="@+id/ivExpand"
+                android:src="@drawable/expandicon"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/_8sdp"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/_2sdp"
+                />
+        </RelativeLayout>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:layout_width="60dp"
+                android:visibility="gone"
+                android:layout_height="60dp" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivPlayPause1"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/pauseicon"
+            android:visibility="gone"
+            />
+          <LinearLayout
+              android:id="@+id/clBottom"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="bottom"
+              android:layout_marginStart="@dimen/_35sdp"
+              android:layout_marginEnd="@dimen/_35sdp"
+              android:layout_marginBottom="@dimen/_4sdp"
+              android:orientation="horizontal"
+              android:visibility="gone"
+              android:gravity="center_vertical"
+              android:background="@drawable/round_semi_red">
+
+              <androidx.appcompat.widget.AppCompatImageView
+                  android:id="@+id/ivPlayPause"
+                  android:layout_width="@dimen/_20sdp"
+                  android:layout_height="@dimen/_20sdp"
+                  android:layout_gravity="center"
+                  android:layout_marginHorizontal="@dimen/_10sdp"
+                  android:src="@drawable/playicon"/>
+
+          </LinearLayout>
+
+    </FrameLayout>
+
+    <!--<View
+        android:id="@+id/viewBlurred"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@drawable/picture"/>-->
+
+    <ImageView
+        android:id="@+id/ivMyLock"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:src="@drawable/ic_lock1"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:padding="@dimen/_2sdp"
+        app:tint="@color/gray" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rlLock"
+        >
+        <ImageView
+            android:id="@+id/ivLock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/picture"
+            />
+
+        <ImageView
+            android:id="@+id/ivLock1"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/ic_lock1"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/ivLock2"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/ic_lock1"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tvNsfw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/uplock_with_n"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/inter_semi_bold"
+            android:layout_below="@id/ivLock2"
+            android:textSize="@dimen/_20sdp"
+            />
+
+        <TextView
+            android:id="@+id/tvUnlockCoins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/uplock_with_n"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/inter_semi_bold"
+            android:layout_below="@id/ivLock1"
+            android:textSize="@dimen/_20sdp"
+            />
+    </RelativeLayout>
 
 </RelativeLayout>
-</layout>
+
+    <!--
+        <?xml version="1.0" encoding="utf-8"?>
+    <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile1"
+                android:adjustViewBounds="true"
+                />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+    </layout>-->

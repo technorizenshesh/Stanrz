@@ -19,6 +19,11 @@ public class Constant {
     public static final String driver_id = "driver_id";
 
     public static final String IS_USER_LOGGED_IN = "IsUserLoggedIn";
+
+    public static final String MUTE_UNMUTE = "muteUnmute";
+
+    public static final String PLAY_PAUSE = "playPause";
+
     public static final String USER_ID = "userID";
     public static final int LOCATION_REQUEST = 1000;
     public static final int GPS_REQUEST = 1001;

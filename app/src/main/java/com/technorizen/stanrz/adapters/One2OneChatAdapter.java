@@ -29,7 +29,6 @@ public class One2OneChatAdapter extends RecyclerView.Adapter<One2OneChatAdapter.
     public StoriesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         binding= AdapterChatBinding.inflate(LayoutInflater.from(context));
         //View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_item, parent, false);
-
         return new StoriesViewHolder(binding);
     }
 
@@ -37,7 +36,6 @@ public class One2OneChatAdapter extends RecyclerView.Adapter<One2OneChatAdapter.
     public void onBindViewHolder(@NonNull StoriesViewHolder holder, int position) {
 
     }
-
 
     @Override
     public int getItemCount() {

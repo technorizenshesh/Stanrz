@@ -5,91 +5,246 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:padding="@dimen/_20sdp"
+    android:padding="@dimen/_15sdp"
     >
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btnSubmit"
+        android:fillViewport="true"
         >
-
-        <ImageView
-            android:id="@+id/img_header"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/ic_back1"
-            android:padding="@dimen/_2sdp"
-            android:layout_centerVertical="true"
-            android:scaleType="centerInside"
-            />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:padding="@dimen/_10sdp"
-            android:textSize="@dimen/_12sdp"
-            android:hint="Write a Caption..."
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/inter_regular"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:background="@color/gray"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:id="@+id/rvimages_videos"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Make your post"
-            android:textSize="@dimen/_12sdp"
-            android:fontFamily="@font/inter_semi_bold"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_centerVertical="true"
-            />
-
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_7sdp"
-            android:background="@drawable/rec_coronor_5_bg"
-            android:padding="@dimen/_10sdp"
+            android:layout_height="match_parent"
+            >
+
+            <ImageView
+                android:id="@+id/img_header"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_back1"
+                android:padding="@dimen/_2sdp"
+                android:scaleType="centerInside"
+                />
+
+
+            <EditText
+                android:id="@+id/etCaption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
+                android:hint="@string/write_a_caption"
+                android:layout_below="@id/img_header"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/inter_regular"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/etCaption"
             >
 
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:layout_width="wrap_content"
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/gray"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Unlock With"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:id="@+id/rvimages_videos"/>
+
+          <!--  <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:background="@drawable/rec_coronor_5_bg"
+                android:padding="@dimen/_10sdp"
+                >
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioPublicUnloackWIth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unlock With"
+                    android:layout_below="@id/checkboxPublic"
+                    />
+                <ImageView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_toLeftOf="@id/etPublicUnlockAmount"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_below="@id/checkboxPublic"
+                    android:src="@drawable/ic_pay"/>
+
+                <EditText
+                    android:id="@+id/etPublicUnlockAmount"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/rec_coronor_5_bg"
+                    android:layout_below="@id/checkboxPublic"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:background="@drawable/rec_coronor_5_bg"
+                android:padding="@dimen/_10sdp"
+                >
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/checkboxFanClub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fan_club"
+                    android:textColor="@color/black"
+                    android:buttonTint="@color/red"
+                    android:layout_alignParentRight="true"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/checkboxPublic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/public_post"
+                    android:checked="true"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:buttonTint="@color/red"
+                    android:textSize="@dimen/_11sdp"
+                    />
+
+                    <RadioButton
+                        android:id="@+id/radioUnloackWIth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/unlock_with"
+                        android:layout_below="@id/checkboxPublic"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/radioNSFW"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nsfw"
+                        android:layout_below="@id/radioUnloackWIth"
+                        android:visibility="gone"
+                        />
+
+                <RadioButton
+                    android:id="@+id/radioStory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/a_story"
+                    android:layout_below="@id/radioNSFW"
+                    android:visibility="gone"
+                    />
+
+
+                <!--   <RadioGroup
+                       android:id="@+id/radioGroup"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical"
+                       android:layout_below="@id/checkboxPublic"
+                       >
+                   <RadioButton
+                       android:id="@+id/radioUnloackWIth"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/unlock_with"
+                       android:checked="true"
+                       />
+
+                   <RadioButton
+                       android:id="@+id/radioStory"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/a_story"
+                       android:layout_below="@id/radioUnloackWIth"
+                       android:visibility="gone"
+                       />
+
+                   <RadioButton
+                       android:id="@+id/radioNSFW"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/nsfw"
+                       android:layout_below="@id/radioStory"
+                       android:visibility="gone"
+                       />
+                   </RadioGroup>-->
+
+                <ImageView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_toLeftOf="@id/etUnlockAmount"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_below="@id/checkboxPublic"
+                    android:src="@drawable/ic_pay"/>
+
+                <EditText
+                    android:id="@+id/etUnlockAmount"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/rec_coronor_5_bg"
+                    android:layout_below="@id/checkboxPublic"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:textSize="@dimen/_11sdp"
+                    android:inputType="number"
+                    />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/tvTagPeople"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/tag_people"
+                android:background="@drawable/light_grey_bg"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:visibility="gone"
                 />
 
-            <ImageView
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_toLeftOf="@id/etUnlockAmount"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:src="@drawable/ic_pay"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:id="@+id/rvTagPeople"/>
 
-            <EditText
-                android:id="@+id/etUnlockAmount"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/rec_coronor_5_bg"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
+        </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTagComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etCaption"
                 />
 
         </RelativeLayout>
 
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSubmit"
@@ -101,6 +256,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_alignParentBottom="true"
         />
 

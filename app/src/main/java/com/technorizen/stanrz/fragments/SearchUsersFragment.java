@@ -1,5 +1,6 @@
 package com.technorizen.stanrz.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.android.gms.common.util.SharedPreferencesUtils;
@@ -36,7 +39,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static com.technorizen.stanrz.activites.LoginActivity.TAG;
 import static com.technorizen.stanrz.retrofit.Constant.USER_ID;
 import static com.technorizen.stanrz.retrofit.Constant.showToast;
 
@@ -73,6 +78,7 @@ public class SearchUsersFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment SearchUsersFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static SearchUsersFragment newInstance(String param1, String param2) {
         SearchUsersFragment fragment = new SearchUsersFragment();
@@ -83,7 +89,6 @@ public class SearchUsersFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,9 +96,7 @@ public class SearchUsersFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,25 +113,59 @@ public class SearchUsersFragment extends Fragment {
 
         binding.etSearch.requestFocus();
 
-        binding.etSearch.addTextChangedListener(new TextWatcher() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
-            @Override
-            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+        Bundle bundle = this.getArguments();
 
-                getUsers(cs.toString());
+        if (bundle!=null)
+        {
+            String from = bundle.getString("search");
 
+            if(from.equalsIgnoreCase("all"))
+            {
+                binding.etSearch.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+
+                        getUsers(cs.toString());
+
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+
+                    }
+                    @Override
+                    public void afterTextChanged(Editable arg0) {
+
+                    }
+                });
+            } else
+            {
+
+                binding.etSearch.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+
+                        getMyFollwers(cs.toString());
+
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable arg0) {
+
+                    }
+                });
             }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable arg0) {
-
-            }
-        });
+        }
 
         return binding.getRoot();
     }
@@ -136,12 +173,57 @@ public class SearchUsersFragment extends Fragment {
     private void getUsers(String title) {
 
         String userId=  SharedPreferenceUtility.getInstance(getActivity()).getString(USER_ID);
+        Map<String,String> map = new HashMap<>();
+        map.put("user_id",userId);
+        map.put("search",title);
+
+        Call<SuccessResGetUser> call = apiInterface.getUsers(map);
+
+        call.enqueue(new Callback<SuccessResGetUser>() {
+            @Override
+            public void onResponse(Call<SuccessResGetUser> call, Response<SuccessResGetUser> response) {
+
+                DataManager.getInstance().hideProgressMessage();
+
+                try {
+                    SuccessResGetUser data = response.body();
+                    Log.e("data",data.status);
+                    if (data.status.equals("1")) {
+                        String dataResponse = new Gson().toJson(response.body());
+                        usersList.clear();
+
+                        usersList.addAll(data.getResult());
+
+                        binding.rvUsers.setHasFixedSize(true);
+                        binding.rvUsers.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        binding.rvUsers.setAdapter(new SearchAdapter(getActivity(),usersList,true));
+
+                    } else if (data.status.equals("0")) {
+                        showToast(getActivity(), data.message);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResGetUser> call, Throwable t) {
+                call.cancel();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
+    }
+
+    private void getMyFollwers(String title) {
+
+        String userId=  SharedPreferenceUtility.getInstance(getActivity()).getString(USER_ID);
 
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
         map.put("title",title);
 
-        Call<SuccessResGetUser> call = apiInterface.getUsers(map);
+        Call<SuccessResGetUser> call = apiInterface.getChatUsers(map);
 
         call.enqueue(new Callback<SuccessResGetUser>() {
             @Override
@@ -159,8 +241,7 @@ public class SearchUsersFragment extends Fragment {
 
                         binding.rvUsers.setHasFixedSize(true);
                         binding.rvUsers.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        binding.rvUsers.setAdapter(new SearchAdapter(getActivity(),usersList));
-
+                        binding.rvUsers.setAdapter(new SearchAdapter(getActivity(),usersList,false));
 
 //                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
 //                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
@@ -188,6 +269,23 @@ public class SearchUsersFragment extends Fragment {
 
         binding.etSearch.requestFocus();
 
-
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+      hideKeyboardFrom(getActivity(),binding.etSearch);
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 }

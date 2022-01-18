@@ -2,9 +2,14 @@ package com.technorizen.stanrz.fragments;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,9 +43,12 @@ import com.technorizen.stanrz.models.SuccessResUploadCoverImage;
 import com.technorizen.stanrz.retrofit.ApiClient;
 import com.technorizen.stanrz.retrofit.StanrzInterface;
 import com.technorizen.stanrz.utility.DataManager;
+import com.technorizen.stanrz.utility.RealPathUtil;
 import com.technorizen.stanrz.utility.SharedPreferenceUtility;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 
 import okhttp3.MediaType;
@@ -71,7 +79,6 @@ public class AddCoverPhotoFragment extends Fragment {
     private static final int SELECT_FILE = 2;
     private Uri uriSavedImage;
     private static final int MY_PERMISSION_CONSTANT = 5;
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -157,7 +164,31 @@ public class AddCoverPhotoFragment extends Fragment {
 
         return binding.getRoot();
     }
+    public Bitmap BITMAP_RE_SIZER(Bitmap bitmap, int newWidth, int newHeight) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
 
+        float ratioX = newWidth / (float) bitmap.getWidth();
+        float ratioY = newHeight / (float) bitmap.getHeight();
+        float middleX = newWidth / 2.0f;
+        float middleY = newHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title_" + System.currentTimeMillis(), null);
+        return Uri.parse(path);
+    }
 
     public void showImageSelection() {
 
@@ -202,27 +233,32 @@ public class AddCoverPhotoFragment extends Fragment {
 
     private void openCamera() {
 
-        File dirtostoreFile = new File(Environment.getExternalStorageDirectory() + "/Micasa/Images/");
+//        File dirtostoreFile = new File(Environment.getExternalStorageDirectory() + "/Micasa/Images/");
+//
+//        if (!dirtostoreFile.exists()) {
+//            dirtostoreFile.mkdirs();
+//        }
+//
+//        String timestr = DataManager.getInstance().convertDateToString(Calendar.getInstance().getTimeInMillis());
+//
+//        File tostoreFile = new File(Environment.getExternalStorageDirectory() + "/Micasa/Images/" + "IMG_" + timestr + ".jpg");
+//
+//        str_image_path = tostoreFile.getPath();
+//
+//        uriSavedImage = FileProvider.getUriForFile(getActivity(),
+//                BuildConfig.APPLICATION_ID + ".provider",
+//                tostoreFile);
+//
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+//
+//        startActivityForResult(intent, REQUEST_CAMERA);
 
-        if (!dirtostoreFile.exists()) {
-            dirtostoreFile.mkdirs();
-        }
 
-        String timestr = DataManager.getInstance().convertDateToString(Calendar.getInstance().getTimeInMillis());
-
-        File tostoreFile = new File(Environment.getExternalStorageDirectory() + "/Micasa/Images/" + "IMG_" + timestr + ".jpg");
-
-        str_image_path = tostoreFile.getPath();
-
-        uriSavedImage = FileProvider.getUriForFile(getActivity(),
-                BuildConfig.APPLICATION_ID + ".provider",
-                tostoreFile);
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
-
-        startActivityForResult(intent, REQUEST_CAMERA);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null)
+            startActivityForResult(cameraIntent, REQUEST_CAMERA);
 
     }
 
@@ -232,17 +268,41 @@ public class AddCoverPhotoFragment extends Fragment {
         if (resultCode == RESULT_OK) {
             Log.e("Result_code", requestCode + "");
             if (requestCode == SELECT_FILE) {
-                str_image_path = DataManager.getInstance().getRealPathFromURI(getActivity(), data.getData());
-                Glide.with(getActivity())
-                        .load(str_image_path)
-                        .centerCrop()
-                        .into(binding.ivCoverPhoto);
+
+                try {
+                    Uri selectedImage = data.getData();
+                    Bitmap bitmapNew = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                    Bitmap bitmap = BITMAP_RE_SIZER(bitmapNew, bitmapNew.getWidth(), bitmapNew.getHeight());
+                    Glide.with(getActivity())
+                            .load(selectedImage)
+                            .centerCrop()
+                            .into(binding.ivCoverPhoto);
+                    Uri tempUri = getImageUri(getActivity(), bitmap);
+                    String image = RealPathUtil.getRealPath(getActivity(), tempUri);
+                    str_image_path = image;
+
+                } catch (IOException e) {
+                    Log.i("TAG", "Some exception " + e);
+                }
 
             } else if (requestCode == REQUEST_CAMERA) {
-                Glide.with(getActivity())
-                        .load(str_image_path)
-                        .centerCrop()
-                        .into(binding.ivCoverPhoto);
+
+                try {
+                    if (data != null) {
+                        Bundle extras = data.getExtras();
+                        Bitmap bitmapNew = (Bitmap) extras.get("data");
+                        Bitmap imageBitmap = BITMAP_RE_SIZER(bitmapNew, bitmapNew.getWidth(), bitmapNew.getHeight());
+                        Uri tempUri = getImageUri(getActivity(), imageBitmap);
+                        String image = RealPathUtil.getRealPath(getActivity(), tempUri);
+                        str_image_path = image;
+                        Glide.with(getActivity())
+                                .load(imageBitmap)
+                                .centerCrop()
+                                .into(binding.ivCoverPhoto);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         }
@@ -278,9 +338,7 @@ public class AddCoverPhotoFragment extends Fragment {
                     ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-
             ) {
-
 
                 requestPermissions(
                         new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -336,7 +394,6 @@ public class AddCoverPhotoFragment extends Fragment {
 //
 //                        strLat = Double.toString(gpsTracker.getLatitude()) ;
 //                        strLng = Double.toString(gpsTracker.getLongitude()) ;
-//
 //                    }
                 } else {
                     Toast.makeText(getActivity(), "Permission denied", Toast.LENGTH_SHORT).show();
@@ -396,9 +453,11 @@ public class AddCoverPhotoFragment extends Fragment {
             public void onResponse(Call<SuccessResUploadCoverImage> call, Response<SuccessResUploadCoverImage> response) {
                 DataManager.getInstance().hideProgressMessage();
                 try {
+
                     SuccessResUploadCoverImage data = response.body();
                     String responseString = new Gson().toJson(response.body());
                     Log.e(TAG,"Test Response :"+responseString);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(TAG,"Test Response :"+response.body());

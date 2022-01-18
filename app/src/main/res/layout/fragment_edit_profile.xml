@@ -24,7 +24,7 @@
         android:textStyle="bold"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/_15sdp"
-        android:text="@string/done"
+        android:text="@string/save"
         android:textSize="@dimen/_14sdp" />
 </RelativeLayout>
 
@@ -58,7 +58,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
-        android:text="Change Profile Photo"
+        android:text="@string/change_profile_photo"
         android:layout_marginTop="@dimen/_10sdp"
         android:textSize="@dimen/_12sdp" />
 
@@ -68,6 +68,31 @@
         android:background="@color/gray"
         android:layout_marginTop="@dimen/_15sdp"
         />
+            <TextView
+                android:id="@+id/tvApply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semi_bold"
+                android:textColor="@color/red"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:textStyle="bold"
+                android:text="@string/request_verification"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:visibility="gone"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:id="@+id/tvPending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semi_bold"
+                android:textColor="@color/red"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:textStyle="bold"
+                android:text="@string/request_is_pending"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:visibility="gone"
+                android:textSize="@dimen/_14sdp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -82,7 +107,7 @@
             android:textColor="@color/text_color"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="Name"
+            android:text="@string/name"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/_14sdp" />
 
@@ -114,7 +139,7 @@
             android:textColor="@color/text_color"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="Username"
+            android:text="@string/username"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/_14sdp" />
 
@@ -133,6 +158,37 @@
             />
 
     </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight=".3"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/text_color"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/bio"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/tvBio"
+                    android:layout_width="0dp"
+                    android:layout_weight=".7"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/gray"
+                    android:textSize="@dimen/_14sdp"
+                    android:textColor="@color/text_color"
+                    android:hint="@string/bio"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/inter_regular"
+                    />
+
+            </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -147,7 +203,7 @@
             android:textColor="@color/text_color"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="Website"
+            android:text="@string/website"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/_14sdp" />
 
@@ -159,39 +215,7 @@
             android:backgroundTint="@color/gray"
             android:textSize="@dimen/_14sdp"
             android:textColor="@color/text_color"
-            android:hint="Website"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/inter_regular"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp"
-        >
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight=".3"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_regular"
-            android:textColor="@color/text_color"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:text="Bio"
-            android:layout_gravity="center_vertical"
-            android:textSize="@dimen/_14sdp" />
-
-        <EditText
-            android:id="@+id/tvBio"
-            android:layout_width="0dp"
-            android:layout_weight=".7"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/gray"
-            android:textSize="@dimen/_14sdp"
-            android:textColor="@color/text_color"
-            android:hint="Bio"
+            android:hint="@string/website"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/inter_regular"
             />
@@ -211,7 +235,7 @@
         android:textColor="@color/black"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:text="Prvate Information"
+        android:text="@string/private_information"
         android:layout_marginLeft="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_gravity="center_vertical"
@@ -230,7 +254,7 @@
             android:textColor="@color/text_color"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="Email"
+            android:text="@string/email"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/_14sdp" />
 
@@ -242,7 +266,7 @@
             android:backgroundTint="@color/gray"
             android:textSize="@dimen/_14sdp"
             android:textColor="@color/text_color"
-            android:hint="Email"
+            android:hint="@string/email"
             android:editable="false"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/inter_regular"
@@ -327,7 +351,7 @@
             android:textColor="@color/text_color"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="Dob"
+            android:text="@string/dob"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/_14sdp" />
 
@@ -339,7 +363,7 @@
             android:backgroundTint="@color/gray"
             android:textSize="@dimen/_14sdp"
             android:textColor="@color/text_color"
-            android:hint="Dob"
+            android:hint="@string/dob"
             android:editable="false"
             android:focusable="false"
             android:layout_gravity="center_vertical"
@@ -348,6 +372,37 @@
 
     </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight=".3"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/text_color"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/address"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/etAddress"
+                    android:layout_width="0dp"
+                    android:layout_weight=".7"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/gray"
+                    android:textSize="@dimen/_14sdp"
+                    android:textColor="@color/text_color"
+                    android:hint="@string/address"
+                    android:editable="false"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/inter_regular"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
 

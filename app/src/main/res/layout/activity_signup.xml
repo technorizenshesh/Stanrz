@@ -43,7 +43,7 @@
         android:fontFamily="@font/inter_regular"
         android:textStyle="bold"
         android:textColor="@color/text_color"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         android:textSize="@dimen/_14sdp"
         android:layout_centerHorizontal="true"
         />
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:textStyle="bold"
-                    android:text="Full Name"
+                    android:text="@string/full_name"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:textSize="@dimen/_11sdp" />
 
@@ -66,7 +66,7 @@
                     android:padding="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/et_bg"
-                    android:hint="Your name"
+                    android:hint="@string/your_name"
                     android:fontFamily="@font/inter_regular"
                     android:textColor="@color/text_color"
                     android:inputType="textEmailAddress"
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_regular"
                     android:textStyle="bold"
-                    android:text="User Name"
+                    android:text="@string/user_name"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textSize="@dimen/_11sdp" />
 
@@ -89,7 +89,7 @@
                     android:padding="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/et_bg"
-                    android:hint="Your user name"
+                    android:hint="@string/your_user_name"
                     android:fontFamily="@font/inter_regular"
                     android:textColor="@color/text_color"
                     android:inputType="textEmailAddress"
@@ -105,7 +105,7 @@
                     android:fontFamily="@font/inter_regular"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textStyle="bold"
-                    android:text="Email"
+                    android:text="@string/email"
                     android:textSize="@dimen/_12sdp"
                     />
 
@@ -116,7 +116,7 @@
                     android:padding="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/et_bg"
-                    android:hint="Your email address"
+                    android:hint="@string/your_email_address"
                     android:fontFamily="@font/inter_regular"
                     android:textColor="@color/text_color"
                     android:inputType="textEmailAddress"
@@ -157,7 +157,7 @@
                     android:fontFamily="@font/inter_regular"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textStyle="bold"
-                    android:text="Phone"
+                    android:text="@string/phone"
                     android:textSize="@dimen/_12sdp"
                     />
                 <RelativeLayout
@@ -189,7 +189,7 @@
                             android:layout_weight="0.7"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_10sdp"
-                            android:hint="Your phone number"
+                            android:hint="@string/your_phone_number"
                             android:fontFamily="@font/inter_regular"
                             android:textColor="@color/text_color"
                             android:inputType="number"
@@ -209,7 +209,7 @@
                     android:fontFamily="@font/inter_regular"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textStyle="bold"
-                    android:text="Password"
+                    android:text="@string/password"
                     android:textSize="@dimen/_12sdp"
                     />
 
@@ -220,7 +220,7 @@
                     android:padding="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/et_bg"
-                    android:hint="Your password"
+                    android:hint="@string/your_password"
                     android:fontFamily="@font/inter_regular"
                     android:textSize="@dimen/_12sdp"
                     android:textColor="@color/text_color"
@@ -234,7 +234,7 @@
                     android:fontFamily="@font/inter_regular"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textStyle="bold"
-                    android:text="Confirm Password"
+                    android:text="@string/confirm_password"
                     android:textSize="@dimen/_12sdp"
                     />
 
@@ -245,7 +245,7 @@
                     android:padding="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/et_bg"
-                    android:hint="Your confirm password"
+                    android:hint="@string/your_confirm_password"
                     android:fontFamily="@font/inter_regular"
                     android:textSize="@dimen/_12sdp"
                     android:inputType="textPassword"
@@ -297,7 +297,7 @@
                     android:layout_marginRight="@dimen/_16sdp"
                     android:backgroundTint="@color/purple_500"
                     app:cornerRadius="@dimen/_8sdp"
-                    android:text="Sign Up"
+                    android:text="@string/sign_up"
                     android:textAllCaps="false"
                     android:textStyle="bold"
                     android:textSize="@dimen/_14sdp"

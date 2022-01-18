@@ -8,9 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.technorizen.stanrz.retrofit.Constant.BASE_URL;
 
-
 public class ApiClient {
-
 
     public static Retrofit retrofit = null;
 
@@ -27,9 +25,7 @@ public class ApiClient {
                     .build();
 
         }
-
         return retrofit;
     }
-
 
 }

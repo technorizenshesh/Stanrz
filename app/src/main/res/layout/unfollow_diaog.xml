@@ -27,11 +27,10 @@
             android:gravity="center"
             android:fontFamily="@font/inter_semi_bold"
             android:padding="5dp"
-            android:text="Remove Following?"
+            android:text="@string/remove_following"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp"
             />
-
 
         <TextView
             android:layout_width="match_parent"
@@ -40,7 +39,7 @@
             android:gravity="center"
             android:fontFamily="@font/inter_semi_bold"
             android:padding="5dp"
-            android:text="Remove Following?"
+            android:text="@string/remove_following"
             android:textColor="@color/black"
             android:textSize="@dimen/_18sdp"
            />
@@ -52,7 +51,7 @@
             android:gravity="center"
             android:fontFamily="@font/inter_semi_bold"
             android:padding="5dp"
-            android:text="Remove Following?"
+            android:text="@string/remove_following"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp"
             />

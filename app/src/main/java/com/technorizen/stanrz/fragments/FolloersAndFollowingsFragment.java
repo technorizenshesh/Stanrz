@@ -7,19 +7,26 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.technorizen.stanrz.R;
 import com.technorizen.stanrz.adapters.FollowingAdapter;
+import com.technorizen.stanrz.adapters.SearchAdapter;
 import com.technorizen.stanrz.databinding.FragmentFolloersAndFollowingsBinding;
 import com.technorizen.stanrz.models.SuccessResAddFollowing;
 import com.technorizen.stanrz.models.SuccessResGetFollowers;
 import com.technorizen.stanrz.models.SuccessResGetFollowings;
+import com.technorizen.stanrz.models.SuccessResGetUser;
 import com.technorizen.stanrz.models.SuccessResProfileData;
 import com.technorizen.stanrz.retrofit.ApiClient;
 import com.technorizen.stanrz.retrofit.StanrzInterface;
@@ -51,12 +58,14 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
     StanrzInterface apiInterface;
     private List<SuccessResGetFollowings.Result> followersList = new LinkedList<>();
 
+    private boolean searchFollowers = true;
+
+    private String name = "";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -74,6 +83,9 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
      * @param param2 Parameter 2.
      * @return A new instance of fragment FolloersAndFollowingsFragment.
      */
+
+    boolean notFromPrevious = true;
+
     // TODO: Rename and change types and number of parameters
     public static FolloersAndFollowingsFragment newInstance(String param1, String param2) {
         FolloersAndFollowingsFragment fragment = new FolloersAndFollowingsFragment();
@@ -105,28 +117,24 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
         });
 
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         binding.tabLayoutEventDay.addTab(binding.tabLayoutEventDay.newTab().setText(R.string.followers));
         binding.tabLayoutEventDay.addTab(binding.tabLayoutEventDay.newTab().setText(R.string.following));
         binding.tabLayoutEventDay.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        getFollowers();
-
         binding.tabLayoutEventDay.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int currentTabSelected= tab.getPosition();
+
+                notFromPrevious = false;
+
                 if(currentTabSelected==0)
                 {
-                    //Go for Today
-
+                    searchFollowers = true;
                     getFollowers();
-
                 }else if(currentTabSelected==1)
                 {
-                    //Go for Upcoming
                     getFollowings();
-
+                    searchFollowers = false;
                 }
             }
             @Override
@@ -139,24 +147,70 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
 
         Bundle bundle = this.getArguments();
 
-        if (bundle!=null)
+        if(notFromPrevious)
         {
-            String name = bundle.getString("name");
+            if (bundle!=null)
+            {
+                 name = bundle.getString("name");
+                binding.header.tvHeader.setText(name);
+                String Goto = bundle.getString("Goto");
+                if(Goto.equalsIgnoreCase("1"))
+                {
+                    binding.tabLayoutEventDay.getTabAt(0).select();
+                    getFollowers();
+                    searchFollowers = true;
+                } else
+                {
+                    binding.tabLayoutEventDay.getTabAt(1).select();
+                    getFollowings();
+                    searchFollowers = false;
+                }
+            }
+        }
+        else
+        {
             binding.header.tvHeader.setText(name);
-            String Goto = bundle.getString("Goto");
-            if(Goto.equalsIgnoreCase("1"))
+
+            if(searchFollowers)
             {
                 binding.tabLayoutEventDay.getTabAt(0).select();
-            } else
+                getFollowers();
+            }
+            else
             {
                 binding.tabLayoutEventDay.getTabAt(1).select();
+                getFollowings();
             }
         }
 
+        binding.etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                    if(searchFollowers)
+                    {
+                        if(!binding.etSearch.getText().toString().equalsIgnoreCase(""))
+                        {
+                            searchFollower(binding.etSearch.getText().toString());
+                        }
+                    }
+                    else
+                    {
+                        if(!binding.etSearch.getText().toString().equalsIgnoreCase(""))
+                        {
+                            searchFollowing(binding.etSearch.getText().toString());
+                        }
+                    }
+
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return binding.getRoot();
     }
-
 
     private void getFollowers()
     {
@@ -166,11 +220,6 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
 
-      /*  RequestBody email = RequestBody.create(MediaType.parse("text/plain"),strEmail);
-        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), strPassword);
-        RequestBody registerID = RequestBody.create(MediaType.parse("text/plain"),deviceToken);
-*/
-//        Call<SuccessResSignIn> call = apiInterface.login(email,password,registerID);
         Call<SuccessResGetFollowings> call = apiInterface.getFollowers(map);
 
         call.enqueue(new Callback<SuccessResGetFollowings>() {
@@ -181,20 +230,16 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
 
                 try {
                     SuccessResGetFollowings data = response.body();
-//                    setSellerData();
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
                         followersList.clear();
                         followersList.addAll(data.getResult());
-
                         binding.rvFollowing.setHasFixedSize(true);
                         binding.rvFollowing.setLayoutManager(new LinearLayoutManager(getActivity()));
                         binding.rvFollowing.setAdapter(new FollowingAdapter(getActivity(),followersList,FolloersAndFollowingsFragment.this,true));
 
-//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
-//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                         followersList.clear();
@@ -224,11 +269,6 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
 
-      /*  RequestBody email = RequestBody.create(MediaType.parse("text/plain"),strEmail);
-        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), strPassword);
-        RequestBody registerID = RequestBody.create(MediaType.parse("text/plain"),deviceToken);
-*/
-//        Call<SuccessResSignIn> call = apiInterface.login(email,password,registerID);
         Call<SuccessResGetFollowings> call = apiInterface.getFollowings(map);
 
         call.enqueue(new Callback<SuccessResGetFollowings>() {
@@ -239,7 +279,6 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
 
                 try {
                     SuccessResGetFollowings data = response.body();
-//                    setSellerData();
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
@@ -251,8 +290,6 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
                         binding.rvFollowing.setLayoutManager(new LinearLayoutManager(getActivity()));
                         binding.rvFollowing.setAdapter(new FollowingAdapter(getActivity(),followersList,FolloersAndFollowingsFragment.this,false));
 
-//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
-//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                         followersList.clear();
@@ -283,11 +320,6 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
         map.put("user_id",userId);
         map.put("follower_id",userID);
 
-      /*  RequestBody email = RequestBody.create(MediaType.parse("text/plain"),strEmail);
-        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), strPassword);
-        RequestBody registerID = RequestBody.create(MediaType.parse("text/plain"),deviceToken);
-*/
-//        Call<SuccessResSignIn> call = apiInterface.login(email,password,registerID);
         Call<SuccessResAddFollowing> call = apiInterface.remove(map);
 
         call.enqueue(new Callback<SuccessResAddFollowing>() {
@@ -298,7 +330,6 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
 
                 try {
                     SuccessResAddFollowing data = response.body();
-//                    setSellerData();
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
@@ -307,11 +338,8 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
 
                         getFollowers();
 
-//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
-//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.result);
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -335,11 +363,6 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
         map.put("user_id",userId);
         map.put("follower_id",userID);
 
-      /*  RequestBody email = RequestBody.create(MediaType.parse("text/plain"),strEmail);
-        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), strPassword);
-        RequestBody registerID = RequestBody.create(MediaType.parse("text/plain"),deviceToken);
-*/
-//        Call<SuccessResSignIn> call = apiInterface.login(email,password,registerID);
         Call<SuccessResAddFollowing> call = apiInterface.addFollowing(map);
 
         call.enqueue(new Callback<SuccessResAddFollowing>() {
@@ -350,7 +373,6 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
 
                 try {
                     SuccessResAddFollowing data = response.body();
-//                    setSellerData();
                     Log.e("data",data.status);
                     showToast(getActivity(), data.result);
                     getFollowings();
@@ -366,4 +388,108 @@ public class FolloersAndFollowingsFragment extends Fragment implements FollowNFo
             }
         });
     }
+
+    private void searchFollower(String title) {
+
+        String userId=  SharedPreferenceUtility.getInstance(getActivity()).getString(USER_ID);
+
+        Map<String,String> map = new HashMap<>();
+        map.put("user_id",userId);
+        map.put("title",title);
+
+        Call<SuccessResGetFollowings> call = apiInterface.searchFollower(map);
+
+        call.enqueue(new Callback<SuccessResGetFollowings>() {
+            @Override
+            public void onResponse(Call<SuccessResGetFollowings> call, Response<SuccessResGetFollowings> response) {
+
+                DataManager.getInstance().hideProgressMessage();
+                try {
+                    SuccessResGetFollowings data = response.body();
+                    Log.e("data",data.status);
+                    if (data.status.equals("1")) {
+                        String dataResponse = new Gson().toJson(response.body());
+                        followersList.clear();
+                        followersList.addAll(data.getResult());
+
+                        binding.rvFollowing.setHasFixedSize(true);
+                        binding.rvFollowing.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        binding.rvFollowing.setAdapter(new FollowingAdapter(getActivity(),followersList,FolloersAndFollowingsFragment.this,true));
+
+//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
+//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
+                    } else if (data.status.equals("0")) {
+                        showToast(getActivity(), data.message);
+                        followersList.clear();
+                        binding.rvFollowing.setHasFixedSize(true);
+                        binding.rvFollowing.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        binding.rvFollowing.setAdapter(new FollowingAdapter(getActivity(),followersList,FolloersAndFollowingsFragment.this,true));
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResGetFollowings> call, Throwable t) {
+                call.cancel();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
+    }
+
+    private void searchFollowing(String title) {
+
+        String userId=  SharedPreferenceUtility.getInstance(getActivity()).getString(USER_ID);
+
+        Map<String,String> map = new HashMap<>();
+        map.put("user_id",userId);
+        map.put("title",title);
+
+        Call<SuccessResGetFollowings> call = apiInterface.searchFollowing(map);
+
+        call.enqueue(new Callback<SuccessResGetFollowings>() {
+            @Override
+            public void onResponse(Call<SuccessResGetFollowings> call, Response<SuccessResGetFollowings> response) {
+
+                DataManager.getInstance().hideProgressMessage();
+                try {
+                    SuccessResGetFollowings data = response.body();
+                    Log.e("data",data.status);
+                    if (data.status.equals("1")) {
+                        String dataResponse = new Gson().toJson(response.body());
+                        Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
+                        followersList.clear();
+                        followersList.addAll(data.getResult());
+
+                        binding.rvFollowing.setHasFixedSize(true);
+                        binding.rvFollowing.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        binding.rvFollowing.setAdapter(new FollowingAdapter(getActivity(),followersList,FolloersAndFollowingsFragment.this,false));
+
+                    } else if (data.status.equals("0")) {
+                        showToast(getActivity(), data.message);
+                        followersList.clear();
+                        binding.rvFollowing.setHasFixedSize(true);
+                        binding.rvFollowing.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        binding.rvFollowing.setAdapter(new FollowingAdapter(getActivity(),followersList,FolloersAndFollowingsFragment.this,false));
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResGetFollowings> call, Throwable t) {
+                call.cancel();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
+    }
+
+
+
+
 }

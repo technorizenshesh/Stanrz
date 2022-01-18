@@ -48,12 +48,13 @@ public class FollowersNFollowingAdapter extends RecyclerView.Adapter<FollowersNF
     public void onBindViewHolder(@NonNull StoriesViewHolder holder, int position) {
 
         CircleImageView circleImageView = holder.itemView.findViewById(R.id.ivProfile);
+
         TextView tvUserName,tvvFullName;
 
         RelativeLayout rlParent = holder.itemView.findViewById(R.id.rlParent);
 
         tvUserName = holder.itemView.findViewById(R.id.tvUserName);
-        tvvFullName = holder.itemView.findViewById(R.id.tvFullName);
+        tvvFullName = holder.itemView.findViewById(R.id.tvMessage);
 
         tvUserName.setText(usersList.get(position).getUsername());
         tvvFullName.setText(usersList.get(position).getFullname());

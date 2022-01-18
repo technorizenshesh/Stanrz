@@ -11,7 +11,6 @@ import java.util.List;
  */
 public interface ShowStory {
 
-    public void showStory(int pos,String userName, String userImage, List<SuccessResGetStories.UserStory> storyList);
-
+    public void showStory(View v,int pos,String userName, String userImage, SuccessResGetStories.Result story);
 
 }

@@ -154,12 +154,12 @@ public class SuccessResGetStories implements Serializable {
         @SerializedName("story_id")
         @Expose
         public String storyId;
-        @SerializedName("image")
+        @SerializedName("story_data")
         @Expose
-        public String image;
-        @SerializedName("video")
+        public String storyData;
+        @SerializedName("story_type")
         @Expose
-        public String video;
+        public String storyType;
         @SerializedName("date_time")
         @Expose
         public String dateTime;
@@ -180,20 +180,20 @@ public class SuccessResGetStories implements Serializable {
             this.storyId = storyId;
         }
 
-        public String getImage() {
-            return image;
+        public String getStoryData() {
+            return storyData;
         }
 
-        public void setImage(String image) {
-            this.image = image;
+        public void setStoryData(String storyData) {
+            this.storyData = storyData;
         }
 
-        public String getVideo() {
-            return video;
+        public String getStoryType() {
+            return storyType;
         }
 
-        public void setVideo(String video) {
-            this.video = video;
+        public void setStoryType(String storyType) {
+            this.storyType = storyType;
         }
 
         public String getDateTime() {

@@ -1,17 +1,25 @@
 package com.technorizen.stanrz.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.technorizen.stanrz.R;
 import com.technorizen.stanrz.databinding.StanrzItemBinding;
 import com.technorizen.stanrz.databinding.StanrzItemBinding;
+import com.technorizen.stanrz.models.SuccessResGetStanrzOf;
+
+import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Ravindra Birla on 06,July,2021
@@ -21,10 +29,14 @@ public class StanrzAdapter extends RecyclerView.Adapter<StanrzAdapter.StoriesVie
     private Context context;
     
     StanrzItemBinding binding;
-    
-    public StanrzAdapter(Context context)
+
+    private ArrayList<SuccessResGetStanrzOf.Result> topStanrzList ;
+    private String from;
+    public StanrzAdapter(Context context,ArrayList<SuccessResGetStanrzOf.Result> topStanrzList, String from)
     {
       this.context = context;
+      this.topStanrzList=topStanrzList;
+      this.from = from;
     }
     
     @NonNull
@@ -32,14 +44,47 @@ public class StanrzAdapter extends RecyclerView.Adapter<StanrzAdapter.StoriesVie
     public StoriesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         binding= StanrzItemBinding.inflate(LayoutInflater.from(context));
         //View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_item, parent, false);
-
         return new StoriesViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull StoriesViewHolder holder, int position) {
 
+        CircleImageView circleImageView = holder.itemView.findViewById(R.id.iv_profile);
+
         TextView textView = holder.itemView.findViewById(R.id.tvRanking);
+
+        Glide
+                .with(context)
+                .load(topStanrzList.get(position).getUserImage())
+                .centerCrop()
+                .into(circleImageView);
+
+        circleImageView.setOnClickListener(view ->
+                {
+                    if(from.equalsIgnoreCase("profile"))
+                    {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("otherUser",topStanrzList.get(position).getUserId());
+                        Navigation.findNavController(view).navigate(R.id.action_navigation_profile_to_otherUserDetailFragment,bundle);
+                    }
+                    else if(from.equalsIgnoreCase("other"))
+                    {
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("otherUser",topStanrzList.get(position).getUserId());
+                        Navigation.findNavController(view).navigate(R.id.action_otherUserDetailFragment_to_newOtherUserDetailFragment,bundle);
+
+                    }  else if(from.equalsIgnoreCase("newother"))
+                    {
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("otherUser",topStanrzList.get(position).getUserId());
+                        Navigation.findNavController(view).navigate(R.id.action_newOtherUserDetailFragment_to_otherUserDetailFragment,bundle);
+
+                    }
+                }
+        );
 
         if(position==0)
         {
@@ -102,7 +147,7 @@ public class StanrzAdapter extends RecyclerView.Adapter<StanrzAdapter.StoriesVie
 
     @Override
     public int getItemCount() {
-        return 10;
+        return topStanrzList.size();
     }
 
     public class StoriesViewHolder extends RecyclerView.ViewHolder {

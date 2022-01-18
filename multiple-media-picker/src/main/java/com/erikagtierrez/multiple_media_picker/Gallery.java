@@ -31,6 +31,12 @@ public class Gallery extends AppCompatActivity {
     public static int mode;
     private TextView tvVideos,tvPhotos;
 
+    private static Gallery instance;
+
+    public static Gallery getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,7 +170,20 @@ public class Gallery extends AppCompatActivity {
         }
     }
 
-    private void returnResult() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(OpenGallery.imagesSelected.size()>0)
+        {
+            Intent returnIntent = new Intent();
+            returnIntent.putStringArrayListExtra("result",OpenGallery.imagesSelected);
+            setResult(RESULT_OK, returnIntent);
+            finish();
+        }
+    }
+
+    public void returnResult() {
         Intent returnIntent = new Intent();
         returnIntent.putStringArrayListExtra("result",OpenGallery.imagesSelected);
         setResult(RESULT_OK, returnIntent);

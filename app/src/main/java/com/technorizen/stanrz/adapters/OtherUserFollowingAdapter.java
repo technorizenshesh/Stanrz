@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -37,7 +39,6 @@ public class OtherUserFollowingAdapter extends RecyclerView.Adapter<OtherUserFol
     private List<SuccessResGetFollowings.Result> followersList ;
     private AddFollow addFollow;
 
-
     public OtherUserFollowingAdapter(Context context, List<SuccessResGetFollowings.Result> followersList, AddFollow addFollow)
     {
       this.context = context;
@@ -61,7 +62,6 @@ public class OtherUserFollowingAdapter extends RecyclerView.Adapter<OtherUserFol
         AppCompatButton btnFollowing = holder.itemView.findViewById(R.id.btnFollowing);
         AppCompatButton btnFollow = holder.itemView.findViewById(R.id.btnFollow);
 
-
             btnFollow.setVisibility(View.VISIBLE);
             btnFollowing.setVisibility(View.VISIBLE);
 
@@ -83,9 +83,7 @@ public class OtherUserFollowingAdapter extends RecyclerView.Adapter<OtherUserFol
             {
                 btnFollowing.setVisibility(View.GONE);
                 btnFollow.setVisibility(View.VISIBLE);
-
             }
-
             binding.btnFollowing.setOnClickListener(v ->
                     {
 
@@ -134,11 +132,8 @@ public class OtherUserFollowingAdapter extends RecyclerView.Adapter<OtherUserFol
                                     dialog.dismiss();
                                 }
                         );
-
                         tvName.setText(followersList.get(position).getUserDetails().getUsername());
-
                         tvRemoveText.setText("Stanrz won't tell "+followersList.get(position).getUserDetails().getUsername()+"they were removed from your following");
-
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         dialog.show();
 
@@ -148,13 +143,18 @@ public class OtherUserFollowingAdapter extends RecyclerView.Adapter<OtherUserFol
             btnFollow.setOnClickListener(v ->
                     {
                         addFollow.addFollow(followersList.get(position).getUserDetails().getId());
-
                         btnFollow.setVisibility(View.GONE);
                         btnFollowing.setVisibility(View.VISIBLE);
-
                     }
                     );
+        ivProfile.setOnClickListener(view ->
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("otherUser",followersList.get(position).getUserDetails().getId());
+                    Navigation.findNavController(view).navigate(R.id.action_otherUserFollowersFollowingFragment_to_otherUserDetailFragment,bundle);
 
+                }
+        );
     }
 
     @Override
@@ -163,7 +163,6 @@ public class OtherUserFollowingAdapter extends RecyclerView.Adapter<OtherUserFol
     }
 
     public class StoriesViewHolder extends RecyclerView.ViewHolder {
-
         public StoriesViewHolder(FollowersItemBinding itemView) {
             super(itemView.getRoot());
         }

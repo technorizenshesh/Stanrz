@@ -35,6 +35,7 @@ import com.technorizen.stanrz.utility.SharedPreferenceUtility;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -45,7 +46,6 @@ import retrofit2.Response;
 import static com.technorizen.stanrz.retrofit.Constant.showToast;
 
 public class LoginActivity extends AppCompatActivity {
-
 
     String str_image_path = "";
     private static final int RC_SIGN_IN = 9001;
@@ -117,7 +117,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -127,11 +126,10 @@ public class LoginActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
+
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
 
@@ -145,10 +143,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 socialLogin();
 
-                // firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+                Log.w(TAG, getString(R.string.google_sing_in_falied), e);
             }
         }
 
@@ -160,19 +156,11 @@ public class LoginActivity extends AppCompatActivity {
 
     {
 
-//        strLat ="22.698986";
-//        strLng = "75.867851";
+        TimeZone tz = TimeZone.getDefault();
+
+        String id = tz.getID();
 
         DataManager.getInstance().showProgressMessage(LoginActivity.this, getString(R.string.please_wait));
-
-    /*    MultipartBody.Part filePart;
-        if (!str_image_path.equalsIgnoreCase("")) {
-            File file = DataManager.getInstance().saveBitmapToFile(new File(str_image_path));
-            filePart = MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
-        } else {
-            RequestBody attachmentEmpty = RequestBody.create(MediaType.parse("text/plain"), "");
-            filePart = MultipartBody.Part.createFormData("attachment", "", attachmentEmpty);
-        }*/
 
         RequestBody fullName = RequestBody.create(MediaType.parse("text/plain"), strFullName);
         RequestBody userName = RequestBody.create(MediaType.parse("text/plain"), strUserName);
@@ -181,8 +169,9 @@ public class LoginActivity extends AppCompatActivity {
         RequestBody dob = RequestBody.create(MediaType.parse("text/plain"), strdob);
         RequestBody registerID = RequestBody.create(MediaType.parse("text/plain"),deviceToken);
         RequestBody socialId = RequestBody.create(MediaType.parse("text/plain"),strSocialId);
+        RequestBody timeZone = RequestBody.create(MediaType.parse("text/plain"),id);
 
-        Call<SuccessResSocialLogin> signupCall = apiInterface.socialLogin(fullName,userName,email,mobile,dob,registerID,socialId);
+        Call<SuccessResSocialLogin> signupCall = apiInterface.socialLogin(fullName,userName,email,mobile,dob,registerID,socialId,timeZone);
         signupCall.enqueue(new Callback<SuccessResSocialLogin>() {
             @Override
             public void onResponse(Call<SuccessResSocialLogin> call, Response<SuccessResSocialLogin> response) {
@@ -196,8 +185,6 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferenceUtility.getInstance(LoginActivity.this).putString(Constant.USER_ID,data.getResult().getId());
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
-//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
-//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
                         finish();
                     } else if (data.status.equals("0")) {
                         showToast(LoginActivity.this, data.message);
@@ -213,23 +200,22 @@ public class LoginActivity extends AppCompatActivity {
                 call.cancel();
                 DataManager.getInstance().hideProgressMessage();
             }
-
         });
     }
 
     private void login() {
+
+        TimeZone tz = TimeZone.getDefault();
+
+        String id = tz.getID();
 
         DataManager.getInstance().showProgressMessage(LoginActivity.this, getString(R.string.please_wait));
         Map<String, String> map = new HashMap<>();
         map.put("username", strEmail);
         map.put("password", strPassword);
         map.put("register_id", deviceToken);
+        map.put("time_zone",id);
 
-      /*  RequestBody email = RequestBody.create(MediaType.parse("text/plain"),strEmail);
-        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), strPassword);
-        RequestBody registerID = RequestBody.create(MediaType.parse("text/plain"),deviceToken);
-*/
-//        Call<SuccessResSignIn> call = apiInterface.login(email,password,registerID);
         Call<SuccessResSignIn> call = apiInterface.login(map);
 
         call.enqueue(new Callback<SuccessResSignIn>() {
@@ -245,10 +231,8 @@ public class LoginActivity extends AppCompatActivity {
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
                         SharedPreferenceUtility.getInstance(getApplication()).putBoolean(Constant.IS_USER_LOGGED_IN, true);
                         SharedPreferenceUtility.getInstance(LoginActivity.this).putString(Constant.USER_ID, data.getResult().getId());
-                        Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,""+R.string.logged_in_success, Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
-//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
                         finish();
                     } else if (data.status.equals("0")) {
                         showToast(LoginActivity.this, data.message);
@@ -278,10 +262,6 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-
-    /**
-     * This method is used to get fcm token
-     */
     private void getToken() {
         try {
             FirebaseMessaging.getInstance().getToken()
@@ -289,7 +269,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<String> task) {
                             if (!task.isSuccessful()) {
-                                Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                                Log.w(TAG, ""+getString(R.string.fetching_fcm_token_failed), task.getException());
                                 return;
                             }
                             // Get new FCM registration token
