@@ -44,7 +44,6 @@ public class TwoFragment extends Fragment {
         bitmapList.clear();
         videosList.clear();
         getVideoBuckets();
-
     }
 
     @Override
@@ -76,7 +75,6 @@ public class TwoFragment extends Fragment {
             }
         });
         recyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen._3sdp)));
-
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
@@ -88,10 +86,8 @@ public class TwoFragment extends Fragment {
                 intent.putExtra("FROM","Videos");
                 startActivity(intent);
             }
-
             @Override
             public void onLongClick(View view, int position) {
-
             }
         }));
         mAdapter.notifyDataSetChanged();

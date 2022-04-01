@@ -125,7 +125,6 @@
                 android:background="@drawable/circle_gray"
                 android:layout_centerVertical="true"
                 />
-
             <EditText
                 android:id="@+id/etComment"
                 android:layout_width="match_parent"
@@ -140,7 +139,6 @@
                 android:layout_toLeftOf="@id/tvSendMessage"
                 android:layout_toRightOf="@id/ivUserProfile"
                 />
-
             <TextView
                 android:id="@+id/tvSendMessage"
                 android:layout_width="wrap_content"
@@ -158,7 +156,6 @@
                 android:src="@drawable/ic_chat_send" />
 
         </RelativeLayout>
-
     </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 

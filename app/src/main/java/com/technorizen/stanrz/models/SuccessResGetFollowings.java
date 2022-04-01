@@ -125,6 +125,9 @@ public class SuccessResGetFollowings implements Serializable {
         @SerializedName("fan_club")
         @Expose
         public String fanClub;
+        @SerializedName("suspended")
+        @Expose
+        public String suspended;
         @SerializedName("time_zone")
         @Expose
         public String timeZone;
@@ -383,6 +386,14 @@ public class SuccessResGetFollowings implements Serializable {
             this.fanClub = fanClub;
         }
 
+        public String getSuspended() {
+            return suspended;
+        }
+
+        public void setSuspended(String suspended) {
+            this.suspended = suspended;
+        }
+
         public String getTimeZone() {
             return timeZone;
         }
@@ -473,6 +484,7 @@ public class SuccessResGetFollowings implements Serializable {
 
     }
 
+
     public class UserDetails {
 
         @SerializedName("id")
@@ -550,6 +562,9 @@ public class SuccessResGetFollowings implements Serializable {
         @SerializedName("status")
         @Expose
         public String status;
+        @SerializedName("suspended")
+        @Expose
+        public String suspended;
         @SerializedName("time_zone")
         @Expose
         public String timeZone;
@@ -583,6 +598,9 @@ public class SuccessResGetFollowings implements Serializable {
         @SerializedName("verified")
         @Expose
         public String verified;
+        @SerializedName("block_user")
+        @Expose
+        public String blockUser;
 
         public String getId() {
             return id;
@@ -784,6 +802,14 @@ public class SuccessResGetFollowings implements Serializable {
             this.status = status;
         }
 
+        public String getSuspended() {
+            return suspended;
+        }
+
+        public void setSuspended(String suspended) {
+            this.suspended = suspended;
+        }
+
         public String getTimeZone() {
             return timeZone;
         }
@@ -870,6 +896,14 @@ public class SuccessResGetFollowings implements Serializable {
 
         public void setVerified(String verified) {
             this.verified = verified;
+        }
+
+        public String getBlockUser() {
+            return blockUser;
+        }
+
+        public void setBlockUser(String blockUser) {
+            this.blockUser = blockUser;
         }
 
     }

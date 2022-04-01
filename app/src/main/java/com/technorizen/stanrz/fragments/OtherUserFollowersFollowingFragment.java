@@ -46,26 +46,21 @@ import static com.technorizen.stanrz.retrofit.Constant.showToast;
  */
 public class OtherUserFollowersFollowingFragment extends Fragment implements AddFollow {
 
+
     FragmentOtherUserFollowersFollowingBinding binding;
     StanrzInterface apiInterface;
     private List<SuccessResGetFollowings.Result> followersList = new LinkedList<>();
-
     private String otherUserID;
-
     boolean notFromPrevious = true;
-
     private String name = "";
     private boolean searchFollowers = true;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     public OtherUserFollowersFollowingFragment() {
         // Required empty public constructor
     }
@@ -77,6 +72,7 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
      * @param param2 Parameter 2.
      * @return A new instance of fragment OtherUserFollowersFollowingFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static OtherUserFollowersFollowingFragment newInstance(String param1, String param2) {
         OtherUserFollowersFollowingFragment fragment = new OtherUserFollowersFollowingFragment();
@@ -100,7 +96,6 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_other_user_followers_following, container, false);
 
         binding.header.imgHeader.setOnClickListener(v -> {
@@ -118,21 +113,14 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
             public void onTabSelected(TabLayout.Tab tab) {
                 int currentTabSelected= tab.getPosition();
                 notFromPrevious = false;
-
                 if(currentTabSelected==0)
                 {
-                    //Go for Today
                     searchFollowers = true;
-
                     getFollowers();
-
                 }else if(currentTabSelected==1)
                 {
-                    //Go for Upcoming
                     searchFollowers = false;
-
                     getFollowings();
-
                 }
             }
             @Override
@@ -160,18 +148,13 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
                     binding.tabLayoutEventDay.getTabAt(0).select();
                     getFollowers();
                     searchFollowers = true;
-
-
                 } else
                 {
                     binding.tabLayoutEventDay.getTabAt(1).select();
                     getFollowings();
                     searchFollowers = false;
-
                 }
             }
-
-
         }
         else
         {
@@ -188,25 +171,18 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
             }
         }
 
-
-
         return binding.getRoot();
     }
+
     private void getFollowers()
     {
 
         String userId = SharedPreferenceUtility.getInstance(getActivity()).getString(USER_ID);
-
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
         map.put("other_id",otherUserID);
 
-      /*  RequestBody email = RequestBody.create(MediaType.parse("text/plain"),strEmail);
-        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), strPassword);
-        RequestBody registerID = RequestBody.create(MediaType.parse("text/plain"),deviceToken);
-*/
-//        Call<SuccessResSignIn> call = apiInterface.login(email,password,registerID);
         Call<SuccessResGetFollowings> call = apiInterface.getOthersFollower(map);
 
         call.enqueue(new Callback<SuccessResGetFollowings>() {
@@ -217,20 +193,25 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
 
                 try {
                     SuccessResGetFollowings data = response.body();
-//                    setSellerData();
+
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
                         followersList.clear();
-                        followersList.addAll(data.getResult());
+
+                        for(SuccessResGetFollowings.Result result:data.getResult())
+                        {
+                            if(!result.getUserDetails().getBlockUser().equalsIgnoreCase("Block"))
+                            {
+                                followersList.add(result);
+                            }
+                        }
 
                         binding.rvFollowing.setHasFixedSize(true);
                         binding.rvFollowing.setLayoutManager(new LinearLayoutManager(getActivity()));
                         binding.rvFollowing.setAdapter(new OtherUserFollowingAdapter(getActivity(),followersList,OtherUserFollowersFollowingFragment.this));
 
-//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
-//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                         followersList.clear();
@@ -278,7 +259,14 @@ public class OtherUserFollowersFollowingFragment extends Fragment implements Add
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
                         followersList.clear();
-                        followersList.addAll(data.getResult());
+
+                        for(SuccessResGetFollowings.Result result:data.getResult())
+                        {
+                            if(!result.getUserDetails().getBlockUser().equalsIgnoreCase("Block"))
+                            {
+                                followersList.add(result);
+                            }
+                        }
 
                         binding.rvFollowing.setHasFixedSize(true);
                         binding.rvFollowing.setLayoutManager(new LinearLayoutManager(getActivity()));

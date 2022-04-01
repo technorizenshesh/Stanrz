@@ -3,7 +3,6 @@ package com.technorizen.stanrz.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-
 public class SuccessResSignUp
 {
     @SerializedName("result")

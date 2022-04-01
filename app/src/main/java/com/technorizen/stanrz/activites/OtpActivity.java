@@ -35,6 +35,7 @@ import com.technorizen.stanrz.utility.SharedPreferenceUtility;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -58,9 +59,7 @@ public class OtpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = DataBindingUtil.setContentView(this,R.layout.activity_otp);
-
         mContext = OtpActivity.this;
         Intent intent = getIntent();
          strName =  intent.getStringExtra("fullname");
@@ -69,17 +68,12 @@ public class OtpActivity extends AppCompatActivity {
         strPass =  intent.getStringExtra("password");
         strphone =  intent.getStringExtra("mobile");
         strdob =  intent.getStringExtra("dob");
-
         mAuth = FirebaseAuth.getInstance();
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         mobile = "+"+strphone;
-
         init();
-
+        binding.ivBack.setOnClickListener(v -> finish());
         VerifyPhoneNumber();
-
         binding.tvResentToMessage.setOnClickListener(v ->
                 {
                     VerifyPhoneNumber();
@@ -114,13 +108,11 @@ public class OtpActivity extends AppCompatActivity {
                     }
                 }
         );
-
     }
 /*
     private void VerifyPhoneNumber(){
         binding.tvResentToMessage.setVisibility(View.GONE);
         binding.progressBar.setVisibility(View.VISIBLE);
-
         // mobile = "+2348036624845";
         Log.e("mobilenumber====",mobile);
       */
@@ -132,7 +124,6 @@ public class OtpActivity extends AppCompatActivity {
                         .setCallbacks(mCallbacks)
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);*//*
-
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 mobile.replace(" ", ""), 60,  TimeUnit.SECONDS,  OtpActivity.this,
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -140,20 +131,16 @@ public class OtpActivity extends AppCompatActivity {
                     // Timeout duration
                     // Unit of timeout
                     // Activity (for callback binding)
-
                     @Override
                     public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                         Toast.makeText(OtpActivity.this, "Otp send successfully.", Toast.LENGTH_SHORT).show();
-
                         Log.e(TAG, "onCodeSent:" + verificationId);
                         binding.tvError.setVisibility(View.VISIBLE);
                         binding.tvError.setText("Code Sent Successfully");
                         binding.tvResentToMessage.setVisibility(View.VISIBLE);
                         // Save verification ID and resending token so we can use them later
                         mVerificationId = verificationId;
-
                     }
-
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
                         //   ProjectUtil.pauseProgressDialog()
@@ -164,26 +151,21 @@ public class OtpActivity extends AppCompatActivity {
                         binding.tvResentToMessage.setVisibility(View.VISIBLE);
 //                        binding.progressBar.setVisibility(View.GONE);
                         signInWithPhoneAuthCredential(credential);
-
                     }
-
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
                         // ProjectUtil.pauseProgressDialog();
                         //   DataManager.getInstance().hideProgressMessage();
                         //   Toast.makeText(OTPActivity.this, "Failed"+e, Toast.LENGTH_SHORT).show();
-
                         binding.tvResentToMessage.setVisibility(View.VISIBLE);
 //                        binding.progressBar.setVisibility(View.GONE);
                         // This callback is invoked in an invalid request for verification is made,
                         // for instance if the the phone number format is not valid.
                         Log.w(TAG, "onVerificationFailed", e);
-
                         if (e instanceof FirebaseAuthInvalidCredentialsException) {
                             // Invalid request
                             binding.tvError.setVisibility(View.VISIBLE);
                             binding.tvError.setText(e.getLocalizedMessage());
-
                         } else if (e instanceof FirebaseTooManyRequestsException) {
                             // The SMS quota for the project has been exceeded
                             binding.tvError.setVisibility(View.VISIBLE);
@@ -212,23 +194,17 @@ public class OtpActivity extends AppCompatActivity {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 mobile.replace(" ", ""), 60,  TimeUnit.SECONDS,  OtpActivity.this,
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                    // Phone number to verify
-                    // Timeout duration
-                    // Unit of timeout
-                    // Activity (for callback binding)
 
                     @Override
                     public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                        Toast.makeText(OtpActivity.this, "Otp send successfully.", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(OtpActivity.this, ""+getString(R.string.otp_send), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "onCodeSent:" + verificationId);
                         binding.tvError.setVisibility(View.VISIBLE);
-                        binding.tvError.setText("Code Sent Successfully");
+                        binding.tvError.setText(R.string.code_send_success);
                         binding.tvResentToMessage.setVisibility(View.VISIBLE);
                         binding.progressBar.setVisibility(View.GONE);
                         // Save verification ID and resending token so we can use them later
                         mVerificationId = verificationId;
-
                     }
 
                     @Override
@@ -237,7 +213,7 @@ public class OtpActivity extends AppCompatActivity {
                         //      DataManager.getInstance().hideProgressMessage();
                         //     Toast.makeText(OTPActivity.this, ""+phoneAuthCredential.getSmsCode(), Toast.LENGTH_SHORT).show();
                         //        signInWithPhoneAuthCredential(phoneAuthCredential);
-                        Log.d(TAG, "onVerificationCompleted:" + credential);
+                        Log.d(TAG, getString(R.string.on_verification_failed) + credential);
                         binding.tvResentToMessage.setVisibility(View.VISIBLE);
                         binding.progressBar.setVisibility(View.GONE);
                         signInWithPhoneAuthCredential(credential);
@@ -253,13 +229,11 @@ public class OtpActivity extends AppCompatActivity {
                         binding.progressBar.setVisibility(View.GONE);
                         // This callback is invoked in an invalid request for verification is made,
                         // for instance if the the phone number format is not valid.
-                        Log.w(TAG, "onVerificationFailed", e);
-
+                        Log.w(TAG, getString(R.string.on_failed), e);
                         if (e instanceof FirebaseAuthInvalidCredentialsException) {
                             // Invalid request
                             binding.tvError.setVisibility(View.VISIBLE);
                             binding.tvError.setText(e.getLocalizedMessage());
-
                         } else if (e instanceof FirebaseTooManyRequestsException) {
                             // The SMS quota for the project has been exceeded
                             binding.tvError.setVisibility(View.VISIBLE);
@@ -277,11 +251,8 @@ public class OtpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             binding.tvError.setVisibility(View.VISIBLE);
                             binding.tvError.setText("Success");
-
                             Log.d(TAG, "signInWithCredential:success");
-
                             signup();
-
                         } else {
                             // Sign in failed, display a message and update the UI
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -297,7 +268,8 @@ public class OtpActivity extends AppCompatActivity {
 
     private void signup()
     {
-
+        TimeZone tz = TimeZone.getDefault();
+        String id = tz.getID();
         DataManager.getInstance().showProgressMessage(OtpActivity.this, getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("fullname",strName);
@@ -307,6 +279,7 @@ public class OtpActivity extends AppCompatActivity {
         map.put("mobile",strphone);
         map.put("dob",strdob);
         map.put("register_id","");
+        map.put("time_zone",id);
 
         Call<SuccessResSignUp> signupCall = apiInterface.signup(map);
         signupCall.enqueue(new Callback<SuccessResSignUp>() {
@@ -322,28 +295,21 @@ public class OtpActivity extends AppCompatActivity {
                         SharedPreferenceUtility.getInstance(getApplication()).putBoolean(Constant.IS_USER_LOGGED_IN, true);
                         SharedPreferenceUtility.getInstance(OtpActivity.this).putString(Constant.USER_ID,data.getResult().getId());
                         startActivity(new Intent(OtpActivity.this, LoginActivity.class));
-
                     } else if (data.status.equals("0")) {
                         showToast(OtpActivity.this, data.message);
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResSignUp> call, Throwable t) {
                 call.cancel();
                 DataManager.getInstance().hideProgressMessage();
             }
-
         });
-
     }
     private void init() {
-
-
         binding.et1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -423,9 +389,6 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
             }
-
-
-
 
         });
 

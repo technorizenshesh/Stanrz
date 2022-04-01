@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.technorizen.stanrz.R;
+import com.technorizen.stanrz.adapters.MyFanAdapter;
 import com.technorizen.stanrz.adapters.MyPurchasedSubscriptionAdapter;
 import com.technorizen.stanrz.databinding.FragmentMyFanSubscriberBinding;
 import com.technorizen.stanrz.models.SuccessResGetMyPurchasedPlan;
@@ -40,6 +41,7 @@ import static com.technorizen.stanrz.retrofit.Constant.showToast;
  * Use the {@link MyFanSubscriberFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class MyFanSubscriberFragment extends Fragment {
 
     FragmentMyFanSubscriberBinding binding;
@@ -48,7 +50,6 @@ public class MyFanSubscriberFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     private StanrzInterface apiInterface;
 
     // TODO: Rename and change types of parameters
@@ -59,14 +60,6 @@ public class MyFanSubscriberFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MyFanSubscriberFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static MyFanSubscriberFragment newInstance(String param1, String param2) {
         MyFanSubscriberFragment fragment = new MyFanSubscriberFragment();
@@ -90,65 +83,47 @@ public class MyFanSubscriberFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_my_fan_subscriber, container, false);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         binding.header.tvHeader.setText(getString(R.string.my_fans));
         binding.header.imgHeader.setOnClickListener(v ->
                 {
                     getActivity().onBackPressed();
                 }
         );
-
         if (NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
-
             getubscriptionPlan();
-
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
         }
-
         return binding.getRoot();
     }
-
     public void getubscriptionPlan()
     {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
         Call<SuccessResGetMyPurchasedPlan> call = apiInterface.getMySubscriber(map);
-
         call.enqueue(new Callback<SuccessResGetMyPurchasedPlan>() {
             @Override
             public void onResponse(Call<SuccessResGetMyPurchasedPlan> call, Response<SuccessResGetMyPurchasedPlan> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
                     SuccessResGetMyPurchasedPlan data = response.body();
-
                     if (data.status.equalsIgnoreCase("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
-
                         purchasedPlan.clear();
                         purchasedPlan.addAll(data.getResult());
-
                         binding.rvPurchasedPlan.setHasFixedSize(true);
                         binding.rvPurchasedPlan.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        binding.rvPurchasedPlan.setAdapter(new MyPurchasedSubscriptionAdapter(getActivity(),purchasedPlan));
-
+                        binding.rvPurchasedPlan.setAdapter(new MyFanAdapter(getActivity(),purchasedPlan));
                         if(purchasedPlan.size()>0)
                         {
                             binding.tvTotalSubscriber.setVisibility(View.VISIBLE);
                             binding.tvTotalSubscriber.setText(purchasedPlan.size()+" Subscribers");
                         }
-
                     } else if (data.status.equalsIgnoreCase("0")) {
                         showToast(getActivity(), data.message);
                     }
@@ -164,8 +139,5 @@ public class MyFanSubscriberFragment extends Fragment {
                 Log.d(TAG, "onFailure: "+t);
             }
         });
-
     }
-
-
 }

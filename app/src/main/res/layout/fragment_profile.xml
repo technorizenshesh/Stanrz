@@ -38,7 +38,6 @@
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
                 android:layout_centerHorizontal="true"
-                android:text="joshua_l"
                 android:textSize="@dimen/_14sdp" />
 
         </RelativeLayout>
@@ -86,7 +85,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:background="@drawable/circle_gray"
-            android:src="@drawable/rider"/>
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -114,7 +113,6 @@
                     android:layout_toLeftOf="@id/btnFollow"
                     android:layout_toRightOf="@+id/iv_history"
                     android:textSize="@dimen/_12sdp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -161,7 +159,6 @@
                     android:layout_toLeftOf="@id/btnFollow"
                     android:layout_toRightOf="@+id/iv_history"
                     android:textSize="@dimen/_12sdp" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -184,7 +181,6 @@
                     android:layout_toLeftOf="@id/btnFollow"
                     android:layout_toRightOf="@+id/iv_history"
                     android:textSize="@dimen/_12sdp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -219,11 +215,9 @@
         android:fontFamily="@font/inter_bold"
         android:textColor="@color/black"
         android:layout_centerVertical="true"
-        android:gravity="center"
         android:layout_toLeftOf="@id/btnFollow"
         android:layout_toRightOf="@+id/iv_history"
         android:textSize="@dimen/_13sdp" />
-
         <ImageView
             android:id="@+id/verifiedTick"
             android:layout_width="@dimen/_15sdp"
@@ -241,7 +235,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_regular"
         android:textColor="@color/text_color"
-        android:gravity="center"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/btnFollow"
         android:layout_toRightOf="@+id/iv_history"
@@ -253,7 +246,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_regular"
         android:textColor="@color/blue"
-        android:gravity="center"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/btnFollow"
         android:layout_toRightOf="@+id/iv_history"

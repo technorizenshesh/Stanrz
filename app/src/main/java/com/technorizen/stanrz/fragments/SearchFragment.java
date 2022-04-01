@@ -122,7 +122,9 @@ public class SearchFragment extends Fragment {
             public void onRefresh() {
 
                 if (NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
+
                     getAllImagesAndVideos();
+
                 } else {
                     Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
                 }
@@ -243,7 +245,6 @@ public class SearchFragment extends Fragment {
             myVideoModel.setNsfw(videoModel.getNsfw());
             myVideoModel.setTagUsersDetails(videoModel.getTagUsersDetails());
             myVideoModel.setUploadedAs(videoModel.getUploadedAs());
-
             int i=0;
 
             if(videoModel.getUserPost() == null)

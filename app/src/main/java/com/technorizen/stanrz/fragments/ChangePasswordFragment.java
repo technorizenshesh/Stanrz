@@ -84,7 +84,6 @@ public class ChangePasswordFragment extends Fragment {
         return binding.getRoot();
     }
 
-
     private boolean isValid() {
         if (oldPass.equalsIgnoreCase("")) {
             binding.etPass.setError(getString(R.string.please_enter_old_pass));

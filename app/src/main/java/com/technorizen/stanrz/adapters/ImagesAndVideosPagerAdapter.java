@@ -132,7 +132,6 @@ public class ImagesAndVideosPagerAdapter extends PagerAdapter implements Seriali
         public MyScroller(Context context) {
             super(context, new DecelerateInterpolator());
         }
-
         @Override
         public void startScroll(int startX, int startY, int dx, int dy, int duration) {
             super.startScroll(startX, startY, dx, dy, 1000 /*1 secs*/);

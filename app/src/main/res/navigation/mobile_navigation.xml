@@ -243,6 +243,9 @@
         <action
             android:id="@+id/action_otherUserDetailFragment_to_myStoriesFragment"
             app:destination="@id/myStoriesFragment" />
+        <action
+            android:id="@+id/action_otherUserDetailFragment_to_iamStanSeeMoreFragment"
+            app:destination="@id/iamStanSeeMoreFragment" />
 
     </fragment>
     <fragment
@@ -354,6 +357,9 @@
         <action
             android:id="@+id/action_newOtherUserDetailFragment_to_myStoriesFragment"
             app:destination="@id/myStoriesFragment" />
+        <action
+            android:id="@+id/action_newOtherUserDetailFragment_to_iamStanSeeMoreFragment"
+            app:destination="@id/iamStanSeeMoreFragment" />
     </fragment>
     <fragment
         android:id="@+id/seeMoreFragment"
@@ -381,6 +387,14 @@
         <action
             android:id="@+id/action_notificationPostFragment_to_addCommentFragment"
             app:destination="@id/addCommentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/iamStanSeeMoreFragment"
+        android:name="com.technorizen.stanrz.fragments.IamStanSeeMoreFragment"
+        android:label="IamStanSeeMoreFragment" >
+        <action
+            android:id="@+id/action_iamStanSeeMoreFragment_to_otherUserDetailFragment"
+            app:destination="@id/otherUserDetailFragment" />
     </fragment>
 
 

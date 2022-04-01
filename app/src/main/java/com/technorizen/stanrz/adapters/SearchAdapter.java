@@ -25,6 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by Ravindra Birla on 06,July,2021
  */
+
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.StoriesViewHolder> {
 
     private Context context;

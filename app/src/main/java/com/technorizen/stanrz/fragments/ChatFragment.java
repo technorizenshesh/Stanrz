@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.InputType;
 import android.util.Log;
@@ -31,7 +32,12 @@ import com.technorizen.stanrz.utility.DataManager;
 import com.technorizen.stanrz.utility.ReportInterface;
 import com.technorizen.stanrz.utility.SharedPreferenceUtility;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -51,17 +57,11 @@ import static com.technorizen.stanrz.retrofit.Constant.showToast;
  * create an instance of this fragment.
  */
 public class ChatFragment extends Fragment implements ReportInterface {
-
     FragmentChatBinding binding;
-
     private BottomSheet bottomSheetFragment;
-
     private ArrayList<SuccessResGetConversation.Result> conversationList = new ArrayList<>();
-
     StanrzInterface apiInterface;
-
     private String type = "All";
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -93,7 +93,6 @@ public class ChatFragment extends Fragment implements ReportInterface {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,20 +106,15 @@ public class ChatFragment extends Fragment implements ReportInterface {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_chat, container, false);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         binding.header.imgHeader.setOnClickListener(v ->
                 {
                     getActivity().onBackPressed();
                 }
                 );
-
         binding.header.tvHeader.setText(R.string.messsages);
         getConversations();
-
         binding.etSearch.setInputType(InputType.TYPE_NULL);
         binding.etSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,84 +127,60 @@ public class ChatFragment extends Fragment implements ReportInterface {
 
         binding.cvAll.setOnClickListener(v ->
                 {
-
                     type = "All";
                     getConversations();
-
                     binding.tvAll.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvAll.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvFan.setBackgroundResource(0);
                     binding.tvFan.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvFollowing.setBackgroundResource(0);
                     binding.tvFollowing.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );
-
         binding.cvFollowing.setOnClickListener(v ->
                 {
-
                     type = "Following";
                     getConversations();
                     binding.tvFollowing.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvFollowing.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvFan.setBackgroundResource(0);
                     binding.tvFan.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvAll.setBackgroundResource(0);
                     binding.tvAll.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );
 
         binding.cvFan.setOnClickListener(v ->
                 {
-
                     type = "Fan";
-
                     getConversations();
-
                     binding.tvFan.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvFan.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvFollowing.setBackgroundResource(0);
                     binding.tvFollowing.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvAll.setBackgroundResource(0);
                     binding.tvAll.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );
-
         return binding.getRoot();
     }
-
     private void getConversations() {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("receiver_id",userId);
         map.put("type",type);
-
         Call<SuccessResGetConversation> call = apiInterface.getConversations(map);
-
         call.enqueue(new Callback<SuccessResGetConversation>() {
             @Override
             public void onResponse(Call<SuccessResGetConversation> call, Response<SuccessResGetConversation> response) {
-
                 DataManager.getInstance().hideProgressMessage();
                 try {
                     SuccessResGetConversation data = response.body();
-
                     if (data.status.equalsIgnoreCase("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
                         conversationList.clear();
-
                         for(SuccessResGetConversation.Result conversation:data.getResult())
                         {
                             if(conversation.getBlockUser().equalsIgnoreCase("Unblock") && conversation.getSenderAccount().equalsIgnoreCase("Active"))
@@ -218,16 +188,36 @@ public class ChatFragment extends Fragment implements ReportInterface {
                                 conversationList.add(conversation);
                             }
                         }
-
+                        Collections.sort(conversationList, new Comparator<SuccessResGetConversation.Result>(){
+                            public int compare(SuccessResGetConversation.Result obj1, SuccessResGetConversation.Result obj2) {
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                String  dtDate1 = obj1.getDate();
+                                String  dtDate2 = obj2.getDate();
+                                Date date1 = null;
+                                Date  date2 = null;
+                                try {
+                                    date1 = format.parse(dtDate1);
+                                    date2 = format.parse(dtDate2);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                return (date1.getTime() > date2.getTime() ? -1 : 1);     //descending
+//                                return (date1.getTime() > date2.getTime() ? 1 : -1);     //ascending
+//                                return date1.compareTo(date2); // To compare string values
+                                // return Integer.valueOf(obj1.empId).compareTo(Integer.valueOf(obj2.empId)); // To compare integer values
+                                // ## Descending order
+                                // return obj2.firstName.compareToIgnoreCase(obj1.firstName); // To compare string values
+                                // return Integer.valueOf(obj2.empId).compareTo(Integer.valueOf(obj1.empId)); // To compare integer values
+                            }
+                        });
                         binding.rvMessageItem.setHasFixedSize(true);
-                        binding.rvMessageItem.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        binding.rvMessageItem.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false));
                         binding.rvMessageItem.setAdapter(new MessageAdapter(getActivity(),conversationList,ChatFragment.this));
-
                     } else if (data.status.equalsIgnoreCase("0")) {
                         showToast(getActivity(), data.message);
                         conversationList.clear();
                         binding.rvMessageItem.setHasFixedSize(true);
-                        binding.rvMessageItem.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        binding.rvMessageItem.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false));
                         binding.rvMessageItem.setAdapter(new MessageAdapter(getActivity(),conversationList,ChatFragment.this));
                     }
                 } catch (Exception e) {
@@ -240,12 +230,10 @@ public class ChatFragment extends Fragment implements ReportInterface {
                 call.cancel();
                 DataManager.getInstance().hideProgressMessage();
                 Log.d(TAG, "onFailure: "+t);
-
                 conversationList.clear();
                 binding.rvMessageItem.setHasFixedSize(true);
                 binding.rvMessageItem.setLayoutManager(new LinearLayoutManager(getActivity()));
                 binding.rvMessageItem.setAdapter(new MessageAdapter(getActivity(),conversationList,ChatFragment.this));
-
             }
         });
     }
@@ -281,7 +269,6 @@ public class ChatFragment extends Fragment implements ReportInterface {
         });
 
         bottomSheetFragment.show(getActivity().getSupportFragmentManager(),"ModalBottomSheet");
-
     }
 
     public void reportUser(String id,String report)
@@ -292,7 +279,6 @@ public class ChatFragment extends Fragment implements ReportInterface {
         map.put("user_id",userId);
         map.put("report_user_id",id);
         map.put("report_reson",report);
-
         Call<SuccessResReportUser> call = apiInterface.reportUser(map);
 
         call.enqueue(new Callback<SuccessResReportUser>() {

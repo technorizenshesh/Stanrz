@@ -176,7 +176,6 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
                     showOption();
                 }
                 );
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
         binding.header.imgHeader.setOnClickListener(v -> getActivity().onBackPressed());
         binding.btnFollow.setOnClickListener(v ->
@@ -184,13 +183,11 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
                     addFollow();
                 }
                 );
-
         binding.btnFollowing.setOnClickListener(v ->
                 {
                     unfollowDialog();
                 }
                 );
-
         binding.btnChat.setOnClickListener(v ->
                 {
                     Bundle bundle1 = new Bundle();
@@ -200,7 +197,6 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
                     Navigation.findNavController(v).navigate(R.id.action_otherUserDetailFragment_to_one2OneChatFragment,bundle1);
                 }
                 );
-
         return binding.getRoot();
     }
 
@@ -210,7 +206,6 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
         AppCompatButton btnCancel,btnRemove;
         TextView tvName,tvRemoveText;
         CircleImageView ivProfile;
-
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = android.R.style.Widget_Material_ListPopupWindow;
@@ -218,17 +213,14 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         Window window = dialog.getWindow();
         lp.copyFrom(window.getAttributes());
-
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
-
         btnCancel = dialog.findViewById(R.id.btnCancel);
         btnRemove = dialog.findViewById(R.id.btnRemove);
         tvName = dialog.findViewById(R.id.tvName);
         tvRemoveText = dialog.findViewById(R.id.tvRemoveText);
         ivProfile = dialog.findViewById(R.id.ivOtherUserProfile);
-
         Glide
                 .with(getActivity())
                 .load(otherUsersDetail.getImage())
@@ -248,23 +240,18 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
                     dialog.dismiss();
                 }
                 );
-
         tvName.setText(otherUsersDetail.getUsername());
-
         tvRemoveText.setText("Stanrz won't tell "+otherUsersDetail.getUsername()+"they were removed from your following");
-
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 
     private void getOtherUserProfile(String otherUser) {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",otherUser);
         map.put("login_id",userId);
-
         Call<SuccessResGetOtherUsers> call = apiInterface.getOtherProfile(map);
 
         call.enqueue(new Callback<SuccessResGetOtherUsers>() {
@@ -300,6 +287,14 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
                     Bundle bundle = new Bundle();
                     bundle.putString("id",otherUsersDetail.getId());
                     Navigation.findNavController(view).navigate(R.id.action_otherUserDetailFragment_to_seeMoreFragment,bundle);
+                }
+                );
+
+           binding.tvIamSeeMore.setOnClickListener(view ->
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("id",otherUsersDetail.getId());
+                    Navigation.findNavController(view).navigate(R.id.action_otherUserDetailFragment_to_iamStanSeeMoreFragment,bundle);
                 }
                 );
 
@@ -379,23 +374,17 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
 
                 }
         );
-
 /*
         binding.cvFanPost.setOnClickListener(v ->
                 {
-
                     binding.tvFan.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvFan.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvImage.setBackgroundResource(0);
                     binding.tvImage.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvVideo.setBackgroundResource(0);
                     binding.tvVideo.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvVip.setBackgroundResource(0);
                     binding.tvVip.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );*/
 
@@ -448,21 +437,23 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
         {
          binding.rvIamStanrz.setVisibility(View.VISIBLE);
          binding.iamStanrzOf.setVisibility(View.VISIBLE);
+         binding.tvIamSeeMore.setVisibility(View.VISIBLE);
         }
         else
         {
             binding.rvIamStanrz.setVisibility(View.GONE);
             binding.iamStanrzOf.setVisibility(View.GONE);
+            binding.tvIamSeeMore.setVisibility(View.GONE);
         }
 
-        if (otherUsersDetail.getFanClub().equalsIgnoreCase("1"))
-        {
-            binding.tvJoin.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            binding.tvJoin.setVisibility(View.GONE);
-        }
+//        if (otherUsersDetail.getFanClub().equalsIgnoreCase("1"))
+//        {
+//            binding.tvJoin.setVisibility(View.VISIBLE);
+//        }
+//        else
+//        {
+//            binding.tvJoin.setVisibility(View.GONE);
+//        }
 
         binding.tvMyTopStanrz.setText(otherUsersDetail.getUsername()+" "+getString(R.string.daily_top_10_stanrz));
         binding.iamStanrzOf.setText(otherUsersDetail.getUsername()+" "+getString(R.string.i_am_a_stanrz_of));
@@ -503,13 +494,13 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
             binding.cvVip.setVisibility(View.GONE);
         }
 
-        if(otherUsersDetail.getFanClub().equalsIgnoreCase("0"))
-        {
-            binding.tvJoin.setVisibility(View.GONE);
-        }else
-        {
-            binding.tvJoin.setVisibility(View.VISIBLE);
-        }
+//        if(otherUsersDetail.getFanClub().equalsIgnoreCase("0"))
+//        {
+//            binding.tvJoin.setVisibility(View.GONE);
+//        }else
+//        {
+//            binding.tvJoin.setVisibility(View.VISIBLE);
+//        }
 
         String bio = otherUsersDetail.getBio();
 
@@ -526,9 +517,9 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
                 public void run() {
                     int lineCount = binding.tvBio.getLineCount();
                     // Use lineCount here
-                    if (lineCount>3)
+                    if (lineCount>4)
                     {
-                        makeTextViewResizable(binding.tvBio, 3, getString(R.string.see_more), true);
+                        makeTextViewResizable(binding.tvBio, 4, getString(R.string.see_more), true);
                     }
                 }
             });
@@ -827,19 +818,17 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
 
     private void getTopStanrz() {
 
-
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",otherUserId);
+        map.put("type","dailytop");
 
         Call<SuccessResGetStanrzOf> call = apiInterface.getTopStanrz(map);
 
         call.enqueue(new Callback<SuccessResGetStanrzOf>() {
             @Override
             public void onResponse(Call<SuccessResGetStanrzOf> call, Response<SuccessResGetStanrzOf> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
 
                     SuccessResGetStanrzOf data = response.body();
@@ -875,6 +864,7 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",otherUserId);
+        map.put("type","dailytop");
 
         Call<SuccessResGetStanrzOf> call = apiInterface.getStanrzOf(map);
 
@@ -982,41 +972,36 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
     public void getDescription()
     {
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
-
         Map<String,String> map = new HashMap<>();
         map.put("user_id",otherUserId);
-
         Call<SuccessResAddSubscription> call = apiInterface.getDescription(map);
         call.enqueue(new Callback<SuccessResAddSubscription>() {
             @Override
             public void onResponse(Call<SuccessResAddSubscription> call, Response<SuccessResAddSubscription> response) {
-
                 DataManager.getInstance().hideProgressMessage();
                 try {
                     SuccessResAddSubscription data = response.body();
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
-
                         String dataResponse = new Gson().toJson(response.body());
                         showToast(getActivity(), data.message);
-
                         description = data.getResult();
-
                         if(!description.getDescription().equalsIgnoreCase(""))
                         {
                             binding.tvDescription.setText(description.getDescription());
                         }
-
-
+                        else
+                        {
+                            binding.tvDescription.setText(otherUsersDetail.getUsername()+" "+getString(R.string.fan_club_1));
+                        }
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
+                        binding.tvDescription.setText(otherUsersDetail.getUsername()+" "+getString(R.string.fan_club_1));
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResAddSubscription> call, Throwable t) {
                 call.cancel();
@@ -1024,7 +1009,6 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
             }
         });
     }
-
     public void showOption()
     {
         final Dialog dialog = new Dialog(getActivity());
@@ -1037,11 +1021,9 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
-
         TextView tvShare = dialog.findViewById(R.id.tvShare);
         TextView tvReport = dialog.findViewById(R.id.tvReport);
         TextView tvBlock = dialog.findViewById(R.id.tvBlock);
-
         tvBlock.setOnClickListener(view ->
                 {
                         dialog.dismiss();
@@ -1068,24 +1050,20 @@ public class OtherUserDetailFragment extends Fragment implements ShowStory {
 //                    shareIntent.setType("image/jpeg");
 //                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //                    startActivity(Intent.createChooser(shareIntent, "send"));
-
                 }
         );
-
+        
         tvReport.setOnClickListener(v1 ->
                 {
-
                     dialog.dismiss();
                     bottomSheetFragment= new BottomSheet(getActivity(), new ReportInterface() {
                         @Override
                         public void onReport(String content,String userId) {
                             reportUser(otherUserId,content);
                         }
-
                         @Override
                         public void deleteChat(String userId) {
                         }
-
                         @Override
                         public void blockUser(String userId,String other) {
                         }

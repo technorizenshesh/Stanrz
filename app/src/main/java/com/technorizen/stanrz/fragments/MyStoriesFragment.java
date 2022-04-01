@@ -118,14 +118,11 @@ public class MyStoriesFragment extends Fragment implements DeleteStory {
 
                 }
                 );
-
         getStories();
-
         binding.header.tvHeader.setText(R.string.my_stories);
 
         return binding.getRoot();
     }
-
 
     private void getStories() {
 
@@ -133,7 +130,6 @@ public class MyStoriesFragment extends Fragment implements DeleteStory {
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
 
         Call<SuccessResGetStories> call = apiInterface.getStories(map);
 

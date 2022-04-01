@@ -29,7 +29,6 @@
                 android:scaleType="centerInside"
                 />
 
-
             <EditText
                 android:id="@+id/etCaption"
                 android:layout_width="match_parent"
@@ -42,8 +41,6 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/inter_regular"/>
-
-
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -36,6 +37,7 @@ import com.technorizen.stanrz.models.SuccessResGetFollowings;
 import com.technorizen.stanrz.models.SuccessResGetUser;
 import com.technorizen.stanrz.models.SuccessResProfileData;
 import com.technorizen.stanrz.retrofit.ApiClient;
+import com.technorizen.stanrz.retrofit.NetworkAvailablity;
 import com.technorizen.stanrz.retrofit.StanrzInterface;
 import com.technorizen.stanrz.utility.DataManager;
 import com.technorizen.stanrz.utility.DeleteComment;
@@ -74,32 +76,21 @@ import static com.technorizen.stanrz.retrofit.Constant.showToast;
 public class AddCommentFragment extends Fragment {
 
     FragmentAddCommentBinding binding;
-
     private StanrzInterface apiInterface;
     private SuccessResProfileData.Result userDetail;
     private ArrayList<SuccessResGetUser.Result> taggedUserList = new ArrayList<>();
-
     private ArrayList<SuccessResGetUser.Result> usersList = new ArrayList<>();
-
     private List<SuccessResGetComment.Result> commentList = new LinkedList<>();
-
     private String emoji1 = "", emoji2= "",emoji3="",emoji4="";
-
     private String strPostID ="";
-
     private String strComment = "";
-
     Timer timer = new Timer();
-
     private ArrayList<SuccessResGetUser.Result> taggedUsersList = new ArrayList<>();
-
     private CommentAdapter commentAdapter;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -139,25 +130,21 @@ public class AddCommentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_add_comment, container, false);
-
         apiInterface  = ApiClient.getClient().create(StanrzInterface.class);
-
         Bundle bundle = this.getArguments();
-
-        getAllUsers();
-        getProfile();
-
+        if (NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
+            getAllUsers();
+            getProfile();
+        } else {
+            Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
+        }
         if (bundle!=null)
         {
             strPostID = bundle.getString("postID");
         }
-
         binding.imgHeader.setOnClickListener(v -> getActivity().onBackPressed());
-
         setCommentEmojis();
-
         binding.tvSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,9 +160,7 @@ public class AddCommentFragment extends Fragment {
         commentAdapter = new CommentAdapter(getActivity(),commentList,usersList, new DeleteComment() {
             @Override
             public void deleteComment(String userId, String commentId) {
-
                 deletePost(userId,commentId);
-
             }
         });
 
@@ -198,7 +183,6 @@ public class AddCommentFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable)
             {
-
                 strComment = binding.etComment.getText().toString();
                 String text = editable.toString();
                 Pattern p = Pattern.compile("[@][a-zA-Z0-9-.]+");
@@ -211,7 +195,6 @@ public class AddCommentFragment extends Fragment {
                 binding.rvTagComment.setAdapter(new SearchTagPeopleAdapter(getActivity(), resultArrayList, true, new TaggedUserId() {
                     @Override
                     public void taggedId(int position) {
-
                     }
                 }));
 

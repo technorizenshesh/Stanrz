@@ -35,6 +35,7 @@ import com.technorizen.stanrz.databinding.FragmentOtherUserDetailBinding;
 import com.technorizen.stanrz.models.Result;
 import com.technorizen.stanrz.models.SuccessResAddFollowing;
 import com.technorizen.stanrz.models.SuccessResAddLike;
+import com.technorizen.stanrz.models.SuccessResAddSubscription;
 import com.technorizen.stanrz.models.SuccessResGetOtherUsers;
 import com.technorizen.stanrz.models.SuccessResGetStanrzOf;
 import com.technorizen.stanrz.models.SuccessResGetStories;
@@ -80,19 +81,15 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
     private ArrayList<SuccessResGetStanrzOf.Result> topStanrzList = new ArrayList<>();
 
     private SuccessResGetUploadedVideos successResGetUploadedVideosItem;
-
+    private SuccessResAddSubscription.Result description;
     private UploadsAdapter videoAdapter;
-
     private String enableDisable;
     private  BottomSheet bottomSheetFragment;
     private StanrzInterface apiInterface;
     private String otherUserId = "";
     private ArrayList<Result> myVideos = new ArrayList<>();
-
     private boolean subscribed = false;
-
     private ArrayList<SuccessResGetUploadedVideos.Result> uploadedVideos = new ArrayList<>();
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -101,7 +98,6 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     public NewOtherUserDetailFragment() {
         // Required empty public constructor
     }
@@ -138,21 +134,17 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_other_user_detail, container, false);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         Bundle bundle = this.getArguments();
-
         if (bundle!=null)
         {
             otherUserId = bundle.getString("otherUser");
-
             if (NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
                 getOtherUserProfile(otherUserId);
                 getUploadedImagesVideos(otherUserId);
                 getStanrzOf();
+                getDescription();
                 getTopStanrz();
             } else {
                 Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
@@ -170,19 +162,16 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
                 }
         );
 
-
         binding.btnFollow.setOnClickListener(v ->
                 {
                     addFollow();
                 }
                 );
-
         binding.btnFollowing.setOnClickListener(v ->
                 {
                     unfollowDialog();
                 }
                 );
-
         binding.btnChat.setOnClickListener(v ->
                 {
                     Bundle bundle1 = new Bundle();
@@ -192,17 +181,58 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
                     Navigation.findNavController(v).navigate(R.id.action_newOtherUserDetailFragment_to_one2OneChatFragment,bundle1);
                 }
                 );
-
         return binding.getRoot();
     }
 
-    private void unfollowDialog()
+    public void getDescription()
+    {
 
+        DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
+        Map<String,String> map = new HashMap<>();
+        map.put("user_id",otherUserId);
+        Call<SuccessResAddSubscription> call = apiInterface.getDescription(map);
+        call.enqueue(new Callback<SuccessResAddSubscription>() {
+            @Override
+            public void onResponse(Call<SuccessResAddSubscription> call, Response<SuccessResAddSubscription> response) {
+
+                DataManager.getInstance().hideProgressMessage();
+                try {
+                    SuccessResAddSubscription data = response.body();
+                    Log.e("data",data.status);
+                    if (data.status.equals("1")) {
+                        String dataResponse = new Gson().toJson(response.body());
+                        showToast(getActivity(), data.message);
+                        description = data.getResult();
+                        if(!description.getDescription().equalsIgnoreCase(""))
+                        {
+                            binding.tvDescription.setText(description.getDescription());
+                        }
+                        else
+                        {
+                            binding.tvDescription.setText(otherUsersDetail.getUsername()+" "+getString(R.string.fan_club_1));
+                        }
+                    } else if (data.status.equals("0")) {
+                        showToast(getActivity(), data.message);
+                        binding.tvDescription.setText(otherUsersDetail.getUsername()+" "+getString(R.string.fan_club_1));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResAddSubscription> call, Throwable t) {
+                call.cancel();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
+    }
+
+    private void unfollowDialog()
     {
         AppCompatButton btnCancel,btnRemove;
         TextView tvName,tvRemoveText;
         CircleImageView ivProfile;
-
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().getAttributes().windowAnimations = android.R.style.Widget_Material_ListPopupWindow;
@@ -210,11 +240,9 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         Window window = dialog.getWindow();
         lp.copyFrom(window.getAttributes());
-
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
-
         btnCancel = dialog.findViewById(R.id.btnCancel);
         btnRemove = dialog.findViewById(R.id.btnRemove);
         tvName = dialog.findViewById(R.id.tvName);
@@ -240,17 +268,13 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
                     dialog.dismiss();
                 }
                 );
-
         tvName.setText(otherUsersDetail.getUsername());
-
         tvRemoveText.setText("Stanrz won't tell "+otherUsersDetail.getUsername()+"they were removed from your following");
-
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 
     private void getOtherUserProfile(String otherUser) {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
@@ -262,9 +286,7 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
         call.enqueue(new Callback<SuccessResGetOtherUsers>() {
             @Override
             public void onResponse(Call<SuccessResGetOtherUsers> call, Response<SuccessResGetOtherUsers> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
                     SuccessResGetOtherUsers data = response.body();
                     otherUsersDetail = data.getResult();
@@ -293,13 +315,18 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
         binding.tvMore.setOnClickListener(view ->
                 {
                     Bundle bundle = new Bundle();
-
                     bundle.putString("id",otherUsersDetail.getId());
-
                     Navigation.findNavController(view).navigate(R.id.action_newOtherUserDetailFragment_to_seeMoreFragment,bundle);
-
                 }
         );
+
+         binding.tvIamSeeMore.setOnClickListener(view ->
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("id",otherUsersDetail.getId());
+                    Navigation.findNavController(view).navigate(R.id.action_newOtherUserDetailFragment_to_iamStanSeeMoreFragment,bundle);
+                }
+                );
 
         binding.tvJoin.setOnClickListener(v ->
                 {
@@ -311,48 +338,35 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
 
         binding.cvUploads.setOnClickListener(v ->
                 {
-
                     getUploadedImagesVideos(otherUserId);
-
                     binding.rvUploads.setVisibility(View.VISIBLE);
                     binding.rvStories.setVisibility(View.GONE);
                     binding.llVip.setVisibility(View.GONE);
-
                     binding.tvVip.setBackgroundResource(0);
                     binding.tvVip.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvImage.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvImage.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvVideo.setBackgroundResource(0);
                     binding.tvVideo.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );
-
         binding.cvVideos.setOnClickListener(v ->
                 {
-
                     getUploadedVideos(otherUserId);
                     binding.rvUploads.setVisibility(View.VISIBLE);
                     binding.rvStories.setVisibility(View.GONE);
                     binding.llVip.setVisibility(View.GONE);
-
                     binding.tvVip.setBackgroundResource(0);
                     binding.tvVip.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvVideo.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvVideo.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvImage.setBackgroundResource(0);
                     binding.tvImage.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );
 
         binding.cvVip.setOnClickListener(v ->
                 {
-
                    if(subscribed)
                    {
                        binding.rvUploads.setVisibility(View.VISIBLE);
@@ -366,26 +380,20 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
                        binding.rvUploads.setVisibility(View.GONE);
                        binding.llVip.setVisibility(View.VISIBLE);
                    }
-
                     binding.tvVip.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvVip.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvImage.setBackgroundResource(0);
                     binding.tvImage.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvVideo.setBackgroundResource(0);
                     binding.tvVideo.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );
 
 /*
         binding.cvFanPost.setOnClickListener(v ->
                 {
-
                     binding.tvFan.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvFan.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvImage.setBackgroundResource(0);
                     binding.tvImage.setTextColor(getResources().getColor(R.color.black));
                     binding.tvVideo.setBackgroundResource(0);
@@ -446,25 +454,25 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
 
          binding.rvIamStanrz.setVisibility(View.VISIBLE);
          binding.iamStanrzOf.setVisibility(View.VISIBLE);
+         binding.tvIamSeeMore.setVisibility(View.VISIBLE);
         }
         else
         {
             binding.rvIamStanrz.setVisibility(View.GONE);
             binding.iamStanrzOf.setVisibility(View.GONE);
+            binding.tvIamSeeMore.setVisibility(View.GONE);
         }
 
         binding.tvMyTopStanrz.setText(otherUsersDetail.getUsername()+" "+getString(R.string.daily_top_10_stanrz));
         binding.iamStanrzOf.setText(otherUsersDetail.getUsername()+" "+getString(R.string.i_am_a_stanrz_of));
-
-        if (otherUsersDetail.getFanClub().equalsIgnoreCase("1"))
-        {
-            binding.tvJoin.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            binding.tvJoin.setVisibility(View.GONE);
-        }
-
+//        if (otherUsersDetail.getFanClub().equalsIgnoreCase("1"))
+//        {
+//            binding.tvJoin.setVisibility(View.VISIBLE);
+//        }
+//        else
+//        {
+//            binding.tvJoin.setVisibility(View.GONE);
+//        }
         if(otherUsersDetail.getSubscriber().equalsIgnoreCase("Subscribed"))
         {
             subscribed = true;
@@ -501,13 +509,14 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
             binding.cvVip.setVisibility(View.GONE);
         }
 
-        if(otherUsersDetail.getFanClub().equalsIgnoreCase("0"))
-        {
-            binding.tvJoin.setVisibility(View.GONE);
-        }else
-        {
-            binding.tvJoin.setVisibility(View.VISIBLE);
-        }
+
+//        if(otherUsersDetail.getFanClub().equalsIgnoreCase("0"))
+//        {
+//            binding.tvJoin.setVisibility(View.GONE);
+//        }else
+//        {
+//            binding.tvJoin.setVisibility(View.VISIBLE);
+//        }
 
         String bio = otherUsersDetail.getBio();
 
@@ -530,18 +539,16 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
                 public void run() {
                     int lineCount = binding.tvBio.getLineCount();
                     // Use lineCount here
-                    if (lineCount>3)
+                    if (lineCount>4)
                     {
-                        makeTextViewResizable(binding.tvBio, 3, getString(R.string.see_more), true);
+                        makeTextViewResizable(binding.tvBio, 4, getString(R.string.see_more), true);
                     }
                 }
             });
 
             binding.tvBio.setVisibility(View.VISIBLE);
         }
-
         binding.tvWebsite.setText(otherUsersDetail.getWebsite());
-
         binding.tvWebsite.setOnClickListener(view ->
                 {
 
@@ -554,7 +561,6 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
                     {
                         showToast(getActivity(),getString(R.string.invalid_url));
                     }
-
                 }
         );
 
@@ -566,7 +572,6 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
         {
             binding.tvWebsite.setVisibility(View.VISIBLE);
         }
-
     }
 
     public void addFollow()
@@ -577,16 +582,13 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
         map.put("follower_id",otherUserId);
-
         Call<SuccessResAddFollowing> call = apiInterface.addFollowing(map);
 
         call.enqueue(new Callback<SuccessResAddFollowing>() {
             @Override
             public void onResponse(Call<SuccessResAddFollowing> call, Response<SuccessResAddFollowing> response) {
-
                 DataManager.getInstance().hideProgressMessage();
                 getOtherUserProfile(otherUserId);
-
                 try {
                     SuccessResAddFollowing data = response.body();
                     Log.e("data",data.status);
@@ -635,7 +637,6 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
 
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
-
                         myVideos.clear();
                         videoAdapter = new UploadsAdapter(getActivity(),myVideos,"newother",successResGetUploadedVideosItem);
                         binding.rvUploads.setHasFixedSize(true);
@@ -656,16 +657,12 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
     }
 
     private void getUploadedVideos(String otherUserId) {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
         map.put("other_id",otherUserId);
-
-
         Call<SuccessResGetUploadedVideos> call = apiInterface.getOtherUserVideos(map);
-
         call.enqueue(new Callback<SuccessResGetUploadedVideos>() {
             @Override
             public void onResponse(Call<SuccessResGetUploadedVideos> call, Response<SuccessResGetUploadedVideos> response) {
@@ -674,26 +671,19 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
 
                 try {
                     SuccessResGetUploadedVideos data = response.body();
-
                     successResGetUploadedVideosItem = data;
-
                     uploadedVideos.clear();
                     uploadedVideos.addAll(data.getResult());
-
                     setVideoList();
-
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
-
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                         uploadsList.clear();
                         myVideos.clear();
-
                         videoAdapter = new UploadsAdapter(getActivity(),myVideos,"newother",successResGetUploadedVideosItem);
-
                         binding.rvUploads.setHasFixedSize(true);
                         binding.rvUploads.setLayoutManager(new GridLayoutManager(getActivity(),3));
                         binding.rvUploads.setAdapter(videoAdapter);
@@ -713,19 +703,13 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
 
     public void setVideoList()
     {
-
         myVideos.clear();
-
         Result myVideoModel;
         UserPost myVideo;
-
         ArrayList<UserPost> userPostArrayList =new ArrayList<>() ;
-
         for (SuccessResGetUploadedVideos.Result videoModel:uploadedVideos)
         {
-
             myVideoModel = new Result();
-
             myVideoModel.setId(videoModel.getId());
             myVideoModel.setUserId(videoModel.getUserId());
             myVideoModel.setDescription(videoModel.getDescription());
@@ -757,28 +741,17 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
 
             while (i<videoModel.getUserPost().size())
             {
-
                 myVideo = new UserPost();
-
                 myVideo.setId(videoModel.getUserPost().get(i).getId());
-
                 myVideo.setPostId(videoModel.getUserPost().get(i).getPostId());
-
                 myVideo.setPostData(videoModel.getUserPost().get(i).getPostData());
-
                 myVideo.setPostType(videoModel.getUserPost().get(i).getPostType());
-
                 userPostArrayList.add(myVideo);
-
                 i++;
-
             }
-
             myVideoModel.setUserPost(userPostArrayList);
-
             myVideos.add(myVideoModel);
         }
-
         videoAdapter = new UploadsAdapter(getActivity(),myVideos,"newother",successResGetUploadedVideosItem);
         binding.rvUploads.setHasFixedSize(true);
         binding.rvUploads.setLayoutManager(new GridLayoutManager(getActivity(),3));
@@ -843,15 +816,13 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",otherUserId);
-
+        map.put("type","dailytop");
         Call<SuccessResGetStanrzOf> call = apiInterface.getTopStanrz(map);
 
         call.enqueue(new Callback<SuccessResGetStanrzOf>() {
             @Override
             public void onResponse(Call<SuccessResGetStanrzOf> call, Response<SuccessResGetStanrzOf> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
 
                     SuccessResGetStanrzOf data = response.body();
@@ -881,12 +852,12 @@ public class NewOtherUserDetailFragment extends Fragment implements ShowStory {
             }
         });
     }
-
     private void getStanrzOf() {
 
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",otherUserId);
+        map.put("type","dailytop");
 
         Call<SuccessResGetStanrzOf> call = apiInterface.getStanrzOf(map);
 

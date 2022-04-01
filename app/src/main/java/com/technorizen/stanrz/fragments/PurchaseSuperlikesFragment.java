@@ -106,18 +106,12 @@ public class PurchaseSuperlikesFragment extends Fragment implements SuperlikeCli
                              Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_purchase_superlikes, container, false);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         binding.header.imgHeader.setOnClickListener(v -> getActivity().onBackPressed());
-        binding.header.tvHeader.setText("Purchase Super Likes");
-
+        binding.header.tvHeader.setText(R.string.purchase_superlikes);
         isSelected = false;
-
         if (NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
-
             getSuperlikePlans();
-
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
         }
@@ -138,10 +132,8 @@ public class PurchaseSuperlikesFragment extends Fragment implements SuperlikeCli
                     {
                         Toast.makeText(getActivity(),"Please select a plan",Toast.LENGTH_SHORT).show();
                     }
-
                 }
                 );
-
         return binding.getRoot();
     }
 
@@ -154,7 +146,6 @@ public class PurchaseSuperlikesFragment extends Fragment implements SuperlikeCli
         map.put("user_id",userId);
 
         Call<SuccessResGetSuperLikePlan> call = apiInterface.getSuperLikesPlan(map);
-
         call.enqueue(new Callback<SuccessResGetSuperLikePlan>() {
             @Override
             public void onResponse(Call<SuccessResGetSuperLikePlan> call, Response<SuccessResGetSuperLikePlan> response) {
@@ -162,18 +153,13 @@ public class PurchaseSuperlikesFragment extends Fragment implements SuperlikeCli
                 DataManager.getInstance().hideProgressMessage();
 
                 try {
-
                     SuccessResGetSuperLikePlan data = response.body();
-
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
-
                         superLikeList.clear();
-
                         superLikeList.addAll(data.getResult());
-
                         binding.rvSuperlikePlan.setHasFixedSize(true);
                         binding.rvSuperlikePlan.setLayoutManager(new LinearLayoutManager(getActivity()));
                         binding.rvSuperlikePlan.setAdapter(new SuperlikePlanAdapter(getActivity(),superLikeList,PurchaseSuperlikesFragment.this));
@@ -196,10 +182,8 @@ public class PurchaseSuperlikesFragment extends Fragment implements SuperlikeCli
 
     @Override
     public void superLikeClick(int position, boolean isChecked) {
-
         isSelected = true;
         selectedPosition = position;
-
     }
 
 }

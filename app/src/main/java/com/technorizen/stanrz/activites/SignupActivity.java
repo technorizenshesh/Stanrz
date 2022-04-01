@@ -97,6 +97,7 @@ public class SignupActivity extends AppCompatActivity {
                     strphone = strcc+binding.etPhone.getText().toString().trim();
                     strConfirmPass = binding.etConfPass.getText().toString().trim();
 
+
                     if (isValid()) {
 
                         if (NetworkAvailablity.getInstance(this).checkNetworkStatus()) {

@@ -23,7 +23,6 @@
     android:layout_marginRight="@dimen/_15sdp"
     app:tint="@color/white" />
         </RelativeLayout>
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,6 +33,30 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 >
+                <TextView
+                    android:id="@+id/tvHideShow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/show"
+                    android:gravity="center"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:textSize="@dimen/_14sdp"
+                    android:visibility="gone"
+                    />
+                <TextView
+                    android:id="@+id/tvHideShowDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_show"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:textSize="@dimen/_11sdp"
+                     android:gravity="center"
+                    android:visibility="gone"
+                    />
 
                 <RelativeLayout
                     android:id="@+id/ll25"
@@ -44,7 +67,6 @@
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_gravity="center_horizontal"
                     >
-
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -56,7 +78,7 @@
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_cent"
+                            android:src="@drawable/ic_super_heart"
                             android:layout_gravity="center_vertical"
                             />
                         <TextView
@@ -89,6 +111,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tvEdit"
                         android:layout_width="@dimen/_60sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:text="@string/edit"
@@ -113,7 +136,7 @@
                     android:padding="@dimen/_10sdp"
                     android:hint="@string/set_month"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     />
 
@@ -127,7 +150,8 @@
                     android:background="@drawable/et_bg"
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
-                    android:hint="Set Rate"
+                    android:inputType="number"
+                    android:hint="@string/set_rate"
                     />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -145,10 +169,7 @@
                     android:text="@string/save_changes"
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     />
-
             </LinearLayout>
-
         </androidx.core.widget.NestedScrollView>
-
     </LinearLayout>
 </layout>

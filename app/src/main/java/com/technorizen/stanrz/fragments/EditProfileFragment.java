@@ -80,19 +80,14 @@ public class EditProfileFragment extends Fragment {
 
     FragmentEditProfileBinding binding;
     private StanrzInterface apiInterface;
-
     private SuccessResProfileData.Result userDetail;
-
     private String haveFanClub = "";
-
     String strName ="",strMobile ="",strGender ="",strBio ="",strAddress = "",strWebsite = "";
-
     String str_image_path="";
     private static final int REQUEST_CAMERA = 1;
     private static final int SELECT_FILE = 2;
     private Uri uriSavedImage;
     private static final int MY_PERMISSION_CONSTANT = 5;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -150,12 +145,10 @@ public class EditProfileFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 String result = s.toString().replaceAll(" ", "");
                 if (!s.toString().equals(result)) {
                     binding.tvUserName.setText(result);
@@ -202,11 +195,8 @@ public class EditProfileFragment extends Fragment {
 
                     strAddress = binding.etAddress.getText().toString();
                     if (isValid()) {
-
                         if (NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
-
                             updateProfile();
-
                         } else {
                             Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
                         }
@@ -242,6 +232,7 @@ public class EditProfileFragment extends Fragment {
                 DataManager.getInstance().hideProgressMessage();
 
                 try {
+
                     SuccessResProfileData data = response.body();
                     userDetail = data.getResult();
 
@@ -532,15 +523,11 @@ public class EditProfileFragment extends Fragment {
                     ||
                     ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
             ) {
-
                 requestPermissions(
                         new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         MY_PERMISSION_CONSTANT);
-
             } else {
-
                 //explain("Please Allow Location Permission");
                 // No explanation needed, we can request the permission.
                 requestPermissions(
@@ -549,7 +536,6 @@ public class EditProfileFragment extends Fragment {
             }
             return false;
         } else {
-
             //  explain("Please Allow Location Permission");
             return true;
         }

@@ -48,19 +48,16 @@ import static com.technorizen.stanrz.retrofit.Constant.showToast;
  * Use the {@link NotificationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class NotificationFragment extends Fragment {
 
     FragmentNotificationBinding binding;
-
     StanrzInterface apiInterface;
-
     private LinkedList<SuccessResGetNotifications.Result> notificationList = new LinkedList<SuccessResGetNotifications.Result>();
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -68,15 +65,6 @@ public class NotificationFragment extends Fragment {
     public NotificationFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NotificationFragment.
-     */
 
     // TODO: Rename and change types and number of parameters
     public static NotificationFragment newInstance(String param1, String param2) {
@@ -100,14 +88,9 @@ public class NotificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_notification, container, false);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         Bundle bundle = this.getArguments();
-
         if (bundle!=null)
         {
             binding.header.layoutHeader.setVisibility(View.VISIBLE);
@@ -124,37 +107,24 @@ public class NotificationFragment extends Fragment {
 
     private void getNotification()
     {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
         Call<SuccessResGetNotifications> call = apiInterface.getNotifications(map);
-
         call.enqueue(new Callback<SuccessResGetNotifications>() {
             @Override
             public void onResponse(Call<SuccessResGetNotifications> call, Response<SuccessResGetNotifications> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
 //                try {
-////                    SuccessResAddComment data = response.body();
-//
+//                    SuccessResAddComment data = response.body();
 //                    JSONObject jsonObject = new JSONObject(response.body().string());
-//
 //                    String data = jsonObject.getString("status");
-//
 //                    String message = jsonObject.getString("message");
-//
 //                    JSONArray array = jsonObject.getJSONArray("result");
-//
 //                    if (data.equals("1")) {
-//
 //                        String dataResponse = new Gson().toJson(response.body().toString());
-//
 //                        Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
-//
 //                        SuccessResGetNotifications model = new Gson().fromJson(dataResponse,SuccessResGetNotifications.class);
 //                        notificationList.clear();
 //                        notificationList.addAll(model.getResult());
@@ -162,56 +132,41 @@ public class NotificationFragment extends Fragment {
 //                        binding.rvYou.setLayoutManager(new LinearLayoutManager(getActivity()));
 //                        binding.rvYou.setAdapter(new YouAdapter(getActivity(),notificationList));
 //                        ((HomeActivity) getActivity()).getUnseenNotificationCount();
-//
 //                    } else if (data.equals("0")) {
-//
 //                        showToast(getActivity(),message);
 //                        notificationList.clear();
 //                        binding.rvYou.setHasFixedSize(true);
 //                        binding.rvYou.setLayoutManager(new LinearLayoutManager(getActivity()));
 //                        binding.rvYou.setAdapter(new YouAdapter(getActivity(),notificationList));
-//
 //                    }
 //                } catch (Exception e) {
-//
-//
 //                    Log.d(TAG, "onResponse: "+e);
 //                    e.printStackTrace();
 //                }
 //            }
-
                 try {
-
                     SuccessResGetNotifications data = response.body();
-
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
-
                         notificationList.clear();
                         notificationList.addAll(data.getResult());
                         binding.rvYou.setHasFixedSize(true);
                         binding.rvYou.setLayoutManager(new LinearLayoutManager(getActivity()));
                         binding.rvYou.setAdapter(new YouAdapter(getActivity(),notificationList));
                         ((HomeActivity) getActivity()).getUnseenNotificationCount();
-
             } else if (data.status.equals("0")) {
-
-                      //  showToast(getActivity(), data.message);
                         notificationList.clear();
                         notificationList.addAll(data.getResult());
-
                         binding.rvYou.setHasFixedSize(true);
                         binding.rvYou.setLayoutManager(new LinearLayoutManager(getActivity()));
                         binding.rvYou.setAdapter(new YouAdapter(getActivity(),notificationList));
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResGetNotifications> call, Throwable t) {
                 call.cancel();
@@ -219,5 +174,4 @@ public class NotificationFragment extends Fragment {
             }
         });
     }
-
 }

@@ -13,7 +13,6 @@ public class NetworkAvailablity {
         boolean HaveConnectedWifi = false;
         boolean HaveConnectedMobile = false;
 
-
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo[] netInfo = cm.getAllNetworkInfo();

@@ -63,6 +63,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     .with(context)
                     .load(notificationList.get(position).getImage())
                     .centerCrop()
+                    .placeholder(R.drawable.ic_lock11)
                     .into(ivPost);
         }
         else

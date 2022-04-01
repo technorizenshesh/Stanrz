@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,15 +57,29 @@ public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPl
         tvMonths = holder.itemView.findViewById(R.id.tvMonth4);
         tv200Edit = holder.itemView.findViewById(R.id.tv200Edit);
         tvJoin = holder.itemView.findViewById(R.id.tvJoin);
-
+        RelativeLayout ll200 = holder.itemView.findViewById(R.id.ll200);
         tvSuperlikes.setText(packagesList.get(position).getSuperlike()+" /");
-
         if(packagesList.get(position).getForMonth().equalsIgnoreCase("") || packagesList.get(position).getForMonth().equalsIgnoreCase(context.getString(R.string.monthly)))
         {
-            tvMonths.setText(packagesList.get(position).getFormonth());
+            tvMonths.setText(packagesList.get(position).getForMonth());
+            if(packagesList.get(position).getViewStatus().equalsIgnoreCase(context.getString(R.string.hide)))
+            {
+                ll200.setBackground(context.getResources().getDrawable(R.drawable.ic_blank_black));
+                tv200Edit.setBackground(context.getResources().getDrawable(R.drawable.black_button_bg));
+                tvJoin.setBackground(context.getResources().getDrawable(R.drawable.blue_button_bg));
+            }
+            else
+            {
+                ll200.setBackground(context.getResources().getDrawable(R.drawable.ic_blank_blue));
+                tv200Edit.setBackground(context.getResources().getDrawable(R.drawable.blue_button_bg));
+                tvJoin.setBackground(context.getResources().getDrawable(R.drawable.blue_button_bg));
+            }
         }
         else
         {
+            ll200.setBackground(context.getResources().getDrawable(R.drawable.ic_blank_orange));
+            tv200Edit.setBackground(context.getResources().getDrawable(R.drawable.orange_button_bg));
+            tvJoin.setBackground(context.getResources().getDrawable(R.drawable.orange_button_bg));
             tvMonths.setText(packagesList.get(position).getForMonth()+" "+context.getResources().getString(R.string.months));
         }
 

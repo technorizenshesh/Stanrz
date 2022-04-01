@@ -61,6 +61,7 @@ public class AddCardFragment extends Fragment implements UpdateAndDeleteAddress 
     FragmentAddCardBinding binding;
 
     Dialog dialog;
+
     StanrzInterface apiInterface;
 
     String from = "", strPlanId = "",strSuperLike ="",strPrice = "",token = "";
@@ -100,6 +101,7 @@ public class AddCardFragment extends Fragment implements UpdateAndDeleteAddress 
      * @param param2 Parameter 2.
      * @return A new instance of fragment AddCardFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static AddCardFragment newInstance(String param1, String param2) {
         AddCardFragment fragment = new AddCardFragment();
@@ -124,11 +126,8 @@ public class AddCardFragment extends Fragment implements UpdateAndDeleteAddress 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_add_card, container, false);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         selected = false;
-
         binding.imgAdd.setOnClickListener(v ->
                 {
                     fullScreenDialog();
@@ -137,16 +136,11 @@ public class AddCardFragment extends Fragment implements UpdateAndDeleteAddress 
 
         binding.header.imgHeader.setOnClickListener(v -> getActivity().onBackPressed());
         binding.header.tvHeader.setText(R.string.choose_card);
-
         getCards();
-
         Bundle bundle = this.getArguments();
-
         if (bundle!=null)
         {
-
             from = bundle.getString("from");
-
             if(from.equalsIgnoreCase("PurchaseSubscription"))
             {
                 strPlanId = bundle.getString("plan_id");
@@ -172,19 +166,12 @@ public class AddCardFragment extends Fragment implements UpdateAndDeleteAddress 
     }
 
     private void fullScreenDialog() {
-
         dialog = new Dialog(getActivity(), WindowManager.LayoutParams.MATCH_PARENT);
-
         dialog.setContentView(R.layout.dialog_add_card);
-
         AppCompatButton btnAdd =  dialog.findViewById(R.id.btnAdd);
-
         ImageView ivBack;
-
         ivBack = dialog.findViewById(R.id.img_header);
-
         CardForm cardForm = dialog.findViewById(R.id.card_form);
-
         cardForm.cardRequired(true)
                 .maskCardNumber(true)
                 .maskCvv(true)
@@ -202,7 +189,6 @@ public class AddCardFragment extends Fragment implements UpdateAndDeleteAddress 
         cardForm.setOnCardFormSubmitListener(new OnCardFormSubmitListener() {
             @Override
             public void onCardFormSubmit() {
-
                 cardNo = cardForm.getCardNumber();
                 expirationMonth = cardForm.getExpirationMonth();
                 expirationYear = cardForm.getExpirationYear();
@@ -238,23 +224,18 @@ public class AddCardFragment extends Fragment implements UpdateAndDeleteAddress 
                     }
                 }
         );
-
         ivBack.setOnClickListener(v ->
                 {
                     dialog.dismiss();
                 }
         );
         dialog.show();
-
     }
 
     private void addCardDetails()
     {
-
         String userId = SharedPreferenceUtility.getInstance(getActivity()).getString(USER_ID);
-
         DataManager.getInstance().showProgressMessage(getActivity(),getString(R.string.please_wait));
-
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
         map.put("card_no",cardNo);
@@ -270,14 +251,10 @@ public class AddCardFragment extends Fragment implements UpdateAndDeleteAddress 
             public void onResponse(Call<SuccessResAddCard> call, Response<SuccessResAddCard> response) {
                 DataManager.getInstance().hideProgressMessage();
                 try {
-
                     SuccessResAddCard data = response.body();
                     String responseString = new Gson().toJson(response.body());
-
                     dialog.dismiss();
-
                     getCards();
-
                     Log.e(TAG,"Test Response :"+responseString);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -299,16 +276,12 @@ public class AddCardFragment extends Fragment implements UpdateAndDeleteAddress 
 
         String userId = SharedPreferenceUtility.getInstance(getActivity()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(),getString(R.string.please_wait));
-
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
         Call<SuccessResGetCards> call = apiInterface.getCards(map);
-
         call.enqueue(new Callback<SuccessResGetCards>() {
             @Override
             public void onResponse(Call<SuccessResGetCards> call, Response<SuccessResGetCards> response) {
-
                 DataManager.getInstance().hideProgressMessage();
                 try {
                     SuccessResGetCards data = response.body();
@@ -316,14 +289,11 @@ public class AddCardFragment extends Fragment implements UpdateAndDeleteAddress 
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         binding.btnPay.setVisibility(View.VISIBLE);
-
                         cardList.clear();
                         cardList.addAll(data.getResult());
-
                         binding.rvCards.setHasFixedSize(true);
                         binding.rvCards.setLayoutManager(new LinearLayoutManager(getActivity()));
                         binding.rvCards.setAdapter(new CardAdapter(getActivity(),cardList,AddCardFragment.this,true));
-
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                         cardList.clear();

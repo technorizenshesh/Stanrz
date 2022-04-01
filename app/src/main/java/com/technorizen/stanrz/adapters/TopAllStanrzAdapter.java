@@ -26,15 +26,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class TopAllStanrzAdapter extends RecyclerView.Adapter<TopAllStanrzAdapter.StoriesViewHolder> {
 
     private Context context;
-
+    private boolean from;
     TopStanrzItemBinding binding;
-
     private ArrayList<SuccessResGetStanrzOf.Result> topStanrzList;
 
-    public TopAllStanrzAdapter(Context context, ArrayList<SuccessResGetStanrzOf.Result> topStanrzList)
+    public TopAllStanrzAdapter(Context context, ArrayList<SuccessResGetStanrzOf.Result> topStanrzList,boolean from)
     {
       this.context = context;
       this.topStanrzList=topStanrzList;
+      this.from = from;
     }
 
     @NonNull
@@ -46,29 +46,31 @@ public class TopAllStanrzAdapter extends RecyclerView.Adapter<TopAllStanrzAdapte
 
     @Override
     public void onBindViewHolder(@NonNull StoriesViewHolder holder, int position) {
-
         CircleImageView circleImageView = holder.itemView.findViewById(R.id.iv_profile);
-
         TextView textView = holder.itemView.findViewById(R.id.tvRanking);
         TextView textName = holder.itemView.findViewById(R.id.tv_name);
         TextView tvSuperlikes = holder.itemView.findViewById(R.id.tvSuperLikes);
-
         Glide
                 .with(context)
                 .load(topStanrzList.get(position).getUserImage())
                 .centerCrop()
                 .into(circleImageView);
-
         tvSuperlikes.setText(topStanrzList.get(position).getTopSuperlike());
-
         textName.setText(topStanrzList.get(position).getUserName());
-
         circleImageView.setOnClickListener(view ->
                 {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("otherUser",topStanrzList.get(position).getUserId());
-                    Navigation.findNavController(view).navigate(R.id.action_seeMoreFragment_to_otherUserDetailFragment,bundle);
-
+                    if (from)
+                    {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("otherUser",topStanrzList.get(position).getUserId());
+                        Navigation.findNavController(view).navigate(R.id.action_seeMoreFragment_to_otherUserDetailFragment,bundle);
+                    }
+                    else
+                    {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("otherUser",topStanrzList.get(position).getUserId());
+                        Navigation.findNavController(view).navigate(R.id.action_iamStanSeeMoreFragment_to_otherUserDetailFragment,bundle);
+                    }
                 }
         );
 
@@ -89,7 +91,6 @@ public class TopAllStanrzAdapter extends RecyclerView.Adapter<TopAllStanrzAdapte
 
         if(position==3)
         {
-
             textView.setBackgroundResource(R.drawable.pink_badge_circle);
         }
 

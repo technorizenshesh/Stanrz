@@ -130,9 +130,6 @@ public class PrivacyPolicyFragment extends Fragment {
                         description = data.getResult().getDescription();
                         setWebView();
 
-
-//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
-//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                     }

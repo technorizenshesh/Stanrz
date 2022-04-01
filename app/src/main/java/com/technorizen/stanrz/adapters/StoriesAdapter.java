@@ -61,10 +61,11 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoriesV
             showStory.showStory(position,"","",new ArrayList<>());
         }
         */
+
         String userId = SharedPreferenceUtility.getInstance(context).getString(USER_ID);
 
                 Glide.with(context)
-                        .load(storyList.get(position).getUserStory().get(0).getStoryData())
+                        .load(storyList.get(position).getUserImage())
                         .centerCrop()
                         .placeholder(R.drawable.ic_user)
                         .into(ivStory);

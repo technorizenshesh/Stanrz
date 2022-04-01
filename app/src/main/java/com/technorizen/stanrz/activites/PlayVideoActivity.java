@@ -1,6 +1,7 @@
 package com.technorizen.stanrz.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -27,17 +28,16 @@ import com.technorizen.stanrz.R;
 
 public class PlayVideoActivity extends AppCompatActivity {
 
-
     ImageView ivHeader;
+
+    private CardView cvVideo;
 
     private Intent intent;
 
     // creating a variable for exoplayerview.
     SimpleExoPlayerView exoPlayerView;
-
     // creating a variable for exoplayer
     SimpleExoPlayer exoPlayer;
-
 
     private String videoUrl;
 
@@ -45,25 +45,22 @@ public class PlayVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
-
         ivHeader = findViewById(R.id.ivBack);
-
+        cvVideo = findViewById(R.id.cvBack);
         intent = getIntent();
         if(intent!=null)
         {
             videoUrl = intent.getStringExtra("uri");
         }
 
-        ivHeader.setOnClickListener(v ->
+        cvVideo.setOnClickListener(v ->
                 {
                     exoPlayer.stop();
                     exoPlayer.release();
                     finish();
                 }
                 );
-
         exoPlayerView = findViewById(R.id.idExoPlayerVIew);
-
         try {
             // bandwisthmeter is used for
             // getting default bandwidth
@@ -92,11 +89,9 @@ public class PlayVideoActivity extends AppCompatActivity {
             // and passing our event handler as null,
 
             MediaSource mediaSource = new ExtractorMediaSource(videouri, dataSourceFactory, extractorsFactory, null, null);
-
             // inside our exoplayer view
             // we are setting our player
             exoPlayerView.setPlayer(exoPlayer);
-
             // we are preparing our exoplayer
             // with media source.
             exoPlayer.prepare(mediaSource);

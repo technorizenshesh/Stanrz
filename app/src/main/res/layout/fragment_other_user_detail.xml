@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +12,6 @@
     android:layout_height="wrap_content"
     >
         <include layout="@layout/header_layout" android:id="@+id/header"/>
-
     <ImageView
         android:id="@+id/ivOption"
         android:layout_width="@dimen/_25sdp"
@@ -25,7 +23,6 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/_10sdp"
         app:tint="@color/white" />
-
 </RelativeLayout>
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -196,7 +193,6 @@
                             android:fontFamily="@font/inter_bold"
                             android:textColor="@color/black"
                             android:layout_centerVertical="true"
-                            android:gravity="center"
                             android:layout_toLeftOf="@id/btnFollow"
                             android:layout_toRightOf="@+id/iv_history"
                             android:textSize="@dimen/_13sdp" />
@@ -217,7 +213,6 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_regular"
                         android:textColor="@color/text_color"
-                        android:gravity="center"
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@id/btnFollow"
                         android:layout_toRightOf="@+id/iv_history"
@@ -230,7 +225,6 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_regular"
                         android:textColor="@color/blue"
-                        android:gravity="center"
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@id/btnFollow"
                         android:layout_toRightOf="@+id/iv_history"
@@ -345,6 +339,20 @@
                             android:text="@string/i_am_a_stanrz_of"
                             android:layout_centerVertical="true"
                             android:gravity="center"
+                            android:layout_toRightOf="@+id/iv_history"
+                            android:textSize="@dimen/_13sdp" />
+
+                        <TextView
+                            android:id="@+id/tvIamSeeMore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_bold"
+                            android:textColor="@color/red"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="@string/view_all"
+                            android:layout_centerVertical="true"
+                            android:gravity="center"
+                            android:layout_alignParentRight="true"
                             android:layout_toRightOf="@+id/iv_history"
                             android:textSize="@dimen/_13sdp" />
 
@@ -474,7 +482,6 @@
                             android:id="@+id/tvDescription"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Test"
                             android:textSize="@dimen/_13sdp"
                             android:textColor="@color/black"
                             android:fontFamily="@font/inter_regular"

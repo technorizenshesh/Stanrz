@@ -72,29 +72,21 @@ public class PostsFragment extends Fragment implements AddLike {
 
     FragmentPostsBinding binding;
     private  BottomSheet bottomSheetFragment;
-
     private ArrayList<Result> myVideos = new ArrayList<>();
     private ArrayList<SuccessResGetUploadedVideos.Result> uploadedVideos = new ArrayList<>();
     private ArrayList<SuccessResGetUser.Result> usersList = new ArrayList<>();
     ArrayList<Result> list;
-
-    StanrzInterface apiInterface;
-
+    private StanrzInterface apiInterface;
     private String position = "";
-
     private SuccessResGetUploadedVideos successResGetUploadedVideos;
-
     private int scrollToPosition = -1;
-
     private PostsAdapter postsAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
-
     private String mParam1;
     private String mParam2;
 
@@ -110,6 +102,7 @@ public class PostsFragment extends Fragment implements AddLike {
      * @param param2 Parameter 2.
      * @return A new instance of fragment PostsFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static PostsFragment newInstance(String param1, String param2) {
         PostsFragment fragment = new PostsFragment();
@@ -134,55 +127,38 @@ public class PostsFragment extends Fragment implements AddLike {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_posts, container, false);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         getAllUsers();
-
         binding.imgHeader.setOnClickListener(v -> getActivity().onBackPressed());
-
         ArrayList<Result> transactionList = (ArrayList<Result>)getArguments().getSerializable("key");
-
         position = getArguments().getString("pos");
-
         scrollToPosition = Integer.parseInt(position);
-
         list = transactionList;
-
         Bundle myBundle = new Bundle();
-
         myBundle = this.getArguments();
-
         if(myBundle!=null) {
-
             String result = myBundle.getString("result");
             successResGetUploadedVideos = new Gson().fromJson(result,SuccessResGetUploadedVideos.class);
             Log.e("sdffsdfds","REsult = " +successResGetUploadedVideos.getResult().get(0).getUserPost().get(0).getPostData());
         }
-
         uploadedVideos.clear();
         uploadedVideos.addAll(successResGetUploadedVideos.getResult());
-
         postsAdapter = new PostsAdapter(getActivity(),myVideos,this,"post",usersList);
         binding.rvPosts.setHasFixedSize(true);
         binding.rvPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rvPosts.setAdapter(postsAdapter);
-
         setVideoList();
         return binding.getRoot();
     }
 
     public void setVideoList()
     {
-
         myVideos.clear();
         Result myVideoModel;
         UserPost myVideo;
         ArrayList<UserPost> userPostArrayList =new ArrayList<>() ;
-
         for (SuccessResGetUploadedVideos.Result videoModel:uploadedVideos)
         {
-
             myVideoModel = new Result();
             myVideoModel.setId(videoModel.getId());
             myVideoModel.setUserId(videoModel.getUserId());
@@ -204,14 +180,11 @@ public class PostsFragment extends Fragment implements AddLike {
             myVideoModel.setNsfw(videoModel.getNsfw());
             myVideoModel.setTagUsersDetails(videoModel.getTagUsersDetails());
             myVideoModel.setUploadedAs(videoModel.getUploadedAs());
-
             int i=0;
-
             if(videoModel.getUserPost() == null)
             {
                 break;
             }
-
             userPostArrayList = new ArrayList<>();
             while (i<videoModel.getUserPost().size())
             {
@@ -223,17 +196,13 @@ public class PostsFragment extends Fragment implements AddLike {
                 userPostArrayList.add(myVideo);
                 i++;
             }
-
             myVideoModel.setUserPost(userPostArrayList);
             myVideos.add(myVideoModel);
         }
-
         postsAdapter.notifyDataSetChanged();
-
         addScrollListener();
         binding.rvPosts.getLayoutManager().scrollToPosition(scrollToPosition);
     }
-
     @Override
     public void addLike(String post_id, String uploader_id) {
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
@@ -242,13 +211,10 @@ public class PostsFragment extends Fragment implements AddLike {
         map.put("user_id",userId);
         map.put("post_id",post_id);
         map.put("post_user",uploader_id);
-
         Call<SuccessResAddLike> call = apiInterface.addLike(map);
-
         call.enqueue(new Callback<SuccessResAddLike>() {
             @Override
             public void onResponse(Call<SuccessResAddLike> call, Response<SuccessResAddLike> response) {
-
                 DataManager.getInstance().hideProgressMessage();
                 try {
                     SuccessResAddLike data = response.body();
@@ -258,7 +224,6 @@ public class PostsFragment extends Fragment implements AddLike {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResAddLike> call, Throwable t) {
                 call.cancel();
@@ -284,16 +249,13 @@ public class PostsFragment extends Fragment implements AddLike {
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         Window window = dialog.getWindow();
         lp.copyFrom(window.getAttributes());
-
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
-
         TextView tvDelete = dialog.findViewById(R.id.tvDelete);
         TextView tvShare = dialog.findViewById(R.id.tvShare);
         TextView tvReport = dialog.findViewById(R.id.tvReport);
         TextView tvSave = dialog.findViewById(R.id.tvSave);
-
         if(isUser)
         {
             tvDelete.setVisibility(View.VISIBLE);
@@ -304,7 +266,6 @@ public class PostsFragment extends Fragment implements AddLike {
             tvReport.setVisibility(View.VISIBLE);
             tvDelete.setVisibility(View.GONE);
         }
-
         if(result.getSaved().equalsIgnoreCase("0"))
         {
             tvSave.setText(R.string.save);
@@ -313,21 +274,15 @@ public class PostsFragment extends Fragment implements AddLike {
         {
             tvSave.setText(R.string.unsave);
         }
-
         tvDelete.setOnClickListener(v1 ->
                 {
-
                     dialog.dismiss();
-
                     new AlertDialog.Builder(getActivity())
                             .setTitle("Delete Post")
                             .setMessage("Are you sure you want to delete Post?")
-
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-
                                     deletePost(postID,position);
-
                                 }
                             })
                             .setNegativeButton(android.R.string.no, null)
@@ -355,11 +310,8 @@ public class PostsFragment extends Fragment implements AddLike {
                     bottomSheetFragment= new BottomSheet(getActivity(), new ReportInterface() {
                         @Override
                         public void onReport(String content,String userId) {
-
                             reportUser(postID,content);
-
                         }
-
                         @Override
                         public void deleteChat(String userId) {
 

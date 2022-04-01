@@ -53,6 +53,7 @@ import static com.technorizen.stanrz.retrofit.Constant.showToast;
 public class SearchUsersFragment extends Fragment {
 
     FragmentSearchUsersBinding binding;
+
     private StanrzInterface apiInterface;
 
     private List<SuccessResGetUser.Result> usersList = new LinkedList<>();
@@ -121,25 +122,18 @@ public class SearchUsersFragment extends Fragment {
         if (bundle!=null)
         {
             String from = bundle.getString("search");
-
             if(from.equalsIgnoreCase("all"))
             {
                 binding.etSearch.addTextChangedListener(new TextWatcher() {
-
                     @Override
                     public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-
                         getUsers(cs.toString());
-
                     }
-
                     @Override
                     public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-
                     }
                     @Override
                     public void afterTextChanged(Editable arg0) {
-
                     }
                 });
             } else
@@ -149,9 +143,7 @@ public class SearchUsersFragment extends Fragment {
 
                     @Override
                     public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-
                         getMyFollwers(cs.toString());
-
                     }
 
                     @Override
@@ -189,11 +181,8 @@ public class SearchUsersFragment extends Fragment {
                     SuccessResGetUser data = response.body();
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
-                        String dataResponse = new Gson().toJson(response.body());
                         usersList.clear();
-
                         usersList.addAll(data.getResult());
-
                         binding.rvUsers.setHasFixedSize(true);
                         binding.rvUsers.setLayoutManager(new LinearLayoutManager(getActivity()));
                         binding.rvUsers.setAdapter(new SearchAdapter(getActivity(),usersList,true));

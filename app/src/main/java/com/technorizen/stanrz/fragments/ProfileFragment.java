@@ -62,6 +62,8 @@ import com.technorizen.stanrz.utility.DataManager;
 import com.technorizen.stanrz.utility.SharedPreferenceUtility;
 import com.technorizen.stanrz.utility.ShowStory;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -89,44 +91,21 @@ import static com.technorizen.stanrz.utility.Util.makeTextViewResizable;
 public class ProfileFragment extends Fragment implements ShowStory {
 
     FragmentProfileBinding binding;
-
     private SuccessResProfileData.Result userDetail;
-
     private ArrayList<SuccessResGetStories.Result> storyList = new ArrayList<>();
-
     private ArrayList<SuccessResGetStanrzOf.Result> stanrzOfList = new ArrayList<>();
-
     private ArrayList<SuccessResGetStanrzOf.Result> topStanrzList = new ArrayList<>();
-
     private UploadsAdapter videoAdapter;
-
     private String enableOrDisable = "";
-
-    private SuccessResGetOtherUsers.Result otherUsersDetail;
-
     private ArrayList<SuccessResGetUploads.Result> uploadsList = new ArrayList<>();
-
     private ArrayList<Result> myVideos = new ArrayList<>();
-
     private ArrayList<SuccessResGetUploadedVideos.Result> uploadedVideos = new ArrayList<>();
-
     private SuccessResGetUploadedVideos successResGetUploadedVideosItem;
-
     private StanrzInterface apiInterface;
-
-    int lineCount;
-
-    String str_image_path="";
-    private static final int REQUEST_CAMERA = 1;
-    private static final int SELECT_FILE = 2;
-    private Uri uriSavedImage;
-    private static final int MY_PERMISSION_CONSTANT = 5;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -134,14 +113,6 @@ public class ProfileFragment extends Fragment implements ShowStory {
     public ProfileFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
 
     // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance(String param1, String param2) {
@@ -165,29 +136,23 @@ public class ProfileFragment extends Fragment implements ShowStory {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_profile, container, false);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
-        allClicks();
-
         if (NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
-
             getProfile();
             getTopStanrz();
             getStanrzOf();
             getStories();
             getUploadedImagesVideos();
-
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
         }
-
-            binding.tvWebsite.setOnClickListener(view ->
+        allClicks();
+        return binding.getRoot();
+    }
+     private void allClicks() {
+         binding.tvWebsite.setOnClickListener(view ->
                     {
-
                         if (binding.tvWebsite.getText().toString().startsWith("http://") || binding.tvWebsite.getText().toString().startsWith("https://"))
                         {
                             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(binding.tvWebsite.getText().toString()));
@@ -197,21 +162,12 @@ public class ProfileFragment extends Fragment implements ShowStory {
                         {
                             showToast(getActivity(),getString(R.string.invalid_url));
                         }
-
                     }
                     );
-
-        return binding.getRoot();
-    }
-
-     private void allClicks() {
-
         binding.tvMore.setOnClickListener(view ->
                 {
                     Bundle bundle = new Bundle();
-
                     bundle.putString("id",userDetail.getId());
-
                     Navigation.findNavController(view).navigate(R.id.action_navigation_profile_to_seeMoreFragment,bundle);
                 }
                 );
@@ -220,55 +176,42 @@ public class ProfileFragment extends Fragment implements ShowStory {
                      updateEnableDisable();
                 }
                 );
-
         binding.tvJoin.setOnClickListener(v ->
                 {
                     Navigation.findNavController(v).navigate(R.id.action_navigation_profile_to_joinVipMembershipFragment);
                 }
         );
-
         binding.btnManage.setOnClickListener(v ->
                 {
                     Navigation.findNavController(v).navigate(R.id.action_navigation_profile_to_editVipMembershipFragment);
                 }
         );
-
         binding.btnEdit.setOnClickListener(v ->
                 {
                     Navigation.findNavController(v).navigate(R.id.action_navigation_profile_to_editProfileFragment);
                 }
         );
-
         binding.imgSettings.setOnClickListener(v ->
                 {
                     Navigation.findNavController(v).navigate(R.id.action_navigation_profile_to_settingsFragment);
                 }
         );
-
         binding.cvUploads.setOnClickListener(v ->
                 {
-
                     getUploadedImagesVideos();
                     binding.rvStories.setVisibility(View.GONE);
-
                     binding.rvUploads.setVisibility(View.VISIBLE);
                     binding.llVip.setVisibility(View.GONE);
-
                     binding.tvVip.setBackgroundResource(0);
                     binding.tvVip.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvImage.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvImage.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvVideo.setBackgroundResource(0);
                     binding.tvVideo.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );
-
         binding.cvVideos.setOnClickListener(v ->
                 {
-
                     getUploadedVideos();
                     binding.rvStories.setVisibility(View.GONE);
                     binding.llVip.setVisibility(View.GONE);
@@ -280,11 +223,8 @@ public class ProfileFragment extends Fragment implements ShowStory {
                     binding.tvImage.setTextColor(getResources().getColor(R.color.black));
                 }
         );
-
         binding.cvVip.setOnClickListener(v ->
-
                 {
-
                     getFanClubImagesVideos();
                     binding.llVip.setVisibility(View.GONE);
                     binding.rvStories.setVisibility(View.VISIBLE);
@@ -294,10 +234,8 @@ public class ProfileFragment extends Fragment implements ShowStory {
                     binding.tvImage.setTextColor(getResources().getColor(R.color.black));
                     binding.tvVideo.setBackgroundResource(0);
                     binding.tvVideo.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );
-
         binding.ivEditCoverPhoto.setOnClickListener(v ->
                 {
                     Bundle bundle = new Bundle();
@@ -306,7 +244,6 @@ public class ProfileFragment extends Fragment implements ShowStory {
                     Navigation.findNavController(v).navigate(R.id.action_navigation_profile_to_addCoverPhotoFragment,bundle);
                 }
         );
-
         binding.llFollowers.setOnClickListener(v ->
                 {
                     Bundle bundle = new Bundle();
@@ -315,7 +252,6 @@ public class ProfileFragment extends Fragment implements ShowStory {
                     Navigation.findNavController(v).navigate(R.id.action_navigation_profile_to_folloersAndFollowingsFragment,bundle);
                 }
                 );
-
          binding.llFollowing.setOnClickListener(v ->
                  {
                      Bundle bundle = new Bundle();
@@ -324,24 +260,18 @@ public class ProfileFragment extends Fragment implements ShowStory {
                      Navigation.findNavController(v).navigate(R.id.action_navigation_profile_to_folloersAndFollowingsFragment,bundle);
                  }
          );
-
      }
 
     private void getProfile() {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
         Call<SuccessResProfileData> call = apiInterface.getProfile(map);
-
         call.enqueue(new Callback<SuccessResProfileData>() {
             @Override
             public void onResponse(Call<SuccessResProfileData> call, Response<SuccessResProfileData> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
                     SuccessResProfileData data = response.body();
                     userDetail = data.getResult();
@@ -350,7 +280,6 @@ public class ProfileFragment extends Fragment implements ShowStory {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
                         setProfileDetails();
-
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                     }
@@ -358,7 +287,6 @@ public class ProfileFragment extends Fragment implements ShowStory {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResProfileData> call, Throwable t) {
                 call.cancel();
@@ -376,7 +304,6 @@ public class ProfileFragment extends Fragment implements ShowStory {
                 .centerCrop()
                 .placeholder(R.drawable.ic_user)
                 .into(binding.ivProfile);
-
         Glide
                 .with(getActivity())
                 .load(userDetail.getBgImage())
@@ -392,12 +319,9 @@ public class ProfileFragment extends Fragment implements ShowStory {
         {
             binding.verifiedTick.setVisibility(View.GONE);
         }
-
         binding.tvMyTopStanrz.setText(userDetail.getUsername()+" "+getString(R.string.daily_top_10_stanrz));
         binding.tvIamStanrzOf.setText(userDetail.getUsername()+" "+getString(R.string.i_am_a_stanrz_of));
-
         enableOrDisable = userDetail.getStanrzOf();
-
         if(userDetail.getOpenFanClub().equalsIgnoreCase("done"))
         {
             binding.cvVip.setVisibility(View.VISIBLE);
@@ -406,7 +330,6 @@ public class ProfileFragment extends Fragment implements ShowStory {
         {
             binding.cvVip.setVisibility(View.GONE);
         }
-
         if(userDetail.getStanrzOf().equalsIgnoreCase("1"))
         {
             binding.tvEnableDisable.setText(getString(R.string.hide_from_profile));
@@ -415,20 +338,15 @@ public class ProfileFragment extends Fragment implements ShowStory {
         {
             binding.tvEnableDisable.setText(getString(R.string.show_from_profile));
         }
-
         binding.tvPosts.setText(userDetail.getTotalPost()+"");
         binding.tvFollower.setText(userDetail.getTotalFollowers()+"");
         binding.tvFollowing.setText(userDetail.getTotalFollowing()+"");
-
         String bio = userDetail.getBio();
-
         if(bio.contains("\n"))
         {
             bio = bio.replace("\n","<br>");
         }
-
         binding.tvBio.setText( userDetail.getBio());
-
         if(userDetail.getBio().equalsIgnoreCase(""))
         {
             binding.tvBio.setVisibility(View.GONE);
@@ -439,18 +357,15 @@ public class ProfileFragment extends Fragment implements ShowStory {
                 @Override
                 public void run() {
                     int lineCount = binding.tvBio.getLineCount();
-                    if (lineCount>3)
+                    if (lineCount>4)
                     {
-                        makeTextViewResizable(binding.tvBio, 3, getString(R.string.see_more), true);
+                        makeTextViewResizable(binding.tvBio, 4, getString(R.string.see_more), true);
                     }
                 }
             });
-
             binding.tvBio.setVisibility(View.VISIBLE);
         }
-
         binding.tvWebsite.setText(userDetail.getWebsite());
-
         if(userDetail.getWebsite().equalsIgnoreCase(""))
         {
             binding.tvWebsite.setVisibility(View.GONE);
@@ -468,15 +383,11 @@ public class ProfileFragment extends Fragment implements ShowStory {
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
         Call<SuccessResGetUploadedVideos> call = apiInterface.getUploadedImageVideos(map);
-
         call.enqueue(new Callback<SuccessResGetUploadedVideos>() {
             @Override
             public void onResponse(Call<SuccessResGetUploadedVideos> call, Response<SuccessResGetUploadedVideos> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
                     SuccessResGetUploadedVideos data = response.body();
                     Log.e("data",data.status);
@@ -503,7 +414,6 @@ public class ProfileFragment extends Fragment implements ShowStory {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResGetUploadedVideos> call, Throwable t) {
                 call.cancel();
@@ -517,37 +427,26 @@ public class ProfileFragment extends Fragment implements ShowStory {
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
         Call<SuccessResGetUploadedVideos> call = apiInterface.getVideos(map);
-
         call.enqueue(new Callback<SuccessResGetUploadedVideos>() {
             @Override
             public void onResponse(Call<SuccessResGetUploadedVideos> call, Response<SuccessResGetUploadedVideos> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
                     SuccessResGetUploadedVideos data = response.body();
-
                     uploadedVideos.clear();
                     uploadedVideos.addAll(data.getResult());
                     successResGetUploadedVideosItem = data;
-
                     setVideoList();
-
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
-//                        SessionManager.writeString(RegisterAct.this, Constant.driver_id,data.result.id);
-//                        App.showToast(RegisterAct.this, data.message, Toast.LENGTH_SHORT);
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                         uploadsList.clear();
                         myVideos.clear();
-
                         videoAdapter = new UploadsAdapter(getActivity(),myVideos,"profile",successResGetUploadedVideosItem);
-
                         binding.rvUploads.setHasFixedSize(true);
                         binding.rvUploads.setLayoutManager(new GridLayoutManager(getActivity(),3));
                         binding.rvUploads.setAdapter(videoAdapter);
@@ -567,13 +466,10 @@ public class ProfileFragment extends Fragment implements ShowStory {
 
     public void setVideoList()
     {
-
         myVideos.clear();
         Result myVideoModel;
         UserPost myVideo;
-
         ArrayList<UserPost> userPostArrayList =new ArrayList<>() ;
-
         for (SuccessResGetUploadedVideos.Result videoModel:uploadedVideos)
         {
 
@@ -605,41 +501,25 @@ public class ProfileFragment extends Fragment implements ShowStory {
             {
                 break;
             }
-
             userPostArrayList = new ArrayList<>();
-
             while (i<videoModel.getUserPost().size())
             {
-
                 myVideo = new UserPost();
-
                 myVideo.setId(videoModel.getUserPost().get(i).getId());
-
                 myVideo.setPostId(videoModel.getUserPost().get(i).getPostId());
-
                 myVideo.setPostData(videoModel.getUserPost().get(i).getPostData());
-
                 myVideo.setPostType(videoModel.getUserPost().get(i).getPostType());
-
                 userPostArrayList.add(myVideo);
-
                 i++;
-
             }
-
             myVideoModel.setUserPost(userPostArrayList);
-
             myVideos.add(myVideoModel);
         }
-
         videoAdapter = new UploadsAdapter(getActivity(),myVideos,"profile",successResGetUploadedVideosItem);
-
         binding.rvUploads.setHasFixedSize(true);
         binding.rvUploads.setLayoutManager(new GridLayoutManager(getActivity(),3));
         binding.rvUploads.setAdapter(videoAdapter);
-
     }
-
 
     private void getFanClubImagesVideos() {
 
@@ -648,32 +528,24 @@ public class ProfileFragment extends Fragment implements ShowStory {
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
         Call<SuccessResGetUploadedVideos> call = apiInterface.getFanClubImageVideos(map);
-
         call.enqueue(new Callback<SuccessResGetUploadedVideos>() {
             @Override
-            public void onResponse(Call<SuccessResGetUploadedVideos> call, Response<SuccessResGetUploadedVideos> response) {
-
+            public void onResponse(@NotNull Call<SuccessResGetUploadedVideos> call, Response<SuccessResGetUploadedVideos> response) {
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
                     SuccessResGetUploadedVideos data = response.body();
-
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
-
                         uploadedVideos.clear();
                         uploadedVideos.addAll(data.getResult());
                         successResGetUploadedVideosItem = data;
                         setVideoList();
-
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                         uploadsList.clear();
-
                         myVideos.clear();
-
                         videoAdapter = new UploadsAdapter(getActivity(),myVideos,"profile",successResGetUploadedVideosItem);
                         binding.rvUploads.setHasFixedSize(true);
                         binding.rvUploads.setLayoutManager(new GridLayoutManager(getActivity(),3));
@@ -685,7 +557,7 @@ public class ProfileFragment extends Fragment implements ShowStory {
             }
 
             @Override
-            public void onFailure(Call<SuccessResGetUploadedVideos> call, Throwable t) {
+            public void onFailure(@NotNull Call<SuccessResGetUploadedVideos> call, Throwable t) {
                 call.cancel();
                 DataManager.getInstance().hideProgressMessage();
             }
@@ -698,17 +570,14 @@ public class ProfileFragment extends Fragment implements ShowStory {
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
+        map.put("type","dailytop");
         Call<SuccessResGetStanrzOf> call = apiInterface.getTopStanrz(map);
 
         call.enqueue(new Callback<SuccessResGetStanrzOf>() {
             @Override
             public void onResponse(Call<SuccessResGetStanrzOf> call, Response<SuccessResGetStanrzOf> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
-
                     SuccessResGetStanrzOf data = response.body();
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
@@ -719,12 +588,8 @@ public class ProfileFragment extends Fragment implements ShowStory {
                         binding.rvStanrz.setHasFixedSize(true);
                         binding.rvStanrz.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
                         binding.rvStanrz.setAdapter(new StanrzAdapter(getActivity(),topStanrzList,"profile"));
-
                     } else if (data.status.equals("0")) {
-
                         topStanrzList.clear();
-
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -745,7 +610,7 @@ public class ProfileFragment extends Fragment implements ShowStory {
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
+        map.put("type","dailytop");
         Call<SuccessResGetStanrzOf> call = apiInterface.getStanrzOf(map);
 
         call.enqueue(new Callback<SuccessResGetStanrzOf>() {

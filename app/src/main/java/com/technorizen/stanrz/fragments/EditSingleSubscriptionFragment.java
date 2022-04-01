@@ -19,9 +19,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.technorizen.stanrz.R;
 import com.technorizen.stanrz.activites.LoginActivity;
+
+
 import com.technorizen.stanrz.databinding.FragmentEditSingleSubscriptionBinding;
 import com.technorizen.stanrz.models.SuccessResAddLike;
 import com.technorizen.stanrz.models.SuccessResGetPackages;
+import com.technorizen.stanrz.models.SuccessResHideShowPlan;
 import com.technorizen.stanrz.models.SuccessResUpdateVipMembership;
 import com.technorizen.stanrz.retrofit.ApiClient;
 import com.technorizen.stanrz.retrofit.StanrzInterface;
@@ -49,37 +52,23 @@ public class EditSingleSubscriptionFragment extends Fragment {
     String rate = "";
     String month = "";
     String id="";
-
-    private String strSuperlikes ="",strMonths = "";
-
+    private String strSuperlikes ="",strMonths = "",strStatus="";
     private StanrzInterface apiInterface;
-
     String myMonth = "";
     String myRate = "";
-
     FragmentEditSingleSubscriptionBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     public EditSingleSubscriptionFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditSingleSubscriptionFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static EditSingleSubscriptionFragment newInstance(String param1, String param2) {
         EditSingleSubscriptionFragment fragment = new EditSingleSubscriptionFragment();
@@ -102,82 +91,153 @@ public class EditSingleSubscriptionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_edit_single_subscription, container, false);
-
         binding.header.imgHeader.setOnClickListener(v -> getActivity().onBackPressed());
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         Bundle bundle = this.getArguments();
-
         if(bundle!=null)
         {
             id = bundle.getString("id");
             rate = bundle.getString("rate");
             month = bundle.getString("month");
+            strStatus = bundle.getString("status");
         }
-
         setPackage();
-
         binding.btnDelete.setOnClickListener(v ->
                 {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle("Delete Plan")
-                            .setMessage("Are you sure you want to delete Plan?")
-
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Continue with delete operation
-
-                                    deletePlan();
-
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    if(month.equalsIgnoreCase("Monthly"))
+                    {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.delete_plan)
+                                .setMessage(R.string.delete_plans)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Continue with delete operation
+                                        deletePlan();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, null)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+                    else
+                    {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.delete_plan)
+                                .setMessage(R.string.are_yousure)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Continue with delete operation
+                                        deletePlan();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, null)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
                 }
                 );
-
+        binding.tvHideShow.setOnClickListener(v ->
+                {
+                    hideShowPlan();
+                }
+                );
         binding.btnSave.setOnClickListener(v ->
                 {
-
                     myMonth = binding.etMonth.getText().toString();
-
                     myRate = binding.etRate.getText().toString();
-
                     if(isValid())
                     {
-
                         editMemberShip();
-
                     }else
                     {
                         Toast.makeText(getActivity(), getResources().getString(R.string.on_error), Toast.LENGTH_SHORT).show();
                     }
-
                 }
                 );
-
         binding.header.tvHeader.setText(R.string.manage_fan_membership);
-
         return binding.getRoot();
+    }
+
+    private void hideShowPlan()
+    {
+        if(strStatus.equalsIgnoreCase(getString(R.string.hide)))
+        {
+            strStatus = getString(R.string.show);
+            binding.tvHideShow.setText(R.string.tap_to_hide);
+            binding.tvHideShowDesc.setText(getString(R.string.text_hide));
+            binding.ll25.setBackgroundResource(R.drawable.ic_blank_blue);
+            binding.tvEdit.setBackgroundResource(R.drawable.blue_button_bg);
+        }
+        else
+        {
+            strStatus = getString(R.string.hide);
+            binding.tvHideShow.setText(R.string.tap_to_show);
+            binding.tvHideShowDesc.setText(getString(R.string.text_show));
+            binding.ll25.setBackgroundResource(R.drawable.ic_blank_black);
+            binding.tvEdit.setBackgroundResource(R.drawable.black_button_bg);
+        }
+
+        DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
+        Map<String,String> map = new HashMap<>();
+        map.put("id",id);
+        map.put("view_status",strStatus);
+        Call<SuccessResHideShowPlan> call = apiInterface.hideSHowMonthlyPlan(map);
+        call.enqueue(new Callback<SuccessResHideShowPlan>() {
+            @Override
+            public void onResponse(Call<SuccessResHideShowPlan> call, Response<SuccessResHideShowPlan> response) {
+                DataManager.getInstance().hideProgressMessage();
+                try {
+                    SuccessResHideShowPlan data = response.body();
+                    Log.e("data",data.status);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(Call<SuccessResHideShowPlan> call, Throwable t) {
+                call.cancel();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
     }
 
     public void setPackage()
     {
-
         binding.tvMoney.setText(rate);
-        binding.tvMonth.setText("/ "+month+" Months");
-
+        if(month.equalsIgnoreCase("Monthly"))
+        {
+            binding.tvMonth.setText("/ "+month);
+            binding.etMonth.setVisibility(View.GONE);
+            binding.etRate.setVisibility(View.GONE);
+            binding.btnSave.setVisibility(View.GONE);
+            binding.etMonth.setText(R.string.monthly);
+            binding.tvHideShow.setVisibility(View.VISIBLE);
+            binding.tvHideShowDesc.setVisibility(View.VISIBLE);
+            if(strStatus.equalsIgnoreCase(getString(R.string.hide)))
+            {
+                binding.tvHideShow.setText(R.string.tap_to_show);
+                binding.ll25.setBackgroundResource(R.drawable.ic_blank_black);
+                binding.tvEdit.setBackgroundResource(R.drawable.black_button_bg);
+                binding.tvHideShowDesc.setText(getString(R.string.text_show));
+            }
+            else
+            {
+                binding.tvHideShow.setText(R.string.tap_to_hide);
+                binding.tvHideShowDesc.setText(getString(R.string.text_hide));
+                binding.ll25.setBackgroundResource(R.drawable.ic_blank_blue);
+                binding.tvEdit.setBackgroundResource(R.drawable.blue_button_bg);
+            }
+        }
+        else
+        {
+            binding.tvMonth.setText("/ "+month+" Months");
+            binding.etMonth.setVisibility(View.VISIBLE);
+        }
     }
-
     public void editMemberShip()
     {
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
-
         Map<String,String> map = new HashMap<>();
         map.put("id",id);
         map.put("for_month",myMonth);
@@ -187,7 +247,6 @@ public class EditSingleSubscriptionFragment extends Fragment {
         call.enqueue(new Callback<SuccessResUpdateVipMembership>() {
             @Override
             public void onResponse(Call<SuccessResUpdateVipMembership> call, Response<SuccessResUpdateVipMembership> response) {
-
                 DataManager.getInstance().hideProgressMessage();
                 try {
                     SuccessResUpdateVipMembership data = response.body();
@@ -195,27 +254,26 @@ public class EditSingleSubscriptionFragment extends Fragment {
                     if (data.status.equals("1")) {
 
                         String dataResponse = new Gson().toJson(response.body());
-
                         binding.tvMoney.setText(myRate);
-                        binding.tvMonth.setText("/ "+myMonth+" Months");
-
-                        binding.etMonth.setText("");
+                        if(month.equalsIgnoreCase("Monthly"))
+                        {
+                            binding.tvMonth.setText("/ "+month);
+                        }
+                        else
+                        {
+                            binding.tvMonth.setText("/ "+month+" Months");
+                            binding.etMonth.setText("");
+                        }
                         binding.etRate.setText("");
-
                         binding.etMonth.clearFocus();
                         binding.etRate.clearFocus();
-
                     } else if (data.status.equals("0")) {
-
                         showToast(getActivity(), data.message);
-
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResUpdateVipMembership> call, Throwable t) {
                 call.cancel();

@@ -21,6 +21,8 @@ import com.technorizen.stanrz.activites.StoryDetailActivity;
 import com.technorizen.stanrz.databinding.AdapterChatBinding;
 import com.technorizen.stanrz.models.SuccessResGetChat;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ import java.util.List;
  */
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
-    AdapterChatBinding binding;
+   AdapterChatBinding binding;
 
    private Context context;
    private List<SuccessResGetChat.Result> chatList = new LinkedList<>();
@@ -46,34 +48,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.adapter_chat, parent, false);
         return new ChatViewHolder(binding);
-
     }
-
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-
         ImageView ivLeft,ivRight,ivLeftVideoPlay,ivRightVideoPlay;
-
         TextView leftTime1,rightTime1,tvleftTime,tvrightTime,tvLeftMessage,tvRightMessage;
-
         ivLeft = holder.itemView.findViewById(R.id.left_chat_image);
         leftTime1 = holder.itemView.findViewById(R.id.chat_left_msg_text_view1);
-
-
         ivRight = holder.itemView.findViewById(R.id.right_chat_image);
         rightTime1 = holder.itemView.findViewById(R.id.tv_time_right1);
-
-
         tvleftTime = holder.itemView.findViewById(R.id.tv_time_left);
         tvLeftMessage = holder.itemView.findViewById(R.id.chat_left_msg_text_view);
-
-
         tvrightTime = holder.itemView.findViewById(R.id.tv_time_right);
         tvRightMessage = holder.itemView.findViewById(R.id.chat_right_msg_text_view);
-
 
         ivLeftVideoPlay = holder.itemView.findViewById(R.id.ivLeftVideoPlay);
 
@@ -84,7 +73,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
          binding.chatLeftMsgLayout.setVisibility(View.GONE);
          binding.chatRightMsgLayout.setVisibility(View.VISIBLE);
          tvrightTime.setText(chatList.get(position).getTimeAgo());
-         tvRightMessage.setText(chatList.get(position).getChatMessage());
+         tvRightMessage.setText(decodeEmoji(chatList.get(position).getChatMessage()));
 
          Glide.with(context)
                  .load(chatList.get(position).getImageVideo())
@@ -117,7 +106,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
              ivRight.setVisibility(View.GONE);
              rightTime1.setVisibility(View.GONE);
              ivRightVideoPlay.setVisibility(View.GONE);
-
          }
 
      }
@@ -126,7 +114,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
          binding.chatLeftMsgLayout.setVisibility(View.VISIBLE);
          binding.chatRightMsgLayout.setVisibility(View.GONE);
          tvleftTime.setText(chatList.get(position).getTimeAgo());
-         tvLeftMessage.setText(chatList.get(position).getChatMessage());
+         tvLeftMessage.setText(decodeEmoji(chatList.get(position).getChatMessage()));
 
          Glide.with(context)
                  .load(chatList.get(position).getImageVideo())
@@ -187,6 +175,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
 
     }
+
+
+    public static String decodeEmoji (String message) {
+        String myString= null;
+        try {
+            return URLDecoder.decode(
+                    message, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return message;
+        }
+    }
+
 
     @Override
     public int getItemViewType(int position) {

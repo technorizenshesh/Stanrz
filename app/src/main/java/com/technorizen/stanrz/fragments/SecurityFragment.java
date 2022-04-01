@@ -100,13 +100,11 @@ public class SecurityFragment extends Fragment implements SubscriptionClick {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_security, container, false);
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         binding.header.imgHeader.setOnClickListener(view ->
                 {
                     getActivity().onBackPressed();
                 }
                 );
-
         binding.header.tvHeader.setText(R.string.security);
 
         blockedUserAdapter = new BlockedUserAdapter(getActivity(),blockedUser,SecurityFragment.this);

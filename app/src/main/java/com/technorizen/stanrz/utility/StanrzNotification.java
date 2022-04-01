@@ -23,9 +23,6 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
-/**
- * Created by Ravindra Birla on 18,August,2021
- */
 public class StanrzNotification extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
@@ -34,24 +31,16 @@ public class StanrzNotification extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // If the application is in the foreground handle both data and notification messages here.
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
-
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "payload:" + remoteMessage.getData());
-
             Map<String,String> map = remoteMessage.getData();
-
             try {
                 sendNotification("","",map);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-
         Log.d(TAG, "onMessageReceived for FCM");
-
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "c: " + remoteMessage.getData());
             try {
@@ -61,15 +50,12 @@ public class StanrzNotification extends FirebaseMessagingService {
             }
         }
     }
-
     private void sendNotification(String message, String title,Map<String,String> map) throws JSONException {
-
         JSONObject jsonObject = null;
         jsonObject = new JSONObject(map);
         String key = jsonObject.getString("key");
         Intent intent = new Intent();
         String key1 = jsonObject.getString("message");
-
         if(key.equalsIgnoreCase("Follow"))
         {
             String result = jsonObject.getString("result");
@@ -86,44 +72,34 @@ public class StanrzNotification extends FirebaseMessagingService {
             intent.putExtra("notification","notification");
             intent.putExtra("key","notification");
             intent.putExtra("chat","test");
-
             if(Util.appInForeground(this))
-
             {
                 Intent intent1 = new Intent("filter_string");
                 intent.putExtra("key", "My Data");
-                // put your all data using put extra
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
             }
-
         } else if(key.equalsIgnoreCase("Comment"))
         {
             intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("notification","notification");
             if(Util.appInForeground(this))
-
             {
                 Intent intent1 = new Intent("filter_string");
                 intent.putExtra("key", "My Data");
-                // put your all data using put extra
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
             }
-
         }else if(key.equalsIgnoreCase("Super Like"))
         {
             intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("notification","notification");
             if(Util.appInForeground(this))
-
             {
                 Intent intent1 = new Intent("filter_string");
                 intent.putExtra("key", "My Data");
-                // put your all data using put extra
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
             }
-
         }else if(key.equalsIgnoreCase("Chat"))
         {
             String userId = jsonObject.getString("userid");
@@ -132,41 +108,40 @@ public class StanrzNotification extends FirebaseMessagingService {
             intent.putExtra("notification","chat");
             intent.putExtra("userId",userId);
             if(Util.appInForeground(this))
-
             {
                 Intent intent1 = new Intent("filter_string");
                 intent.putExtra("key", "My Data");
-                // put your all data using put extra
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
             }
+        }else if(key.equalsIgnoreCase("purchase_subscription"))
+        {
+            String type = jsonObject.getString("type");
+            intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("notification","purchase_subscription");
+            intent.putExtra("type",type);
+        }else if(key.equalsIgnoreCase("subscription_expires"))
+        {
+            String id = jsonObject.getString("userid");
+            intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("notification","subscription_expires");
+            intent.putExtra("id",id);
         }
-
-
-       /* if (jsonObject.has("data")) {
-            JSONObject object = new JSONObject(map);
-            Log.i("onMessageReceived: ", object.toString());
-            title = object.optString("title");
-            notificationType = object.optString("type");
-            message = object.optString("message");
-        }*/
-
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
-
         String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.ic_logo)
+                        .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle(title)
                         .setContentText(key1)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
-
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
@@ -174,7 +149,6 @@ public class StanrzNotification extends FirebaseMessagingService {
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
-
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 }

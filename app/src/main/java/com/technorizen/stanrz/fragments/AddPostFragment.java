@@ -139,85 +139,50 @@ public class AddPostFragment extends Fragment {
     TextView picDescription;
     private ImageView videoImageView;
     LinearLayout compressionMsg;
-
     RecyclerView rvUsers;
-
     private List<SuccessResGetUser.Result> usersList = new LinkedList<>();
     private List<SuccessResGetUser.Result> usersAddedList = new LinkedList<>();
     private ArrayList<SuccessResGetUser.Result> newUsersList = new ArrayList<>();
-
     private ArrayList<SuccessResGetUser.Result> taggedUsersList = new ArrayList<>();
-
     private String nsfwStatus = "No";
-
     private  String destPath = "";
-
     private Dialog dialog;
-
     private Dialog tagDialog;
-
     private String openFanClub = "";
-
     private StanrzInterface apiInterface;
-
     String str_image_path = "";
-
     String str_video_path = "";
-
     private static final int REQUEST_CAMERA = 191;
-
     private static final int SELECT_FILE = 2;
-
     private Uri uriSavedImage;
     private Uri uriSavedVideo;
-
     private boolean haveStory = false;
-
     private String strSuperLikes;
-
     private String storyID = "";
-
     RadioButton radioButton;
-
     FragmentAddPostBinding binding;
-
     private static final int MY_PERMISSION_CONSTANT = 5;
-
     static final int REQUEST_VIDEO_CAPTURE = 125;
-
     private String strType = "Public";
-
     private String strCaption = "";
-
     public static int OPEN_MEDIA_PICKER = 10;
-
     public static int IMAGE_PICKER_SELECT = 20;
-
     private static final String ARG_PARAM1 = "param1";
-
     private static final String ARG_PARAM2 = "param2";
-
     private String mParam1;
-
     private String mParam2;
-
     public Bitmap BITMAP_RE_SIZER(Bitmap bitmap, int newWidth, int newHeight) {
         Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
-
         float ratioX = newWidth / (float) bitmap.getWidth();
         float ratioY = newHeight / (float) bitmap.getHeight();
         float middleX = newWidth / 2.0f;
         float middleY = newHeight / 2.0f;
-
         Matrix scaleMatrix = new Matrix();
         scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
-
         Canvas canvas = new Canvas(scaledBitmap);
         canvas.setMatrix(scaleMatrix);
         canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
-
         return scaledBitmap;
-
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -254,87 +219,49 @@ public class AddPostFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_post, container, false);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         checkPermisssionForReadStorage();
-
         binding.tvUploadImage.setOnClickListener(v ->
                 {
                     if (checkPermisssionForReadStorage())
                     {
-//                        File dirtostoreFile = new File(Environment.getExternalStorageDirectory() + "/Stanrz/Images/");
-//                        if (!dirtostoreFile.exists()) {
-//                            dirtostoreFile.mkdirs();
-//                        }
-//                        String timestr = DataManager.getInstance().convertDateToString(Calendar.getInstance().getTimeInMillis());
-//                        File tostoreFile = new File(Environment.getExternalStorageDirectory() + "/Stanrz/Images/" + "IMG_" + timestr + ".jpg");
-//                        str_image_path = tostoreFile.getPath();
-//                        uriSavedImage = FileProvider.getUriForFile(getActivity(),
-//                                BuildConfig.APPLICATION_ID + ".provider",
-//                                tostoreFile);
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
-//                        startActivityForResult(intent, REQUEST_CAMERA);
-
                         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null)
                             startActivityForResult(cameraIntent, REQUEST_CAMERA);
-
                     }
                     else
                     {
-                        Toast.makeText(getActivity(),"Please allow all permissions.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),""+getString(R.string.all_permissions),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
 
         binding.tvUploadVideo.setOnClickListener(v ->
                 {
-
                     if (checkPermisssionForReadStorage())
                     {
-//                        File dirtostoreFile = new File(Environment.getExternalStorageDirectory() + "/Stanrz/Videos/");
-//                        if (!dirtostoreFile.exists()) {
-//                            dirtostoreFile.mkdirs();
-//                        }
-//                        String timestr = DataManager.getInstance().convertDateToString(Calendar.getInstance().getTimeInMillis());
-//                        File tostoreFile = new File(Environment.getExternalStorageDirectory() + "/Stanrz/Videos/" + "Vid_" + timestr + ".mp4");
-//                        str_video_path = tostoreFile.getPath();
-//                        uriSavedVideo = FileProvider.getUriForFile(getActivity(),
-//                                BuildConfig.APPLICATION_ID + ".provider",
-//                                tostoreFile);
-//
-//                        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-//                        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedVideo);
-//                        if (takeVideoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-//                            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
-//                        }
-
-                       Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                      Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                       takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedVideo);
-
                     if (takeVideoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                         startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
                     }
                     }
                     else
                     {
-                        Toast.makeText(getActivity(),"Please allow all permissions.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),""+getString(R.string.all_permissions),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
 
         binding.tvGallary.setOnClickListener(v ->
                 {
-
                     if (checkPermisssionForReadStorage())
                     {
                         showImageSelection();
                     }
                     else
                     {
-                        Toast.makeText(getActivity(),"Please allow all permissions.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),""+getString(R.string.all_permissions),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -353,9 +280,7 @@ public class AddPostFragment extends Fragment {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED
-
                 ||
-
                 ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED
@@ -401,7 +326,6 @@ public class AddPostFragment extends Fragment {
         switch (requestCode) {
 
             case MY_PERMISSION_CONSTANT: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0) {
                     boolean camera = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean read_external_storage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
@@ -778,39 +702,24 @@ public class AddPostFragment extends Fragment {
     TaggedPeopleAdapter taggedPeopleAdapter;
 
     private void fullScreenDialog(ArrayList<String> selectionResult, boolean from) {
-
         dialog = new Dialog(getActivity(), WindowManager.LayoutParams.MATCH_PARENT);
-
         usersList = new LinkedList<>();
         usersAddedList = new LinkedList<>();
         usersList.clear();
         usersAddedList.clear();
-
         dialog.setContentView(R.layout.upload_post_dialog);
-
         AppCompatButton btnSubmit = dialog.findViewById(R.id.btnSubmit);
-
         EditText etCaption = dialog.findViewById(R.id.etCaption);
-
         RecyclerView rvUploading;
-
         rvTagPeople = dialog.findViewById(R.id.rvTagPeople);
-
         RadioButton radioNSFW = dialog.findViewById(R.id.radioNSFW);
-
         RadioButton radioUnlockWith = dialog.findViewById(R.id.radioUnloackWIth);
-
         RadioButton radioStory = dialog.findViewById(R.id.radioStory);
-
         rvUploading = dialog.findViewById(R.id.rvimages_videos);
-
         EditText etsuperLikes = dialog.findViewById(R.id.etUnlockAmount);
-
         MaterialCheckBox checkBoxPublic = dialog.findViewById(R.id.checkboxPublic);
-
         MaterialCheckBox checkBoxFanClub = dialog.findViewById(R.id.checkboxFanClub);
 //        TextView tvTagPeople = dialog.findViewById(R.id.tvTagPeople);
-
         ImageView ivBack;
 
         RecyclerView rvTagComment = dialog.findViewById(R.id.rvTagComment);
@@ -907,7 +816,6 @@ public class AddPostFragment extends Fragment {
         rvUploading.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         rvUploading.setAdapter(new UploadPostsAdapter(getActivity(), selectionResult));
-
 
         if(openFanClub.equalsIgnoreCase("done"))
         {
@@ -1476,7 +1384,6 @@ public class AddPostFragment extends Fragment {
         RequestBody userId = RequestBody.create(MediaType.parse("text/plain"), strUserId);
         RequestBody caption = RequestBody.create(MediaType.parse("text/plain"), strCaption);
         RequestBody type = RequestBody.create(MediaType.parse("text/plain"), type1);
-
         Call<SuccessResUploadStory> loginCall = apiInterface.uploadStory(userId, caption, type, filePartList);
 
         loginCall.enqueue(new Callback<SuccessResUploadStory>() {
@@ -1484,7 +1391,6 @@ public class AddPostFragment extends Fragment {
             public void onResponse(Call<SuccessResUploadStory> call, Response<SuccessResUploadStory> response) {
                 DataManager.getInstance().hideProgressMessage();
                 try {
-
                     SuccessResUploadStory data = response.body();
                     Log.e("data", data.status);
                     if (data.status.equals("1")) {
@@ -1494,7 +1400,6 @@ public class AddPostFragment extends Fragment {
                         dialog.dismiss();
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1510,9 +1415,7 @@ public class AddPostFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-
     }
-
 
     private Locale getLocale() {
         Configuration config = getResources().getConfiguration();
@@ -1522,7 +1425,6 @@ public class AddPostFragment extends Fragment {
         } else {
             sysLocale = getSystemLocaleLegacy(config);
         }
-
         return sysLocale;
     }
 
@@ -1530,7 +1432,6 @@ public class AddPostFragment extends Fragment {
     public static Locale getSystemLocaleLegacy(Configuration config){
         return config.locale;
     }
-
     @TargetApi(Build.VERSION_CODES.N)
     public static Locale getSystemLocale(Configuration config){
         return config.getLocales().get(0);
@@ -1542,34 +1443,26 @@ public class AddPostFragment extends Fragment {
         Map<String, String> map = new HashMap<>();
         map.put("user_id", userId);
         Call<SuccessResGetStories> call = apiInterface.getStories(map);
-
         call.enqueue(new Callback<SuccessResGetStories>() {
             @Override
             public void onResponse(Call<SuccessResGetStories> call, Response<SuccessResGetStories> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
                     SuccessResGetStories data = response.body();
-
                     Log.e("data", data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
-
                         haveStory = true;
                         storyID = data.getResult().get(0).getId();
-
                     } else if (data.status.equals("0")) {
                         //    showToast(getActivity(), data.message);
                         haveStory = false;
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResGetStories> call, Throwable t) {
                 call.cancel();
@@ -1577,13 +1470,9 @@ public class AddPostFragment extends Fragment {
             }
         });
     }
-
     public void updateStory(ArrayList<String> imagesVideosPathList, boolean image, String type1) {
-
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
-
         List<MultipartBody.Part> filePartList = new LinkedList<>();
-
         if (image) {
             for (int i = 0; i < imagesVideosPathList.size(); i++) {
                 File file = DataManager.getInstance().saveBitmapToFile(new File(imagesVideosPathList.get(i)));
@@ -1596,20 +1485,17 @@ public class AddPostFragment extends Fragment {
                 filePartList.add(MultipartBody.Part.createFormData("image[]", file.getName(), RequestBody.create(MediaType.parse("image[]/*"), file)));
             }
         }
-
-        RequestBody userId = RequestBody.create(MediaType.parse("text/plain"), storyID);
+        String strUserId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
+        RequestBody userID = RequestBody.create(MediaType.parse("text/plain"), strUserId);
+        RequestBody storyId = RequestBody.create(MediaType.parse("text/plain"), storyID);
         RequestBody type = RequestBody.create(MediaType.parse("text/plain"), type1);
-
-        Call<SuccessResUploadStory> loginCall = apiInterface.updateStory(userId, type, filePartList);
-
+        Call<SuccessResUploadStory> loginCall = apiInterface.updateStory(userID,storyId, type, filePartList);
         loginCall.enqueue(new Callback<SuccessResUploadStory>() {
             @Override
             public void onResponse(Call<SuccessResUploadStory> call, Response<SuccessResUploadStory> response) {
                 DataManager.getInstance().hideProgressMessage();
                 try {
-
                     SuccessResUploadStory data = response.body();
-
                     Log.e("data", data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());

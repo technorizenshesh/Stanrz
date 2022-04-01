@@ -4,14 +4,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
-public class SuccessResGetPackages implements Serializable {
-
+public class SuccessResHideShowPlan implements Serializable {
 
     @SerializedName("result")
     @Expose
-    public List<Result> result = null;
+    public Result result;
     @SerializedName("message")
     @Expose
     public String message;
@@ -19,11 +17,11 @@ public class SuccessResGetPackages implements Serializable {
     @Expose
     public String status;
 
-    public List<Result> getResult() {
+    public Result getResult() {
         return result;
     }
 
-    public void setResult(List<Result> result) {
+    public void setResult(Result result) {
         this.result = result;
     }
 
@@ -124,6 +122,6 @@ public class SuccessResGetPackages implements Serializable {
         }
 
     }
-    
+
 }
 

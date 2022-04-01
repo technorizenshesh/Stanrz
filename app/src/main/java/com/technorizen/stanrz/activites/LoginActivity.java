@@ -47,7 +47,6 @@ import static com.technorizen.stanrz.retrofit.Constant.showToast;
 
 public class LoginActivity extends AppCompatActivity {
 
-    String str_image_path = "";
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
     String strFullName = "",strUserName = "", strEmail = "", strdob = "", strLat = "", strLng = "",strSocialId ="",deviceToken = "",strPhoneNumber = "";
@@ -55,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     StanrzInterface apiInterface;
     public static String TAG = "LoginActivity";
-
     private ActivityLoginBinding binding;
     private String  strPassword = "";
 
@@ -63,11 +61,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         mAuth = FirebaseAuth.getInstance();
         mCallbackManager = CallbackManager.Factory.create();
+
         getToken();
 
         binding.tvForgotPass.setOnClickListener(v ->
@@ -86,20 +83,15 @@ public class LoginActivity extends AppCompatActivity {
 
             strEmail = binding.etEmail.getText().toString().trim();
             strPassword = binding.etPass.getText().toString().trim();
-
             if (isValid()) {
-
                 if (NetworkAvailablity.getInstance(this).checkNetworkStatus()) {
-
                     login();
-
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(this, getResources().getString(R.string.on_error), Toast.LENGTH_SHORT).show();
             }
-
         });
 
         binding.rlLinkSignup.setOnClickListener(v ->
@@ -112,9 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
     }
 
     private void signIn() {
@@ -129,20 +119,13 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-
                 strFullName = account.getDisplayName();
-
                 strUserName = account.getDisplayName();
-
                 strEmail = account.getEmail();
-
                 strSocialId = account.getId();
-
                 socialLogin();
-
             } catch (ApiException e) {
                 Log.w(TAG, getString(R.string.google_sing_in_falied), e);
             }
@@ -153,7 +136,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void socialLogin()
-
     {
 
         TimeZone tz = TimeZone.getDefault();
@@ -231,13 +213,12 @@ public class LoginActivity extends AppCompatActivity {
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
                         SharedPreferenceUtility.getInstance(getApplication()).putBoolean(Constant.IS_USER_LOGGED_IN, true);
                         SharedPreferenceUtility.getInstance(LoginActivity.this).putString(Constant.USER_ID, data.getResult().getId());
-                        Toast.makeText(LoginActivity.this,""+R.string.logged_in_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,""+getResources().getString(R.string.logged_in_success), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                         finish();
                     } else if (data.status.equals("0")) {
                         showToast(LoginActivity.this, data.message);
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

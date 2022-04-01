@@ -34,7 +34,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         isUserLoggedIn = SharedPreferenceUtility.getInstance(SplashActivity.this).getBoolean(Constant.IS_USER_LOGGED_IN);
-
         finds();
 
 /*
@@ -82,7 +81,6 @@ public class SplashActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(SplashActivity.this,
                         new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         MY_PERMISSION_CONSTANT);
-
             } else {
 
                 ActivityCompat.requestPermissions(SplashActivity.this,
@@ -120,7 +118,6 @@ public class SplashActivity extends AppCompatActivity {
                     boolean read_external_storage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     boolean write_external_storage = grantResults[2] == PackageManager.PERMISSION_GRANTED;
                     if (camera && read_external_storage && write_external_storage) {
-                    //    showImageSelection();
                     } else {
                         Toast.makeText(SplashActivity.this, getResources().getString(R.string.permission_denied_boo), Toast.LENGTH_SHORT).show();
                     }
@@ -128,15 +125,12 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(SplashActivity.this, getResources().getString(R.string.permission_denied_boo), Toast.LENGTH_SHORT).show();
                 }
-                // return;
-            }
 
+            }
         }
     }
 
     private void finds() {
-
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -147,7 +141,6 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     finish();
                 }
-
             }
         },3000);
     }

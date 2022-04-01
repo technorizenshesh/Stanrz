@@ -87,19 +87,15 @@ public class Util {
         return null;
     }
 
-
     public static void makeTextViewResizable(final TextView tv, final int maxLine, final String expandText, final boolean viewMore) {
-
         if (tv.getTag() == null) {
             tv.setTag(tv.getText());
         }
         ViewTreeObserver vto = tv.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
             @SuppressWarnings("deprecation")
             @Override
             public void onGlobalLayout() {
-
                 ViewTreeObserver obs = tv.getViewTreeObserver();
                 obs.removeGlobalOnLayoutListener(this);
                 if (maxLine == 0) {
@@ -146,15 +142,13 @@ public class Util {
                     if (viewMore) {
                         makeTextViewResizable(tv, -1, "View Less", false);
                     } else {
-                        makeTextViewResizable(tv, 3, "View More", true);
+                        makeTextViewResizable(tv, 4, "View More", true);
                     }
                 }
             }, str.indexOf(spanableText), str.indexOf(spanableText) + spanableText.length(), 0);
-
         }
         return ssb;
     }
-
 
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());

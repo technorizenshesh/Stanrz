@@ -72,7 +72,7 @@ public class EditVipMembershipFragment extends Fragment implements SubscriptionC
 
     Dialog dialog;
 
-    private String strSuperlikes ="",strMonths = "",strForMonthly ="";
+    private String strSuperlikes ="",strMonths = "";
 
     private StanrzInterface apiInterface;
 
@@ -181,44 +181,31 @@ public class EditVipMembershipFragment extends Fragment implements SubscriptionC
                     }
                 }
                 );
-
         return binding.getRoot();
     }
 
     private void fullScreenDialog() {
-
         dialog = new Dialog(getActivity(), WindowManager.LayoutParams.MATCH_PARENT);
-
         dialog.setContentView(R.layout.dialog_add_subscrption_plan);
-
         AppCompatButton btnAdd =  dialog.findViewById(R.id.btnAdd);
-
         CheckBox checkBox = dialog.findViewById(R.id.checkBoxMonthly);
-
         ImageView ivBack;
-
         EditText etSuperlies,etMonth;
         etSuperlies = dialog.findViewById(R.id.etRate);
         etMonth = dialog.findViewById(R.id.etMonth);
-
         ivBack = dialog.findViewById(R.id.img_header);
-
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
                 if(b)
                 {
                     etMonth.setEnabled(false);
-                    strForMonthly = "Monthly";
                     etMonth.setText(R.string.monthly);
-                    Log.d(TAG, "onCheckedChanged: "+strForMonthly);
                 }
                 else
                 {
                     etMonth.setEnabled(true);
-                    strForMonthly = "";
-                    Log.d(TAG, "onCheckedChanged: "+strForMonthly);
+                    etMonth.setText("");
                 }
             }
         });
@@ -233,15 +220,12 @@ public class EditVipMembershipFragment extends Fragment implements SubscriptionC
                 {
                     strSuperlikes = etSuperlies.getText().toString();
                     strMonths = etMonth.getText().toString();
-
                     if(checkBox.isChecked())
                     {
-
                         if(isValid1())
                         {
                             addSubcriptionPlan();
                         }
-
                     }
                     else
                     {
@@ -259,10 +243,7 @@ public class EditVipMembershipFragment extends Fragment implements SubscriptionC
                         {
                             showToast(getActivity(),getString(R.string.enter_months));
                         }
-
                     }
-
-
                 }
                 );
         dialog.show();
@@ -305,7 +286,7 @@ public class EditVipMembershipFragment extends Fragment implements SubscriptionC
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
         map.put("for_month",strMonths);
-        map.put("formonth",strForMonthly);
+//        map.put("formonth",strForMonthly);
         map.put("superlike",strSuperlikes);
 
         Call<SuccessResAddSuperLike> call = apiInterface.addSubscriptionPlan(map);
@@ -519,6 +500,7 @@ public class EditVipMembershipFragment extends Fragment implements SubscriptionC
 
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
+        map.put("type","Mine");
 
         Call<SuccessResGetPackages> call = apiInterface.getVipMemberShip(map);
         call.enqueue(new Callback<SuccessResGetPackages>() {
@@ -563,6 +545,7 @@ public class EditVipMembershipFragment extends Fragment implements SubscriptionC
         bundle.putString("rate",packagesList.get(position).getSuperlike());
         bundle.putString("month",packagesList.get(position).getForMonth());
         bundle.putString("id",packagesList.get(position).getId());
+        bundle.putString("status",packagesList.get(position).getViewStatus());
         Navigation.findNavController(v).navigate(R.id.action_editVipMembershipFragment_to_editSingleSubscriptionFragment,bundle);
 
     }

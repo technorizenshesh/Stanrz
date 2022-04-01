@@ -13,7 +13,6 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_10sdp"
             >
-
             <ImageView
                 android:id="@+id/ivBack"
                 android:layout_width="@dimen/_20sdp"
@@ -22,7 +21,6 @@
                 android:layout_centerVertical="true"
                 android:padding="@dimen/_2sdp"
                 />
-
         <EditText
             android:id="@+id/etSearch"
             android:layout_width="match_parent"
@@ -45,6 +43,5 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/rvUsers"/>
-
     </LinearLayout>
 </layout>

@@ -143,7 +143,6 @@ public class SettingsFragment extends Fragment {
                 }
         );
 
-
         binding.llUserActivity.setOnClickListener(v ->
                 {
                     Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_userActivityFragment);

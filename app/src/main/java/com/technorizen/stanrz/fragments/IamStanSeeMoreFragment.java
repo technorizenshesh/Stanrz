@@ -14,17 +14,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.technorizen.stanrz.R;
-import com.technorizen.stanrz.adapters.IamStanAdapter;
-import com.technorizen.stanrz.adapters.StanrzAdapter;
 import com.technorizen.stanrz.adapters.TopAllStanrzAdapter;
-import com.technorizen.stanrz.databinding.FragmentSeeMoreBinding;
-import com.technorizen.stanrz.databinding.TopStanrzItemBinding;
+import com.technorizen.stanrz.databinding.FragmentIamStanSeeMoreBinding;
 import com.technorizen.stanrz.models.SuccessResGetStanrzOf;
 import com.technorizen.stanrz.retrofit.ApiClient;
 import com.technorizen.stanrz.retrofit.NetworkAvailablity;
 import com.technorizen.stanrz.retrofit.StanrzInterface;
 import com.technorizen.stanrz.utility.DataManager;
-import com.technorizen.stanrz.utility.SharedPreferenceUtility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,25 +30,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.technorizen.stanrz.retrofit.Constant.USER_ID;
 import static com.technorizen.stanrz.retrofit.Constant.showToast;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SeeMoreFragment#newInstance} factory method to
+ * Use the {@link IamStanSeeMoreFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SeeMoreFragment extends Fragment {
+public class IamStanSeeMoreFragment extends Fragment {
 
-    FragmentSeeMoreBinding binding;
-
-    private String userId="";
+    FragmentIamStanSeeMoreBinding binding;
     private ArrayList<SuccessResGetStanrzOf.Result> topStanrzList = new ArrayList<>();
-
+    private String userId;
     private String type = "dailytop";
-
     private StanrzInterface apiInterface;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -62,7 +53,7 @@ public class SeeMoreFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SeeMoreFragment() {
+    public IamStanSeeMoreFragment() {
         // Required empty public constructor
     }
 
@@ -72,11 +63,12 @@ public class SeeMoreFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SeeMoreFragment.
+     * @return A new instance of fragment IamStanSeeMoreFragment.
      */
+
     // TODO: Rename and change types and number of parameters
-    public static SeeMoreFragment newInstance(String param1, String param2) {
-        SeeMoreFragment fragment = new SeeMoreFragment();
+    public static IamStanSeeMoreFragment newInstance(String param1, String param2) {
+        IamStanSeeMoreFragment fragment = new IamStanSeeMoreFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -97,31 +89,21 @@ public class SeeMoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_see_more, container, false);
-
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_iam_stan_see_more, container, false);
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         Bundle bundle = this.getArguments();
-
         if (bundle!=null)
         {
             userId = bundle.getString("id");
-
             if (NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
-
                 getTopStanrz();
-
             } else {
                 Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
             }
             allClick();
         }
-
         binding.header.imgHeader.setOnClickListener(v -> getActivity().onBackPressed());
-
-        binding.header.tvHeader.setText(R.string.top_stanrz);
-
+        binding.header.tvHeader.setText(R.string.top_100);
         return binding.getRoot();
     }
 
@@ -172,22 +154,16 @@ public class SeeMoreFragment extends Fragment {
 
         binding.cvMonthly.setOnClickListener(v ->
                 {
-
                     type = "monthly";
                     getTopStanrz();
-
                     binding.tvMontly.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvMontly.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvDaily.setBackgroundResource(0);
                     binding.tvDaily.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvWeekly.setBackgroundResource(0);
                     binding.tvWeekly.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvAllTime.setBackgroundResource(0);
                     binding.tvAllTime.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );
 
@@ -195,31 +171,25 @@ public class SeeMoreFragment extends Fragment {
                 {
                     type = "alltime";
                     getTopStanrz();
-
                     binding.tvAllTime.setBackgroundResource(R.drawable.ic_header_bg);
                     binding.tvAllTime.setTextColor(getResources().getColor(R.color.white));
-
                     binding.tvDaily.setBackgroundResource(0);
                     binding.tvDaily.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvWeekly.setBackgroundResource(0);
                     binding.tvWeekly.setTextColor(getResources().getColor(R.color.black));
-
                     binding.tvMontly.setBackgroundResource(0);
                     binding.tvMontly.setTextColor(getResources().getColor(R.color.black));
-
                 }
         );
     }
 
     private void getTopStanrz() {
-
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
         map.put("type",type);
 
-        Call<SuccessResGetStanrzOf> call = apiInterface.getTopStanrz(map);
+        Call<SuccessResGetStanrzOf> call = apiInterface.getStanrzOf(map);
 
         call.enqueue(new Callback<SuccessResGetStanrzOf>() {
             @Override
@@ -237,13 +207,13 @@ public class SeeMoreFragment extends Fragment {
                         topStanrzList.addAll(data.getResult());
                         binding.rvStanrz.setHasFixedSize(true);
                         binding.rvStanrz.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        binding.rvStanrz.setAdapter(new TopAllStanrzAdapter(getActivity(),topStanrzList,true));
+                        binding.rvStanrz.setAdapter(new TopAllStanrzAdapter(getActivity(),topStanrzList,false));
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                         topStanrzList.clear();
                         binding.rvStanrz.setHasFixedSize(true);
                         binding.rvStanrz.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        binding.rvStanrz.setAdapter(new TopAllStanrzAdapter(getActivity(),topStanrzList,true));
+                        binding.rvStanrz.setAdapter(new TopAllStanrzAdapter(getActivity(),topStanrzList,false));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -257,4 +227,5 @@ public class SeeMoreFragment extends Fragment {
             }
         });
     }
+
 }

@@ -88,36 +88,24 @@ import static com.technorizen.stanrz.retrofit.Constant.showToast;
 public class HomeFragment extends Fragment implements AddLike, ShowStory {
 
     FragmentHomeBinding binding;
-
     public static SuccessResGetStories.Result story;
-
     private SuccessResProfileData.Result userDetail;
-
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayList<SuccessResGetUser.Result> usersList = new ArrayList<>();
     private ArrayList<SuccessResGetStories.Result> storyList = new ArrayList<>();
-
     private ArrayList<Result> myVideos = new ArrayList<>();
-
     private PostsAdapter postsAdapter;
-
     private ArrayList<SuccessResGetUploadedVideos.Result> uploadedVideos = new ArrayList<>();
-
     private StanrzInterface apiInterface;
-
     private  BottomSheet bottomSheetFragment;
-
     LocalBroadcastManager lbm;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
-
     private String mParam1;
-
     private String mParam2;
 
     public HomeFragment() {
@@ -149,11 +137,8 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
         // Inflate the layout for this fragment
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home, container, false);
-
         apiInterface = ApiClient.getClient().create(StanrzInterface.class);
-
         arrayList.add("https://myspotbh.com/Easy_shopping/uploads/images/download.png");
-
         arrayList.add("https://myspotbh.com/Easy_shopping/uploads/images/CATEGORY_IMG79985.png");
 
         binding.llCoinDetail.setOnClickListener(v ->
@@ -178,21 +163,17 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
             getProfile();
             getAllUsers();
             getStories();
-//            getFanImagesVideos();
             getUnseenNotificationCount();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
         }
-
         binding.srlRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 if (NetworkAvailablity.getInstance(getActivity()).checkNetworkStatus()) {
                     getProfile();
                     getAllUsers();
                     getStories();
-//            getFanImagesVideos();
                     getUnseenNotificationCount();
                 } else {
                     Toast.makeText(getActivity(), getResources().getString(R.string.msg_noInternet), Toast.LENGTH_SHORT).show();
@@ -206,6 +187,7 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
         postsAdapter = new PostsAdapter(getActivity(),myVideos,HomeFragment.this,"home",usersList);
         binding.rvPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rvPosts.setAdapter(postsAdapter);
+
         return binding.getRoot();
     }
 
@@ -219,63 +201,18 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
         }
     };
 
-    private void getFanImagesVideos() {
-
-        String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
-        DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
-        Map<String,String> map = new HashMap<>();
-        map.put("user_id",userId);
-
-        Call<SuccessResGetUploadedVideos> call = apiInterface.getFanUploads(map);
-
-        call.enqueue(new Callback<SuccessResGetUploadedVideos>() {
-            @Override
-            public void onResponse(Call<SuccessResGetUploadedVideos> call, Response<SuccessResGetUploadedVideos> response) {
-
-                DataManager.getInstance().hideProgressMessage();
-                try {
-                    SuccessResGetUploadedVideos data = response.body();
-                    Log.e("data",data.status);
-                    if (data.status.equals("1")) {
-                        String dataResponse = new Gson().toJson(response.body());
-                        Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
-                        uploadedVideos.clear();
-                        uploadedVideos.addAll(data.getResult());
-                        getUploadedImagesVideos();
-
-                    } else if (data.status.equals("0")) {
-                        uploadedVideos.clear();
-                        getUploadedImagesVideos();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SuccessResGetUploadedVideos> call, Throwable t) {
-                call.cancel();
-                DataManager.getInstance().hideProgressMessage();
-            }
-        });
-    }
 
     private void getUploadedImagesVideos() {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
         Call<SuccessResGetUploadedVideos> call = apiInterface.getHomePost(map);
-
         call.enqueue(new Callback<SuccessResGetUploadedVideos>() {
             @Override
             public void onResponse(Call<SuccessResGetUploadedVideos> call, Response<SuccessResGetUploadedVideos> response) {
-
                 DataManager.getInstance().hideProgressMessage();
                 try {
-
                     SuccessResGetUploadedVideos data = response.body();
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
@@ -284,7 +221,6 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
                         uploadedVideos.clear();
                         uploadedVideos.addAll(data.getResult());
                         setVideoList();
-
                     } else if (data.status.equals("0")) {
                         showToast(getActivity(), data.message);
                         if(uploadedVideos.size()==0)
@@ -296,7 +232,6 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
                         {
                             setVideoList();
                         }
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -319,13 +254,10 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
         map.put("user_id",userId);
         map.put("post_id",post_id);
         map.put("post_user",uploader_id);
-
         Call<SuccessResAddLike> call = apiInterface.addLike(map);
-
         call.enqueue(new Callback<SuccessResAddLike>() {
             @Override
             public void onResponse(Call<SuccessResAddLike> call, Response<SuccessResAddLike> response) {
-
                 DataManager.getInstance().hideProgressMessage();
                 try {
                     SuccessResAddLike data = response.body();
@@ -364,7 +296,6 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
-
         TextView tvDelete = dialog.findViewById(R.id.tvDelete);
         TextView tvShare = dialog.findViewById(R.id.tvShare);
         TextView tvReport = dialog.findViewById(R.id.tvReport);
@@ -378,7 +309,6 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
         {
             tvSave.setText(R.string.unsave);
         }
-
         if(isUser)
         {
             tvDelete.setVisibility(View.VISIBLE);
@@ -392,17 +322,13 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
 
         tvDelete.setOnClickListener(v1 ->
                 {
-
                     dialog.dismiss();
                     new AlertDialog.Builder(getActivity())
-                            .setTitle("Delete Post")
-                            .setMessage("Are you sure you want to delete Post?")
-
+                            .setTitle(getString(R.string.delete_post))
+                            .setMessage(getString(R.string.are_you_sure_want_to_delete_post))
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-
                                     deletePost(postID,position);
-
                                 }
                             })
                             .setNegativeButton(android.R.string.no, null)
@@ -414,7 +340,6 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
         tvSave.setOnClickListener(v1 ->
                 {
                     dialog.dismiss();
-
                     if(result.getSaved().equalsIgnoreCase("0"))
                     {
                         tvSave.setText(R.string.unsave);
@@ -425,17 +350,13 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
                         tvSave.setText(R.string.save);
                         result.setSaved("0");
                     }
-
                     savePost(postID,"");
-
                 }
                 );
 
         tvShare.setOnClickListener(v1 ->
                 {
-
                     dialog.dismiss();
-
                     String shareBody = "User :"+result.getUserName()+"\n\n Posted :"+result.getUserPost();
                     Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                     sharingIntent.setType("text/plain");
@@ -447,50 +368,37 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
 
         tvReport.setOnClickListener(v1 ->
                 {
-
                     dialog.dismiss();
-
                     bottomSheetFragment= new BottomSheet(getActivity(), new ReportInterface() {
                        @Override
                        public void onReport(String content,String userId) {
                            reportUser(postID,content);
                        }
-
                         @Override
                         public void deleteChat(String userId) {
-
                         }
-
                         @Override
                         public void blockUser(String userId,String other) {
-
                         }
                     });
-
                    bottomSheetFragment.show(getActivity().getSupportFragmentManager(),"ModalBottomSheet");
                 }
                 );
-
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
-
     @Override
     public void addSuperLikes(View v, String postId, String uploaderId, String quantity) {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
         map.put("post_id",postId);
         map.put("superlike",quantity);
-
         Call<SuccessResAddSuperLike> call = apiInterface.addSuperLike(map);
-
         call.enqueue(new Callback<SuccessResAddSuperLike>() {
             @Override
             public void onResponse(Call<SuccessResAddSuperLike> call, Response<SuccessResAddSuperLike> response) {
-
                 DataManager.getInstance().hideProgressMessage();
                 try {
                     SuccessResAddSuperLike data = response.body();
@@ -503,7 +411,6 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResAddSuperLike> call, Throwable t) {
                 call.cancel();
@@ -511,36 +418,29 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
             }
         });
     }
-
     @Override
     public void unlockNsfw(View v, String postId, String uploaderId, String quantity) {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
         map.put("post_id",postId);
         map.put("nsfw","No");
-
         Call<SuccessResUnlockNsfw> call = apiInterface.unlockNSFW(map);
-
         call.enqueue(new Callback<SuccessResUnlockNsfw>() {
             @Override
             public void onResponse(Call<SuccessResUnlockNsfw> call, Response<SuccessResUnlockNsfw> response) {
-
                 DataManager.getInstance().hideProgressMessage();
                 try {
                     SuccessResUnlockNsfw data = response.body();
                     Log.e("data",data.status);
                     showToast(getActivity(), data.message);
                     getUploadedImagesVideos();
-
                     getProfile();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResUnlockNsfw> call, Throwable t) {
                 call.cancel();
@@ -549,26 +449,22 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
         });
     }
 
-    private void getStories() {
 
+    private void getStories() {
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
         map.put("user_id",userId);
-
         Call<SuccessResGetStories> call = apiInterface.getAllStories(map);
-
         call.enqueue(new Callback<SuccessResGetStories>() {
             @Override
             public void onResponse(Call<SuccessResGetStories> call, Response<SuccessResGetStories> response) {
-
                 DataManager.getInstance().hideProgressMessage();
-
                 try {
                     SuccessResGetStories data = response.body();
-
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
+
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e("MapMap", "EDIT PROFILE RESPONSE" + dataResponse);
                         storyList.clear();
@@ -587,7 +483,6 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<SuccessResGetStories> call, Throwable t) {
                 call.cancel();
@@ -595,12 +490,9 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
             }
         });
     }
-
     @Override
     public void showStory(View v,int pos,String userId, String userImage,SuccessResGetStories.Result storyList) {
-
         String myUserId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
-
         if(myUserId.equalsIgnoreCase(userId))
         {
             Navigation.findNavController(v).navigate(R.id.action_navigation_home_to_myStoriesFragment);
@@ -613,27 +505,25 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
             intent.putExtras(bundle);
             startActivity(intent);
         }
-
     }
-
     public void setVideoList()
     {
-
         myVideos.clear();
-
         Result myVideoModel;
-
         UserPost myVideo;
-
-        ArrayList<UserPost> userPostArrayList =new ArrayList<>() ;
-
+        ArrayList<UserPost> userPostArrayList =new ArrayList<>();
         for (SuccessResGetUploadedVideos.Result videoModel:uploadedVideos)
         {
-
+            if(videoModel.getUserPost() == null)
+            {
+                continue;
+            }
+            if (videoModel.getSubscriberPost().equalsIgnoreCase("No"))
+            {
+                continue;
+            }
             myVideoModel = new Result();
-
             myVideoModel.setId(videoModel.getId());
-
             myVideoModel.setUserId(videoModel.getUserId());
             myVideoModel.setDescription(videoModel.getDescription());
             myVideoModel.setComment(videoModel.getComment());
@@ -656,10 +546,7 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
 
             int i=0;
 
-            if(videoModel.getUserPost() == null)
-            {
-                break;
-            }
+
 
             userPostArrayList = new ArrayList<>();
 
@@ -728,21 +615,17 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
                                 var10001 = layoutManager.findViewByPosition(i);
                                 var15 /= var10001.getHeight();
                             }
-
                             int percentFirstx = var15;
-
                             if (percentFirstx > 70 && !(myVideos.get(i)).isPlaying()) {
                                 myVideos.get(i).setVisiblePercent(percentFirstx);
                                 myVideos.get(i).setPlaying(true);
                                 percentFirst = true;
                                 postsAdapter.playVideo(i);
-
                             } else if (percentFirstx < 50) {
                                 myVideos.get(i).setVisiblePercent(percentFirstx);
                                 myVideos.get(i).setPlaying(false);
                                 postsAdapter.stopVideo(i);
                             }
-
                             if (i == var9) {
                                 break;
                             }
@@ -753,10 +636,8 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
             }
         }));
     }
-
     private void deletePost(String postId,int position)
     {
-
         String userId = SharedPreferenceUtility.getInstance(getContext()).getString(USER_ID);
         DataManager.getInstance().showProgressMessage(getActivity(), getString(R.string.please_wait));
         Map<String,String> map = new HashMap<>();
@@ -922,7 +803,6 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
 
                 try {
                     SuccessResGetUnseenMessages data = response.body();
-//                    setSellerData();
                     Log.e("data",data.status);
                     if (data.status.equals("1")) {
                         String dataResponse = new Gson().toJson(response.body());
@@ -946,7 +826,6 @@ public class HomeFragment extends Fragment implements AddLike, ShowStory {
                         }
 
                     } else if (data.status.equals("0")) {
-                        // showToast(this, data.message);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

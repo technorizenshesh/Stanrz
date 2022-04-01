@@ -35,7 +35,6 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
-            android:text="Hello"
             android:textSize="@dimen/_14sdp" />
 
     </RelativeLayout>

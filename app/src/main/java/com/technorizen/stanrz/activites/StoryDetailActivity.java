@@ -6,8 +6,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.bolaware.viewstimerstory.Momentz;
@@ -23,46 +25,39 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import static com.technorizen.stanrz.activites.LoginActivity.TAG;
+
 public class StoryDetailActivity extends AppCompatActivity implements MomentzCallback {
 
     ArrayList<MomentzView> storyView = new ArrayList<>();
-
     private ArrayList<SuccessResGetStories.UserStory> stories= new ArrayList<>();
-
     private String userName = "";
-
     private String userImage = "";
-
     private Momentz momentz ;
-
     private ConstraintLayout container ;
+
+    private TextView tvDateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_detail);
         container = findViewById(R.id.container);
+        tvDateTime = findViewById(R.id.tvTimeAgo);
         initializeComponents();
     }
 
+
     private void initializeComponents() {
-
         Bundle extras = getIntent().getExtras();
-
         SuccessResGetStories.Result storyObject = HomeFragment.story;
-
         userImage = extras.getString("UserImage");
-
         userName = extras.getString("UserName");
-
         stories.addAll(storyObject.getUserStory());
-
       if(stories!=null)
       {
-
           for (SuccessResGetStories.UserStory story:stories)
           {
-
               if(story.getStoryType().equalsIgnoreCase("image"))
               {
                   ImageView internetLoadedImageView = new ImageView(this);
@@ -101,6 +96,10 @@ public class StoryDetailActivity extends AppCompatActivity implements MomentzCal
     @Override
     public void onNextCalled(@NotNull View view, @NotNull Momentz momentz, int i) {
 
+        Log.d(TAG, "onNextCalled: "+i);
+
+        tvDateTime.setText(stories.get(i).getTimeAgo());
+
         if(view instanceof VideoView)
         {
             momentz.pause(true);
@@ -114,7 +113,6 @@ public class StoryDetailActivity extends AppCompatActivity implements MomentzCal
                 momentz.resume();
             }
         }
-
     }
 
     public void playVideo(VideoView videoView,int index,Momentz momentz)
@@ -122,11 +120,9 @@ public class StoryDetailActivity extends AppCompatActivity implements MomentzCal
 
         String str = stories.get(index).getStoryData();
         Uri uri = Uri.parse(str);
-
         videoView.setVideoURI(uri);
         videoView.requestFocus();
         videoView.start();
-
         videoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
